@@ -1,0 +1,31 @@
+# IB 프로젝트 재구조화 및 고도화 할 일 목록 (Task List)
+
+- [x] 1. 연구 결과 문서화 (Research Documentation)
+    - [x] `Research/PF_Industry_Research.md` 연구 결과 기록 완료
+- [x] 2. 물리적 재구조화 (Physical Restructuring)
+    - [x] 기존 `01_Concepts` -> `Archive_Drafts/` 이전
+    - [x] 기존 `02_Deal_Structures` -> `Archive_Drafts/` 이전
+    - [x] 기존 `03_Risk_Monitoring` -> `Archive_Drafts/` 이전
+    - [x] 기존 `04_Models_Algorithms` -> `Archive_Drafts/` 이전
+    - [x] 기존 `05_Market_Operations` -> `Archive_Drafts/` 이전
+    - [x] 기존 `Archive` 및 `Resources` -> `Archive_Drafts/` 이전
+- [x] 3. 정식 사양서 생산 (Formal Specs v1.0)
+    - [x] `Formal_Specs/01_Market_Domain/IB_Domain_Standard.md` 생성 완료
+    - [x] `Formal_Specs/02_Product_Structures/PF_CashFlow_Financial_Spec.md` 생성 완료
+- [x] 4. 시각화 및 고도화 (Visual Enhancements)
+    - [x] v1 사양서 내 Mermaid 다이어그램 추가 완료
+    - [x] 컨셉 대시보드 이미지 생성 완료
+- [x] 5. 프로젝트 관리 문서 통합 (PM Integration)
+    - [x] `Project_Management/` 폴더 생성 및 문서 이전 완료
+    - [x] 모든 문서의 국문/영문 용어 보완 및 번역 완료
+- [x] 6. 세션 복구 및 메모리 기능 (Context Memory)
+    - [x] `Project_Management/PROJECT_CONTEXT.md` 생성 완료
+- [x] 7. 1단계: 통합 아키텍처 및 매핑 (Unified Architecture & Mapping)
+    - [x] `Formal_Specs/00_System_Architecture/Unified_IB_PF_Architecture.md` 작성 완료
+    - [x] `Project_Management/Draft_Purification_Map.md` 작성 완료
+    - [x] M&A 및 VDR 연동 로직 설계 반영
+    - [x] ML 마이크로서비스 및 피처 스토어 구조 반영
+- [/] 8. 2단계: 레이어별 정규 사양서 고도화 (Refined Production)
+    - [ ] `Formal_Specs/03_Risk_Analysis/Risk_Monitoring_Spec.md` 예정
+    - [ ] `Formal_Specs/04_Logical_Models/Predictive_Logic_Spec.md` 예정
+    - [ ] `Formal_Specs/05_Market_Ops/System_Integration_Spec.md` 예정
