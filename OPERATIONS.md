@@ -28,6 +28,8 @@ aib  # 또는 source /home/kbgkim/antigravity/projects/ib/bin/ib_env
 | **서비스 통합 종료** | `istop a` | `is` |
 | **현재 상태 확인** | `ists` | `ist` |
 | **로그 실시간 확인** | `ilog a` | `il` |
+| **프로젝트 홈 이동** | `ib` | - |
+| **로그 디렉토리 이동** | `ilogs` | - |
 
 ### 개별 서비스 관리
 - **백엔드 (Java)**: `irunb`, `istopb`, `ilogb`
