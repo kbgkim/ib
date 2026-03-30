@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import SynergyInput from './components/SynergyInput';
 import ValuationWaterfall from './components/ValuationWaterfall';
+import ScenarioSelector from './components/ScenarioSelector';
 import RiskRadarChart from './components/RiskRadarChart';
 import RiskEvaluationForm from './components/RiskEvaluationForm';
 import { TrendingUp, Activity, LayoutDashboard, Database, Shield } from 'lucide-react';
@@ -18,6 +19,7 @@ function App() {
   const [valuationData, setValuationData] = useState([2000, 0, 0, -200, 1800]);
   const [riskProfile, setRiskProfile] = useState([0, 0, 0, 0, 0, 0]);
   const [activeScenario, setActiveScenario] = useState('BASE');
+  const [multiplier, setMultiplier] = useState(1.00);
   const [synergyItems, setSynergyItems] = useState([]);
 
   useEffect(() => {
@@ -34,18 +36,25 @@ function App() {
   };
 
   const handleSynergyChange = async (items) => {
-    setSynergyItems(items); // Keep track of current items locally
-    fetchValuation(items, activeScenario);
+    setSynergyItems(items);
+    fetchValuation(items, multiplier);
   };
 
-  const handleScenarioChange = (scenario) => {
+  const handleScenarioChange = (scenario, val) => {
     setActiveScenario(scenario);
-    fetchValuation(synergyItems, scenario);
+    setMultiplier(val);
+    fetchValuation(synergyItems, val);
   };
 
-  const fetchValuation = async (items, scenario) => {
+  const handleMultiplierChange = (val) => {
+    setMultiplier(val);
+    setActiveScenario('CUSTOM'); 
+    fetchValuation(synergyItems, val);
+  };
+
+  const fetchValuation = async (items, mult) => {
     try {
-      const response = await axios.post(`${API_BASE}/valuation-bridge?scenario=${scenario}`, items);
+      const response = await axios.post(`${API_BASE}/valuation-bridge?multiplier=${mult}`, items);
       const bridge = response.data;
       setValuationData([
         bridge.baseValue,
@@ -91,21 +100,16 @@ function App() {
       <main className="main-content">
         <header>
           <h1>통합 IB 대시보드 (대상: {dealId})</h1>
-          <div className="scenario-selector">
-            <button 
-              className={`scenario-btn ${activeScenario === 'BASE' ? 'active' : ''}`} 
-              onClick={() => handleScenarioChange('BASE')}>기본 시나리오</button>
-            <button 
-              className={`scenario-btn ${activeScenario === 'BEAR' ? 'active' : ''}`} 
-              onClick={() => handleScenarioChange('BEAR')}>보수적 시나리오</button>
-            <button 
-              className={`scenario-btn ${activeScenario === 'BULL' ? 'active' : ''}`} 
-              onClick={() => handleScenarioChange('BULL')}>낙관적 시나리오</button>
-          </div>
         </header>
 
         <div className="dashboard-grid">
           <div className="left-column">
+            <ScenarioSelector 
+              multiplier={multiplier} 
+              activePreset={activeScenario}
+              onMultiplierChange={handleMultiplierChange}
+              onPresetChange={handleScenarioChange}
+            />
             <SynergyInput onSynergyChange={handleSynergyChange} />
             <div style={{ marginTop: '24px' }}>
               <RiskEvaluationForm onResult={handleRiskResult} />

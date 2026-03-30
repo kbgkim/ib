@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Shield, AlertTriangle, CheckCircle, User, MessageSquare, Cpu, ShieldAlert } from 'lucide-react';
+import { Shield, AlertTriangle, CheckCircle, User, MessageSquare, Cpu, ShieldAlert, Zap, TrendingUp, RefreshCcw } from 'lucide-react';
+import RiskRadarChart from './RiskRadarChart';
 
 const API_BASE = 'http://localhost:8080/api/v1/risk';
 
@@ -11,7 +12,7 @@ const RiskEvaluationForm = ({ onResult }) => {
     operational: 85,
     security: 60,
     evaluatorId: 'IB_USER_01',
-    evalComment: 'Initial risk assessment for DEAL-001'
+    evalComment: 'DEAL-001 리스크 심사 초안'
   });
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -36,118 +37,166 @@ const RiskEvaluationForm = ({ onResult }) => {
       if (onResult) onResult(res.data);
     } catch (err) {
       console.error(err);
-      alert('Risk evaluation failed. Ensure backend is running.');
+      alert('분석에 실패했습니다. 백엔드 상태를 확인해주세요.');
     } finally {
       setLoading(false);
     }
   };
 
-  const getTrafficLightColor = (grade) => {
-    if (!grade) return '#444';
-    if (grade.startsWith('AAA') || grade === 'AA') return '#4ade80'; // Green
-    if (grade.startsWith('A') || grade.startsWith('B')) return '#facc15'; // Yellow
-    return '#ef4444'; // Red (C, D)
+  const getGradeClass = (grade) => {
+    if (!grade) return '';
+    const simpleScale = grade.replace('+', '').replace('-', '');
+    return `neon-glow-${simpleScale.toLowerCase()}`;
+  };
+
+  const getRadarData = (res) => {
+    if (!res) return [0, 0, 0, 0, 0, 0];
+    return [
+      res.rawData.financialScore,
+      res.rawData.legalScore,
+      res.rawData.operationalScore,
+      res.rawData.securityScore,
+      res.mlScore,
+      res.vdrScore
+    ];
   };
 
   return (
-    <div className="risk-form-container" style={{ background: '#1a1d21', color: '#fff', padding: '24px', borderRadius: '12px' }}>
-      <h2 style={{ fontSize: '18px', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-        <Shield size={20} color="#34d399" /> 고급 리스크 시뮬레이터
-      </h2>
-      
-      <form onSubmit={handleSubmit}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '20px' }}>
-          {[
-            { key: 'financial', label: '재무 점수' },
-            { key: 'legal', label: '법무 점수' },
-            { key: 'operational', label: '운영 점수' },
-            { key: 'security', label: '보안 점수' }
-          ].map(({ key, label }) => (
-            <div key={key}>
-              <label style={{ fontSize: '12px', color: '#aaa', display: 'block', marginBottom: '4px', whiteSpace: 'nowrap' }}>
-                {label} <span style={{fontSize: '10px', color: '#666'}}>(0-100)</span>
-              </label>
-              <input 
-                type="number" 
-                value={inputs[key]}
-                onChange={(e) => setInputs({...inputs, [key]: parseInt(e.target.value)})}
-                style={{ width: '100%', background: '#2d333b', border: '1px solid #444', borderRadius: '6px', color: '#fff', padding: '8px', boxSizing: 'border-box' }}
-              />
-            </div>
-          ))}
-        </div>
-
-        <div style={{ marginBottom: '20px' }}>
-          <label style={{ fontSize: '12px', color: '#aaa', display: 'block', marginBottom: '4px', whiteSpace: 'nowrap' }}>
-            <User size={14} /> 평가자 ID
-          </label>
-          <input 
-            type="text" 
-            value={inputs.evaluatorId}
-            onChange={(e) => setInputs({...inputs, evaluatorId: e.target.value})}
-            style={{ width: '100%', background: '#2d333b', border: '1px solid #444', borderRadius: '6px', color: '#fff', padding: '8px', boxSizing: 'border-box' }}
-          />
-        </div>
-
-        <div style={{ marginBottom: '20px' }}>
-          <label style={{ fontSize: '12px', color: '#aaa', display: 'block', marginBottom: '4px', whiteSpace: 'nowrap' }}>
-            <MessageSquare size={14} /> 코멘트 (선택사항)
-          </label>
-          <textarea 
-            value={inputs.evalComment}
-            onChange={(e) => setInputs({...inputs, evalComment: e.target.value})}
-            style={{ width: '100%', background: '#2d333b', border: '1px solid #444', borderRadius: '6px', color: '#fff', padding: '8px', minHeight: '60px', boxSizing: 'border-box' }}
-          />
-        </div>
-
-        <button 
-          type="submit" 
-          disabled={loading}
-          style={{ width: '100%', background: '#3b82f6', color: '#fff', border: 'none', padding: '12px', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer', marginBottom: '2px', boxSizing: 'border-box' }}
-        >
-          {loading ? '평가 진행 중...' : '통합 리스크 분석 실행'}
-        </button>
-      </form>
-
-      {result && (
-        <div style={{ background: '#2d333b', padding: '20px', borderRadius: '10px', borderLeft: `5px solid ${getTrafficLightColor(result.finalGrade)}`, boxShadow: '0 4px 6px rgba(0,0,0,0.3)' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-            <div>
-              <span style={{ fontSize: '14px', color: '#aaa' }}>최종 등급</span>
-              <h3 style={{ fontSize: '28px', margin: '4px 0', color: getTrafficLightColor(result.finalGrade) }}>{result.finalGrade}</h3>
-            </div>
-            <div style={{ textAlign: 'right' }}>
-              <span style={{ fontSize: '14px', color: '#aaa' }}>종합 리스크 점수</span>
-              <h3 style={{ fontSize: '28px', margin: '4px 0', color: '#fff' }}>{result.totalScore.toFixed(1)}</h3>
-            </div>
-          </div>
+    <div className="risk-dashboard-container" style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+      <div className="dashboard-grid" style={{ display: 'grid', gridTemplateColumns: 'minmax(350px, 1fr) 2fr', gap: '24px' }}>
+        
+        {/* Left: Input Panel */}
+        <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px' }}>
+          <h2 style={{ fontSize: '20px', marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '10px', color: '#60a5fa' }}>
+            <Zap size={22} fill="#60a5fa" /> 리스크 시뮬레이터
+          </h2>
           
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '16px' }}>
-            <div style={{ background: '#1a1d21', padding: '12px', borderRadius: '8px', border: '1px solid #3b82f6' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#60a5fa', marginBottom: '4px' }}>
-                <Cpu size={16} /> 
-                <span style={{ fontSize: '12px', fontWeight: 'bold', whiteSpace: 'nowrap' }}>AI 신뢰도</span>
-              </div>
-              <div style={{ fontSize: '20px', color: '#fff', fontWeight: 'bold' }}>
-                {result.mlScore ? result.mlScore.toFixed(1) : '0.0'}
-              </div>
+          <form onSubmit={handleSubmit}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '24px' }}>
+              {[
+                { key: 'financial', label: '재무 리스크' },
+                { key: 'legal', label: '법무 리스크' },
+                { key: 'operational', label: '운영 리스크' },
+                { key: 'security', label: '보안 리스크' }
+              ].map(({ key, label }) => (
+                <div key={key}>
+                  <label style={{ fontSize: '12px', color: '#94a3b8', display: 'block', marginBottom: '8px' }}>{label}</label>
+                  <input 
+                    type="range" min="0" max="100"
+                    value={inputs[key]}
+                    onChange={(e) => setInputs({...inputs, [key]: parseInt(e.target.value)})}
+                    style={{ width: '100%', accentColor: '#3b82f6', height: '6px', borderRadius: '3px' }}
+                  />
+                  <div style={{ textAlign: 'right', fontSize: '14px', fontWeight: 'bold', marginTop: '4px' }}>{inputs[key]}</div>
+                </div>
+              ))}
             </div>
-            <div style={{ background: '#1a1d21', padding: '12px', borderRadius: '8px', border: '1px solid #10b981' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#34d399', marginBottom: '4px' }}>
-                <ShieldAlert size={16} /> 
-                <span style={{ fontSize: '12px', fontWeight: 'bold', whiteSpace: 'nowrap' }}>VDR 보안 점수</span>
-              </div>
-              <div style={{ fontSize: '20px', color: '#fff', fontWeight: 'bold' }}>
-                {result.vdrScore ? result.vdrScore.toFixed(1) : '0.0'}
-              </div>
-            </div>
-          </div>
 
-          <p style={{ fontSize: '13px', color: '#cbd5e1', fontStyle: 'italic', borderTop: '1px solid #444', paddingTop: '12px' }}>
-            "{result.description}"
-          </p>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '16px', marginBottom: '24px' }}>
+              <div>
+                <label style={{ fontSize: '12px', color: '#94a3b8', display: 'block', marginBottom: '8px' }}>
+                  <User size={14} style={{ marginRight: '4px' }} /> 분석 책임자
+                </label>
+                <input 
+                  type="text" 
+                  value={inputs.evaluatorId}
+                  onChange={(e) => setInputs({...inputs, evaluatorId: e.target.value})}
+                  className="glass-panel"
+                  style={{ width: '100%', padding: '12px', borderRadius: '8px', color: '#fff', border: 'none', background: 'rgba(255,255,255,0.05)' }}
+                />
+              </div>
+              <div>
+                <label style={{ fontSize: '12px', color: '#94a3b8', display: 'block', marginBottom: '8px' }}>
+                  <MessageSquare size={14} style={{ marginRight: '4px' }} /> 정성적 심사 코멘트
+                </label>
+                <textarea 
+                  value={inputs.evalComment}
+                  onChange={(e) => setInputs({...inputs, evalComment: e.target.value})}
+                  className="glass-panel"
+                  style={{ width: '100%', padding: '12px', borderRadius: '8px', color: '#fff', border: 'none', background: 'rgba(255,255,255,0.05)', minHeight: '80px' }}
+                />
+              </div>
+            </div>
+
+            <button 
+              type="submit" 
+              disabled={loading}
+              className="primary-btn"
+              style={{ 
+                width: '100%', 
+                background: 'linear-gradient(90deg, #3b82f6, #6366f1)', 
+                color: '#fff', border: 'none', padding: '16px', borderRadius: '12px', 
+                fontWeight: 'bold', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+                transition: 'all 0.3s'
+              }}
+            >
+              {loading ? <RefreshCcw className="spinning" size={20} /> : <TrendingUp size={20} />}
+              {loading ? '데이터 엔진 연동 중...' : '통합 AI 리스크 분석 실행'}
+            </button>
+          </form>
         </div>
-      )}
+
+        {/* Right: Results Panel */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+          {!result ? (
+            <div className="glass-panel" style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '40px', textAlign: 'center', color: '#64748b' }}>
+              <Shield size={64} color="#334155" style={{ marginBottom: '24px' }} />
+              <h3>데이터를 입력하고 리스크 분석을 실행하세요</h3>
+              <p>재무, 법무, 운영, 보안 지표와 AI 예측 엔진이 결합된 <br/>통합 리스크 프로파일링이 제공됩니다.</p>
+            </div>
+          ) : (
+            <div className="animate-fade-in" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px', flex: 1 }}>
+              <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                <div className="risk-score-display">
+                  <span style={{ fontSize: '14px', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '1px' }}>Total Risk Score</span>
+                  <div className="risk-grade-badge" style={{ color: '#fff' }}>
+                    {result.totalScore.toFixed(1)}
+                  </div>
+                  <div className={`risk-grade-badge ${getGradeClass(result.finalGrade)}`} style={{ fontSize: '5rem', marginTop: '-10px' }}>
+                    {result.finalGrade}
+                  </div>
+                  <div style={{ color: '#94a3b8', fontSize: '14px' }}>{result.description}</div>
+                </div>
+              </div>
+
+              <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px' }}>
+                <h3 style={{ fontSize: '16px', marginBottom: '16px', color: '#94a3b8' }}>카테고리별 리스크 편차 (Radar)</h3>
+                <RiskRadarChart data={getRadarData(result)} />
+              </div>
+            </div>
+          )}
+
+          {result && (
+            <div className="glass-panel animate-fade-in" style={{ padding: '24px', borderRadius: '16px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
+              <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+                <div style={{ background: 'rgba(59, 130, 246, 0.1)', padding: '12px', borderRadius: '12px' }}>
+                  <Cpu color="#3b82f6" size={24} />
+                </div>
+                <div>
+                  <div style={{ fontSize: '12px', color: '#94a3b8' }}>AI 기반 정밀 분석 (Confidence)</div>
+                  <div style={{ fontSize: '20px', fontWeight: 'bold' }}>{result.mlScore ? result.mlScore.toFixed(1) : '0.0'}%</div>
+                </div>
+              </div>
+              <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+                <div style={{ background: 'rgba(16, 185, 129, 0.1)', padding: '12px', borderRadius: '12px' }}>
+                  <ShieldAlert color="#10b981" size={24} />
+                </div>
+                <div>
+                  <div style={{ fontSize: '12px', color: '#94a3b8' }}>VDR 보안 결함 탐지</div>
+                  <div style={{ fontSize: '20px', fontWeight: 'bold' }}>{result.vdrScore ? result.vdrScore.toFixed(1) : '0.0'} / 100</div>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+      
+      <style>{`
+        .spinning { animation: spin 2s linear infinite; }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .primary-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(59, 130, 246, 0.5); }
+        .primary-btn:active { transform: translateY(0); }
+      `}</style>
     </div>
   );
 };

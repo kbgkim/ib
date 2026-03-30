@@ -116,6 +116,16 @@ header {
   border-radius: 4px;
 }
 
+.scenario-selector-card {
+  border: 1px solid rgba(96, 165, 250, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.scenario-selector-card:hover {
+  border-color: rgba(96, 165, 250, 0.4);
+}
+
 .metrics-summary {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -124,11 +134,80 @@ header {
 }
 
 .metric-card {
-  background: #222;
-  padding: 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 20px;
   border-radius: 12px;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: all 0.2s;
 }
 
-.metric-card .label { color: var(--text-secondary); font-size: 0.8rem; display: block; }
-.metric-card .value { font-size: 1.5rem; font-weight: bold; color: var(--accent-green); }
+.metric-card:hover {
+  background: rgba(255, 255, 255, 0.06);
+  transform: translateY(-2px);
+}
+
+.metric-card .label {
+  font-size: 12px;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.metric-card .value {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--accent-green);
+}
+
+/* Layer 04: Premium Risk Dashboard Styles */
+:root {
+  --risk-aaa: #00ff88;
+  --risk-aa: #4ade80;
+  --risk-a: #facc15;
+  --risk-b: #fb923c;
+  --risk-d: #ef4444;
+  --glass-bg: rgba(30, 41, 59, 0.5);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --neon-blue: #00d2ff;
+}
+
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+}
+
+.neon-glow-aaa { filter: drop-shadow(0 0 8px var(--risk-aaa)); color: var(--risk-aaa) !important; }
+.neon-glow-aa { filter: drop-shadow(0 0 8px var(--risk-aa)); color: var(--risk-aa) !important; }
+.neon-glow-a { filter: drop-shadow(0 0 8px var(--risk-a)); color: var(--risk-a) !important; }
+.neon-glow-b { filter: drop-shadow(0 0 8px var(--risk-b)); color: var(--risk-b) !important; }
+.neon-glow-d { filter: drop-shadow(0 0 8px var(--risk-d)); color: var(--risk-d) !important; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease forwards;
+}
+
+.risk-score-display {
+  background: linear-gradient(135deg, rgba(54, 162, 235, 0.1), rgba(75, 192, 192, 0.1));
+  border-radius: 20px;
+  padding: 24px;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.risk-grade-badge {
+  font-size: 3rem;
+  font-weight: 900;
+  letter-spacing: -2px;
+  margin: 10px 0;
+}

@@ -37,9 +37,16 @@ public class MnaEngineController {
     @PostMapping("/valuation-bridge")
     public ValuationBridgeResponse calculateValuationBridge(
             @RequestBody List<SynergyItem> items,
-            @RequestParam(defaultValue = "BASE") String scenario) {
-        BigDecimal multiplier = scenarioService.getMultiplier(scenario);
-        return valuationService.calculateValuationBridge(items, multiplier);
+            @RequestParam(required = false) String scenario,
+            @RequestParam(required = false) BigDecimal multiplier) {
+        
+        BigDecimal finalMultiplier = multiplier;
+        if (finalMultiplier == null) {
+            String targetScenario = (scenario != null) ? scenario : "BASE";
+            finalMultiplier = scenarioService.getMultiplier(targetScenario);
+        }
+        
+        return valuationService.calculateValuationBridge(items, finalMultiplier);
     }
 
     @GetMapping("/simulate/scenarios")
