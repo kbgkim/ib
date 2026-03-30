@@ -3,6 +3,7 @@ package com.ib.mna.controller;
 import com.ib.mna.service.ValuationService;
 import com.ib.mna.service.ScenarioService;
 import com.ib.domain.entity.SynergyItem;
+import com.ib.mna.dto.ValuationBridgeResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
@@ -31,6 +32,14 @@ public class MnaEngineController {
             @RequestParam BigDecimal wacc,
             @RequestParam int years) {
         return valuationService.calculateSynergyNPV("API-DEAL", items, wacc, years);
+    }
+
+    @PostMapping("/valuation-bridge")
+    public ValuationBridgeResponse calculateValuationBridge(
+            @RequestBody List<SynergyItem> items,
+            @RequestParam(defaultValue = "BASE") String scenario) {
+        BigDecimal multiplier = scenarioService.getMultiplier(scenario);
+        return valuationService.calculateValuationBridge(items, multiplier);
     }
 
     @GetMapping("/simulate/scenarios")

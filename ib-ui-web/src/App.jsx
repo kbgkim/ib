@@ -17,6 +17,8 @@ function App() {
   const [dealId] = useState('DEAL-001');
   const [valuationData, setValuationData] = useState([2000, 0, 0, -200, 1800]);
   const [riskProfile, setRiskProfile] = useState([0, 0, 0, 0, 0, 0]);
+  const [activeScenario, setActiveScenario] = useState('BASE');
+  const [synergyItems, setSynergyItems] = useState([]);
 
   useEffect(() => {
     fetchRealData();
@@ -31,11 +33,30 @@ function App() {
     }
   };
 
-  const handleSynergyChange = (items) => {
-    const costTotal = items.filter(i => i.category === 'COST').reduce((a, b) => a + (b.value || b.estimatedValue), 0);
-    const revenueTotal = items.filter(i => i.category === 'REVENUE').reduce((a, b) => a + (b.value || b.estimatedValue), 0);
-    const postValue = 2000 + costTotal + revenueTotal - 200;
-    setValuationData([2000, costTotal, revenueTotal, -200, postValue]);
+  const handleSynergyChange = async (items) => {
+    setSynergyItems(items); // Keep track of current items locally
+    fetchValuation(items, activeScenario);
+  };
+
+  const handleScenarioChange = (scenario) => {
+    setActiveScenario(scenario);
+    fetchValuation(synergyItems, scenario);
+  };
+
+  const fetchValuation = async (items, scenario) => {
+    try {
+      const response = await axios.post(`${API_BASE}/valuation-bridge?scenario=${scenario}`, items);
+      const bridge = response.data;
+      setValuationData([
+        bridge.baseValue,
+        bridge.costSynergy,
+        bridge.revenueSynergy,
+        bridge.integrationCost,
+        bridge.postDealValue
+      ]);
+    } catch (err) {
+      console.error("Valuation Bridge API Error:", err);
+    }
   };
 
   const handleRiskResult = (result) => {
@@ -71,9 +92,15 @@ function App() {
         <header>
           <h1>통합 IB 대시보드 (대상: {dealId})</h1>
           <div className="scenario-selector">
-            <button className="scenario-btn active">기본 시나리오</button>
-            <button className="scenario-btn">보수적 시나리오</button>
-            <button className="scenario-btn">낙관적 시나리오</button>
+            <button 
+              className={`scenario-btn ${activeScenario === 'BASE' ? 'active' : ''}`} 
+              onClick={() => handleScenarioChange('BASE')}>기본 시나리오</button>
+            <button 
+              className={`scenario-btn ${activeScenario === 'BEAR' ? 'active' : ''}`} 
+              onClick={() => handleScenarioChange('BEAR')}>보수적 시나리오</button>
+            <button 
+              className={`scenario-btn ${activeScenario === 'BULL' ? 'active' : ''}`} 
+              onClick={() => handleScenarioChange('BULL')}>낙관적 시나리오</button>
           </div>
         </header>
 

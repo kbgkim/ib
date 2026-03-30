@@ -13,7 +13,9 @@ const SynergyInput = ({ onSynergyChange }) => {
   };
 
   const removeItem = (id) => {
-    setItems(items.filter(item => item.id !== id));
+    const newItems = items.filter(item => item.id !== id);
+    setItems(newItems);
+    onSynergyChange(newItems);
   };
 
   const updateItem = (id, field, val) => {

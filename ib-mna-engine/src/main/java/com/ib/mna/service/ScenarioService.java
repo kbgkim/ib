@@ -16,6 +16,14 @@ public class ScenarioService {
         return baseValue.multiply(captureRate);
     }
 
+    public BigDecimal getMultiplier(String scenario) {
+        return switch (scenario.toUpperCase()) {
+            case "BEAR" -> new BigDecimal("0.70");
+            case "BULL" -> new BigDecimal("1.30");
+            default -> BigDecimal.ONE;
+        };
+    }
+
     /**
      * Generate 3 scenario comparison map (Bear/Base/Bull).
      */
