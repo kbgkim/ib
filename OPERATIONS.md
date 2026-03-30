@@ -32,9 +32,10 @@ aib  # 또는 source /home/kbgkim/antigravity/projects/ib/bin/ib_env
 | **로그 디렉토리 이동** | `ilogs` | - |
 
 ### 개별 서비스 관리
-- **백엔드 (Java)**: `irunb`, `istopb`, `ilogb`
-- **프론트엔드 (React)**: `irunf`, `istopf`, `ilogf`
+- **백엔드 (M&A)**: `irunb`, `istopb`, `ilogb`
+- **PF 엔진 (Finance)**: `irunp`, `istopp`, `ilogp`, `istsp`
 - **ML 엔진 (Python)**: `irunm`, `istopm`, `ilogm`, `istsm`
+- **프론트엔드 (React)**: `irunf`, `istopf`, `ilogf`, `istsf`
 
 ---
 
@@ -45,12 +46,17 @@ aib  # 또는 source /home/kbgkim/antigravity/projects/ib/bin/ib_env
 - **포트**: `8080`
 - **실행**: `./gradlew :ib-mna-engine:bootRun`
 
-### 3.2 ML 엔진 (Risk Prediction Engine)
+### 3.2 PF 엔진 (Project Finance Engine)
+- **기술 스택**: Java 17 / Spring Boot
+- **포트**: `8082`
+- **실행**: `./gradlew :ib-pf-engine:bootRun`
+
+### 3.3 ML 엔진 (Risk Prediction Engine)
 - **기술 스택**: Python 3 / FastAPI
 - **포트**: `8000`
 - **실행**: `source venv/bin/activate && uvicorn app.main:app --port 8000`
 
-### 3.3 프론트엔드 (Integrated Dashboard)
+### 3.4 프론트엔드 (Integrated Dashboard)
 - **기술 스택**: React / Vite
 - **포트**: `3000`
 - **실행**: `npm run dev -- --port 3000`
@@ -62,7 +68,8 @@ aib  # 또는 source /home/kbgkim/antigravity/projects/ib/bin/ib_env
 ### 4.1 포트 충돌 발생 시
 특정 포트가 이미 사용 중인 경우 해당 단축어(`is`)로 종료하거나 아래 명령을 사용하세요.
 ```bash
-fuser -k 8080/tcp  # Backend
+fuser -k 8080/tcp  # M&A Backend
+fuser -k 8082/tcp  # PF Engine
 fuser -k 8000/tcp  # ML Engine
 fuser -k 3000/tcp  # Frontend
 ```

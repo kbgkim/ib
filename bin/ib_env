@@ -43,6 +43,12 @@ alias istopm="im stop m"
 alias istsm="im status m"
 alias ilogm="im log m"
 
+# PF Engine (Project Finance)
+alias irunp="im run p"
+alias istopp="im stop p"
+alias istsp="im status p"
+alias ilogp="im log p"
+
 # --- Quick Aliases ---
 alias ir="irun a"
 alias is="istop a"
@@ -52,4 +58,6 @@ alias ibp="git push origin master"
 
 echo "✅ IB Platform Environment Loaded."
 echo "   - Home : $IB_HOME"
-echo "   - Aliases: ir (run), is (stop), ist (status), il (logs)"
+echo "   - Main : ir (run all), is (stop all), ist (status), il (logs)"
+echo "   - PF   : irunp (run), istopp (stop), istsp (status), ilogp (logs)"
+echo "   - M&A  : irunb (run), istopb (stop), istsb (status), ilogb (logs)"
