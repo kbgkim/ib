@@ -6,13 +6,13 @@
 
 ## 1. 정제 및 이식 매핑 (Migration Mapping)
 
-| 원본 폴더 (Draft Source) | 타겟 사양서 (Formal Specification Target) | 정제 핵심 (Refinement Focus) |
+| 원본 폴더 (Draft Source) | 타겟 사양서 (Formal Specification Target) | 정제 결과 (Refinement Results) |
 |---|---|---|
-| **01_Concepts** | `01_Market_Domain/IB_Domain_Standard.md` | IB 플랫폼 개요, M&A/PF 특화 프로세스 통합 |
-| **02_Deal_Structures** | `02_Product_Structures/PF_CashFlow_Financial_Spec.md` | 현금흐름 Waterfall, 시너지(Synergy) 계산 모델 추가 |
-| **03_Risk_Monitoring** | `03_Risk_Analysis/Risk_Monitoring_Spec.md` | 통합 리스크 스코어링 로직, 등급 산정 기준 정립 |
-| **04_Models_Algorithms**| `04_Logical_Models/Predictive_Logic_Spec.md` | LightGBM/SHAP 기반 부도 예측 및 **외부 ML 서비스 연동 규격** |
-| **05_Market_Operations**| `05_Market_Ops/System_Integration_Spec.md` | Book Building, Pricing, **VDR 연동 보안 규격** |
+| ~~**01_Concepts**~~ | `01_Market_Domain/` | **완료**: Lifecycle, BB-Alloc Flow, Game Theory, Auto Strategy |
+| ~~**02_Deal_Structures**~~ | `02_Product_Structures/` | **완료**: Waterfall/Tranche Design & Calc Engine, Optimization |
+| ~~**03_Risk_Monitoring**~~ | `03_Risk_Engines/` | **완료**: Market Shock, Scenario Engine, Integrated Risk Sim |
+| ~~**04_Models_Algorithms**~~| `04_Models_Algorithms/` | **완료**: BB Analysis, Pricing Optimization, ML Pipeline |
+| ~~**05_Market_Operations**~~| `05_Market_Ops/` & `00_Arch/` | **완료**: DB Schema, UX Spec, Tiers, Market Data |
 
 ---
 
@@ -41,5 +41,5 @@
 
 ## 4. 관리 규칙 (Maintenance Rule)
 
-- 모든 정제 작업은 본 매핑 테이블의 **'정제 핵심'**을 따라야 합니다.
-- 정제가 완료된 드래프트는 본 문서에서 취소선(~~) 처리하여 완료 여부를 추적합니다.
+- 모든 정제 작업이 완료되어 `Formal_Specs` 디렉토리에 v1.2 정식 버전이 배포되었습니다. 
+- 향후 추가되는 드래프트는 동일한 Staging -> Purification 프로세스를 따릅니다.

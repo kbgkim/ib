@@ -1,0 +1,62 @@
+# Java/Gradle
+*.class
+build/
+.gradle/
+bin/
+out/
+gradle.properties
+# !gradle-wrapper.jar  # Keep wrapper if needed, but usually it's in gradle/wrapper/
+
+# Node.js / React / Next.js
+node_modules/
+dist/
+.next/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.eslintcache
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+.tox/
+.coverage
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+
+# IDE / Editors
+.idea/
+*.iml
+*.iws
+.vscode/
+.project
+.classpath
+.settings/
+*.sublime-project
+*.sublime-workspace
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project Specific
+logs/
+*.log
+temp/
+tmp/

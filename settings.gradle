@@ -1,0 +1,5 @@
+rootProject.name = 'ib-platform'
+include 'ib-common'
+include 'ib-domain'
+include 'ib-mna-engine'
+include 'ib-ui-web'
