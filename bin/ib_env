@@ -1,0 +1,54 @@
+#!/bin/bash
+
+# IB Platform Environment Configuration
+# Usage: source bin/ib_env
+
+export IB_HOME="/home/kbgkim/antigravity/projects/ib"
+export IB_BIN="$IB_HOME/bin"
+export IB_LOGS="$IB_HOME/logs"
+export IB_ML="$IB_HOME/ib-ml-engine"
+
+# Ensure log directory exists
+mkdir -p "$IB_LOGS"
+
+# --- Directory Navigation ---
+alias ib="cd $IB_HOME"
+alias ilogs="cd $IB_LOGS"
+
+# --- Service Management Shortcuts ---
+# Main management wrapper
+alias im="/home/kbgkim/antigravity/projects/ib/bin/manage.sh"
+
+# Integrated Control
+alias irun="im run"
+alias istop="im stop"
+alias ists="im status"
+alias ilog="im log"
+
+# Backend (Java)
+alias irunb="im run b"
+alias istopb="im stop b"
+alias istsb="im status b"
+alias ilogb="im log b"
+
+# Frontend (React)
+alias irunf="im run f"
+alias istopf="im stop f"
+alias istsf="im status f"
+alias ilogf="im log f"
+
+# ML Engine (Python)
+alias irunm="im run m"
+alias istopm="im stop m"
+alias istsm="im status m"
+alias ilogm="im log m"
+
+# --- Quick Aliases ---
+alias ir="irun a"
+alias is="istop a"
+alias ist="ists a"
+alias il="ilog a"
+
+echo "✅ IB Platform Environment Loaded."
+echo "   - Home : $IB_HOME"
+echo "   - Aliases: ir (run), is (stop), ist (status), il (logs)"
