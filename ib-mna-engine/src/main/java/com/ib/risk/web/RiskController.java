@@ -30,7 +30,8 @@ public class RiskController {
             com.ib.domain.risk.RiskGrade.valueOf(savedMaster.getFinalGrade()),
             com.ib.domain.risk.RiskGrade.valueOf(savedMaster.getFinalGrade()).getDescription(),
             savedMaster.getEvaluatorId(),
-            savedMaster.getEvalComment()
+            savedMaster.getEvalComment(),
+            request.rawData()
         );
     }
 }

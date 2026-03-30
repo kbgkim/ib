@@ -35,13 +35,18 @@ function App() {
   };
 
   const handleRiskResult = (result) => {
-    // rawData format from backend response if available, or just mock it for now
-    // Since we know the input order: Financial, Legal, Operational, Security
-    // For now we use the scores from the result (if available) or wait for backend update.
     console.log("Risk Evaluation Result:", result);
-    // Profile updated based on dummy or real mapping
-    // Here we use mock scores for purely visual demo if real scores aren't in response yet
-    setRiskProfile([80, 70, 85, 60]); 
+    if (result.rawData) {
+      setRiskProfile([
+        result.rawData.financialScore,
+        result.rawData.legalScore,
+        result.rawData.operationalScore,
+        result.rawData.securityScore
+      ]);
+    } else {
+      // Fallback
+      setRiskProfile([80, 70, 85, 60]); 
+    }
   };
 
   return (
