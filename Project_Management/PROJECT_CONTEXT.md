@@ -12,8 +12,8 @@ Current Version: v1.3
 ## 1. 프로젝트 아키텍처 및 핵심 결정 (Core Decisions)
 
 - **저장소 단일화 (Repository Unification)**: 파편화된 4개의 워크트리를 `~/antigravity/projects/ib`로 통합 완료.
-- **푸시 자동화 (Push Automation)**: `git push origin master` 수행 시 `main` 브랜치까지 자동 업데이트되도록 설정 완료.
-- **IB 전용 단축어 (`ibp`)**: 복잡한 동기화 명령을 `ibp` 하나로 단순화 완료.
+- **푸시 자동화 (Multi-Refspec Push)**: `git push origin master` 한 번으로 리모트의 `master`와 `main`이 동시 업데이트되도록 설정 완료 (`git remote show origin`으로 확인 가능).
+- **IB 전용 단축어 (`ibp`)**: `git push origin master`의 래퍼(Wrapper) 앨리어스 도입 완료.
 - **네트워크 식별**: 내부망 전용 Git 서버(`20.200.245.247`)와의 통신 상태 정기 점검 필요.
 - **모듈 구조**: `ib-mna-engine`, `ib-ui-web`, `ib-ml-engine` 멀티 모듈 체계 유지.
 - **작업 관리**: 모든 최신 작업물을 `master` 브랜치로 병합 및 강제 추적(`git add -f bin/`) 완료.

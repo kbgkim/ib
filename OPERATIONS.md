@@ -83,13 +83,27 @@ ML 엔진 구동 시 가상환경이 활성화되어야 합니다. `ib-ml-engine
 ### 5.2 네트워크 분리 상황에서의 동기화 (Split-Brain Sync)
 프로젝트 환경에 따라 `github.com` 도메인이 실제 외부 GitHub 서버가 아닌 **내부망 Git 서버**를 가리키고 있을 수 있습니다.
 *   **현상**: 에이전트(외부망)의 푸시 결과가 사용자 터미널(내부망)이나 웹사이트에서 보이지 않는 경우.
-*   **해결**: 에이전트가 로컬 파일 정리를 완료하면, **사용자님께서 직접 내부망 터미널에서 아래 명령어를 실행**하여 최종 동기화를 완료해야 합니다.
+*   **해결**: 에이전트 작업 완료 후, 내부망 터미널에서 **`ibp`** 명령어를 사용하여 최종 동기화를 수행합니다.
+
+### 5.3 브랜치 자동 동기화 및 단축어 (ibp)
+번거로운 이중 푸시 작업을 줄이기 위해 **Git Refspec**을 활용한 자동화 설정이 적용되어 있습니다.
+
+*   **자동 동기화 작동 원리**: 
+    - 로컬의 `master` 브랜치를 푸시할 때, 서버의 `master`와 `main` 브랜치가 **동시에 업데이트**되도록 구성되어 있습니다.
+    - 설정 확인 명령어: `git remote show origin`
+    - 기대 출력:
+        ```text
+        Local refs configured for 'git push':
+          master pushes to main   (up to date)
+          master pushes to master (up to date)
+        ```
+*   **단축 명령어 (`ibp`)**: `git push origin master`의 래퍼(Wrapper) 명령어로, `source bin/ib_env` 로드 시 사용 가능합니다.
     ```bash
-    git push origin master --force
-    git push origin master:main --force
+    ibp          # 기본 푸시 (동축 동기화 수행)
+    ibp --force  # 강제 푸시 (동기화 불일치 해결 시)
     ```
 
-### 5.3 워크트리(Worktree) 관리
+### 5.4 워크트리(Worktree) 관리
 중복된 작업 환경으로 인한 혼란을 방지하기 위해 **단일 워크트리** 사용을 권장합니다.
 *   **권장 경로**: `~/antigravity/projects/ib`
 *   **목록 확인**: `git worktree list`
