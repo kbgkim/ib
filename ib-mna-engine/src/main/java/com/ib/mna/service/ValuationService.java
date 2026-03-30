@@ -11,6 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 @Service
 @Transactional
@@ -88,6 +90,19 @@ public class ValuationService {
 
     public ValuationBridgeResponse calculateValuationBridge(List<SynergyItem> items) {
         return calculateValuationBridge(items, BigDecimal.ONE);
+    }
+
+    /**
+     * Generate all three scenarios (Bear, Base, Bull) for the bridge
+     */
+    public Map<String, ValuationBridgeResponse> calculateAllScenarios(List<SynergyItem> items) {
+        Map<String, ValuationBridgeResponse> scenarios = new HashMap<>();
+        
+        scenarios.put("BEAR", calculateValuationBridge(items, new BigDecimal("0.70")));
+        scenarios.put("BASE", calculateValuationBridge(items, new BigDecimal("1.00")));
+        scenarios.put("BULL", calculateValuationBridge(items, new BigDecimal("1.30")));
+        
+        return scenarios;
     }
 
     private BigDecimal calculateCategoryNPV(List<SynergyItem> items, String category, BigDecimal wacc, int years) {

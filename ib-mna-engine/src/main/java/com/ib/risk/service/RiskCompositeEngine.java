@@ -29,7 +29,7 @@ public class RiskCompositeEngine {
     private static final double WEIGHT_SECURITY = 0.10;
 
     @Transactional
-    public RiskMaster calculateAndSave(String dealId, RiskData data, String evaluatorId, String evalComment) {
+    public com.ib.risk.model.RiskEvaluationResult calculateAndSave(String dealId, RiskData data, String evaluatorId, String evalComment) {
         // 1. 점수 계산
         double financialWeighted = data.financialScore() * WEIGHT_FINANCIAL;
         double legalWeighted = data.legalScore() * WEIGHT_LEGAL;
@@ -40,13 +40,12 @@ public class RiskCompositeEngine {
         RiskGrade grade = RiskGradeMapper.toGrade(totalScore);
 
         // 1-1. 머신러닝 피처 모델 조회 (Circuit Breaker 적용)
-        double mlRawScore = 0.0;
+        com.ib.risk.client.MlServiceClient.MlPredictResponse mlResponse = null;
         try {
-            com.ib.risk.client.MlServiceClient.MlPredictResponse mlResponse = mlServiceClient.predictRiskScore(dealId);
-            mlRawScore = mlResponse.mlScore();
+            mlResponse = mlServiceClient.predictRiskScore(dealId);
         } catch (Exception e) {
-            // 폴백: 호출 실패 시 기본값 0.0
-            mlRawScore = 0.0;
+            // 폴백: 호출 실패 시 기본값
+            mlResponse = new com.ib.risk.client.MlServiceClient.MlPredictResponse(dealId, 0.0, 0.0, "ERROR", java.util.Collections.emptyList(), null);
         }
 
         // 1-2. VDR 실시간 보안 리스크 조회
@@ -59,7 +58,7 @@ public class RiskCompositeEngine {
             createDetail(dealId, "OPERATIONAL", "Operational Efficiency", data.operationalScore(), operationalWeighted),
             createDetail(dealId, "SECURITY", "Information Security", data.securityScore(), securityWeighted),
             createDetail(dealId, "VDR_SECURITY", "VDR Near Real-time Risk", vdrRiskScore, 0.0), // 가중치 0으로 로깅
-            createDetail(dealId, "MACHINE_LEARNING", "AI Confidence Score", mlRawScore, 0.0)
+            createDetail(dealId, "MACHINE_LEARNING", "AI Confidence Score", mlResponse.mlScore(), 0.0)
         );
 
         // 3. 마스터 레코드 갱신 또는 생성
@@ -77,7 +76,12 @@ public class RiskCompositeEngine {
             master.setDetails(details);
         }
 
-        return riskMasterRepository.save(master);
+        RiskMaster savedMaster = riskMasterRepository.save(master);
+        
+        return com.ib.risk.model.RiskEvaluationResult.builder()
+            .master(savedMaster)
+            .mlResponse(mlResponse)
+            .build();
     }
 
     private RiskDetail createDetail(String dealId, String category, String factorName, double raw, double weighted) {

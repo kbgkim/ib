@@ -92,14 +92,14 @@ header {
   display: grid;
   grid-template-columns: 400px 1fr;
   gap: 24px;
+  align-items: start;
 }
 
 .left-column, .right-column {
-  background: var(--panel-bg);
-  backdrop-filter: blur(10px);
-  padding: 24px;
-  border-radius: 16px;
-  border: 1px solid #333;
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+  border: none;
 }
 
 .synergy-item-row {

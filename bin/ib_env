@@ -48,6 +48,7 @@ alias ir="irun a"
 alias is="istop a"
 alias ist="ists a"
 alias il="ilog a"
+alias ibp="git push origin master"
 
 echo "✅ IB Platform Environment Loaded."
 echo "   - Home : $IB_HOME"

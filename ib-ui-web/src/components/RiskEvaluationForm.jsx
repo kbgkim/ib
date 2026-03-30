@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Shield, AlertTriangle, CheckCircle, User, MessageSquare, Cpu, ShieldAlert, Zap, TrendingUp, RefreshCcw } from 'lucide-react';
-import RiskRadarChart from './RiskRadarChart';
+import { Shield, Cpu, ShieldAlert, MessageSquare, Activity, RefreshCcw, AlertCircle } from 'lucide-react';
 
 const API_BASE = 'http://localhost:8080/api/v1/risk';
 
@@ -49,153 +48,144 @@ const RiskEvaluationForm = ({ onResult }) => {
     return `neon-glow-${simpleScale.toLowerCase()}`;
   };
 
-  const getRadarData = (res) => {
-    if (!res) return [0, 0, 0, 0, 0, 0];
-    return [
-      res.rawData.financialScore,
-      res.rawData.legalScore,
-      res.rawData.operationalScore,
-      res.rawData.securityScore,
-      res.mlScore,
-      res.vdrScore
-    ];
-  };
-
   return (
-    <div className="risk-dashboard-container" style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-      <div className="dashboard-grid" style={{ display: 'grid', gridTemplateColumns: 'minmax(350px, 1fr) 2fr', gap: '24px' }}>
-        
-        {/* Left: Input Panel */}
-        <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px' }}>
-          <h2 style={{ fontSize: '20px', marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '10px', color: '#60a5fa' }}>
-            <Zap size={22} fill="#60a5fa" /> 리스크 시뮬레이터
-          </h2>
-          
-          <form onSubmit={handleSubmit}>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '24px' }}>
-              {[
-                { key: 'financial', label: '재무 리스크' },
-                { key: 'legal', label: '법무 리스크' },
-                { key: 'operational', label: '운영 리스크' },
-                { key: 'security', label: '보안 리스크' }
-              ].map(({ key, label }) => (
-                <div key={key}>
-                  <label style={{ fontSize: '12px', color: '#94a3b8', display: 'block', marginBottom: '8px' }}>{label}</label>
-                  <input 
-                    type="range" min="0" max="100"
-                    value={inputs[key]}
-                    onChange={(e) => setInputs({...inputs, [key]: parseInt(e.target.value)})}
-                    style={{ width: '100%', accentColor: '#3b82f6', height: '6px', borderRadius: '3px' }}
-                  />
-                  <div style={{ textAlign: 'right', fontSize: '14px', fontWeight: 'bold', marginTop: '4px' }}>{inputs[key]}</div>
-                </div>
-              ))}
-            </div>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '16px', marginBottom: '24px' }}>
-              <div>
-                <label style={{ fontSize: '12px', color: '#94a3b8', display: 'block', marginBottom: '8px' }}>
-                  <User size={14} style={{ marginRight: '4px' }} /> 분석 책임자
-                </label>
-                <input 
-                  type="text" 
-                  value={inputs.evaluatorId}
-                  onChange={(e) => setInputs({...inputs, evaluatorId: e.target.value})}
-                  className="glass-panel"
-                  style={{ width: '100%', padding: '12px', borderRadius: '8px', color: '#fff', border: 'none', background: 'rgba(255,255,255,0.05)' }}
-                />
-              </div>
-              <div>
-                <label style={{ fontSize: '12px', color: '#94a3b8', display: 'block', marginBottom: '8px' }}>
-                  <MessageSquare size={14} style={{ marginRight: '4px' }} /> 정성적 심사 코멘트
-                </label>
-                <textarea 
-                  value={inputs.evalComment}
-                  onChange={(e) => setInputs({...inputs, evalComment: e.target.value})}
-                  className="glass-panel"
-                  style={{ width: '100%', padding: '12px', borderRadius: '8px', color: '#fff', border: 'none', background: 'rgba(255,255,255,0.05)', minHeight: '80px' }}
-                />
-              </div>
-            </div>
+      {/* Input Panel */}
+      <div className="glass-panel" style={{ padding: '20px', borderRadius: '16px' }}>
+        <h2 style={{ fontSize: '16px', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px', color: '#60a5fa', margin: '0 0 16px 0' }}>
+          <Activity size={18} /> 리스크 시뮬레이터 (v1.6)
+        </h2>
 
-            <button 
-              type="submit" 
-              disabled={loading}
-              className="primary-btn"
-              style={{ 
-                width: '100%', 
-                background: 'linear-gradient(90deg, #3b82f6, #6366f1)', 
-                color: '#fff', border: 'none', padding: '16px', borderRadius: '12px', 
-                fontWeight: 'bold', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
-                transition: 'all 0.3s'
+        <form onSubmit={handleSubmit}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '14px' }}>
+            {[
+              { key: 'financial', label: '재무 리스크' },
+              { key: 'legal', label: '법무 리스크' },
+              { key: 'operational', label: '운영 리스크' },
+              { key: 'security', label: '보안 리스크' }
+            ].map(({ key, label }) => (
+              <div key={key}>
+                <label style={{ fontSize: '11px', color: '#94a3b8', display: 'block', marginBottom: '4px' }}>{label}</label>
+                <input
+                  type="range" min="0" max="100"
+                  value={inputs[key]}
+                  onChange={(e) => setInputs({ ...inputs, [key]: parseInt(e.target.value) })}
+                  style={{ width: '100%', accentColor: '#3b82f6', height: '6px', borderRadius: '3px' }}
+                />
+                <div style={{ textAlign: 'right', fontSize: '12px', fontWeight: 'bold', marginTop: '2px' }}>{inputs[key]}</div>
+              </div>
+            ))}
+          </div>
+
+          <div style={{ marginBottom: '14px' }}>
+            <label style={{ fontSize: '11px', color: '#94a3b8', display: 'flex', alignItems: 'center', gap: '4px', marginBottom: '6px' }}>
+              <MessageSquare size={11} /> 정성적 심사 코멘트
+            </label>
+            <textarea
+              value={inputs.evalComment}
+              onChange={(e) => setInputs({ ...inputs, evalComment: e.target.value })}
+              style={{
+                width: '100%', padding: '8px', borderRadius: '8px', color: '#fff',
+                border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(255,255,255,0.05)',
+                minHeight: '60px', boxSizing: 'border-box', resize: 'vertical', fontSize: '12px'
               }}
-            >
-              {loading ? <RefreshCcw className="spinning" size={20} /> : <TrendingUp size={20} />}
-              {loading ? '데이터 엔진 연동 중...' : '통합 AI 리스크 분석 실행'}
-            </button>
-          </form>
-        </div>
+            />
+          </div>
 
-        {/* Right: Results Panel */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-          {!result ? (
-            <div className="glass-panel" style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '40px', textAlign: 'center', color: '#64748b' }}>
-              <Shield size={64} color="#334155" style={{ marginBottom: '24px' }} />
-              <h3>데이터를 입력하고 리스크 분석을 실행하세요</h3>
-              <p>재무, 법무, 운영, 보안 지표와 AI 예측 엔진이 결합된 <br/>통합 리스크 프로파일링이 제공됩니다.</p>
-            </div>
-          ) : (
-            <div className="animate-fade-in" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px', flex: 1 }}>
-              <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                <div className="risk-score-display">
-                  <span style={{ fontSize: '14px', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '1px' }}>Total Risk Score</span>
-                  <div className="risk-grade-badge" style={{ color: '#fff' }}>
-                    {result.totalScore.toFixed(1)}
-                  </div>
-                  <div className={`risk-grade-badge ${getGradeClass(result.finalGrade)}`} style={{ fontSize: '5rem', marginTop: '-10px' }}>
-                    {result.finalGrade}
-                  </div>
-                  <div style={{ color: '#94a3b8', fontSize: '14px' }}>{result.description}</div>
-                </div>
-              </div>
-
-              <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px' }}>
-                <h3 style={{ fontSize: '16px', marginBottom: '16px', color: '#94a3b8' }}>카테고리별 리스크 편차 (Radar)</h3>
-                <RiskRadarChart data={getRadarData(result)} />
-              </div>
-            </div>
-          )}
-
-          {result && (
-            <div className="glass-panel animate-fade-in" style={{ padding: '24px', borderRadius: '16px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
-              <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-                <div style={{ background: 'rgba(59, 130, 246, 0.1)', padding: '12px', borderRadius: '12px' }}>
-                  <Cpu color="#3b82f6" size={24} />
-                </div>
-                <div>
-                  <div style={{ fontSize: '12px', color: '#94a3b8' }}>AI 기반 정밀 분석 (Confidence)</div>
-                  <div style={{ fontSize: '20px', fontWeight: 'bold' }}>{result.mlScore ? result.mlScore.toFixed(1) : '0.0'}%</div>
-                </div>
-              </div>
-              <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-                <div style={{ background: 'rgba(16, 185, 129, 0.1)', padding: '12px', borderRadius: '12px' }}>
-                  <ShieldAlert color="#10b981" size={24} />
-                </div>
-                <div>
-                  <div style={{ fontSize: '12px', color: '#94a3b8' }}>VDR 보안 결함 탐지</div>
-                  <div style={{ fontSize: '20px', fontWeight: 'bold' }}>{result.vdrScore ? result.vdrScore.toFixed(1) : '0.0'} / 100</div>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
+          <button
+            type="submit"
+            disabled={loading}
+            style={{
+              width: '100%', background: 'linear-gradient(90deg, #3b82f6, #6366f1)',
+              color: '#fff', border: 'none', padding: '12px', borderRadius: '10px',
+              fontWeight: 'bold', cursor: 'pointer', display: 'flex', alignItems: 'center',
+              justifyContent: 'center', gap: '8px', fontSize: '13px',
+              transition: 'all 0.3s'
+            }}
+          >
+            {loading ? <RefreshCcw size={16} style={{ animation: 'spin 1s linear infinite' }} /> : <Activity size={16} />}
+            {loading ? 'AI 분석 중...' : '통합 리스크 정밀 분석 실행'}
+          </button>
+        </form>
       </div>
-      
+
+      {/* Results Panel */}
+      {!result ? (
+        <div className="glass-panel" style={{
+          padding: '24px', display: 'flex', flexDirection: 'column',
+          alignItems: 'center', justifyContent: 'center', textAlign: 'center',
+          color: '#64748b', gap: '10px'
+        }}>
+          <Shield size={36} color="#334155" />
+          <p style={{ margin: 0, fontSize: '13px', lineHeight: 1.5 }}>
+            데이터를 입력하고<br />리스크 분석을 실행하세요
+          </p>
+        </div>
+      ) : (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          {/* Score Card */}
+          <div className="glass-panel animate-fade-in" style={{ padding: '20px', borderRadius: '16px', textAlign: 'center' }}>
+            <span style={{ fontSize: '11px', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '1px' }}>Total Risk Score</span>
+            <div style={{ fontSize: '52px', fontWeight: 'bold', color: '#3b82f6', lineHeight: 1.1, margin: '4px 0' }}>
+              {result.totalScore.toFixed(0)}
+            </div>
+            <div className={`risk-grade-badge ${getGradeClass(result.finalGrade)}`}
+              style={{ fontSize: '24px', display: 'inline-block', padding: '2px 16px', borderRadius: '8px' }}>
+              {result.finalGrade}
+            </div>
+            {result.description && (
+              <div style={{ fontSize: '12px', color: '#94a3b8', marginTop: '6px' }}>{result.description}</div>
+            )}
+          </div>
+
+          {/* AI & VDR Stats */}
+          <div className="glass-panel animate-fade-in" style={{
+            padding: '14px', borderRadius: '14px',
+            display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px'
+          }}>
+            <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+              <Cpu color="#3b82f6" size={18} />
+              <div>
+                <div style={{ fontSize: '10px', color: '#94a3b8' }}>AI Confidence</div>
+                <div style={{ fontSize: '16px', fontWeight: 'bold' }}>{result.mlScore ? result.mlScore.toFixed(1) : '0.0'}%</div>
+              </div>
+            </div>
+            <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+              <ShieldAlert color="#10b981" size={18} />
+              <div>
+                <div style={{ fontSize: '10px', color: '#94a3b8' }}>VDR 보안 탐지</div>
+                <div style={{ fontSize: '16px', fontWeight: 'bold' }}>{result.vdrScore ? result.vdrScore.toFixed(1) : '0.0'}</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Top Factors */}
+          {result.topFactors && result.topFactors.length > 0 && (
+            <div className="glass-panel animate-fade-in" style={{ padding: '14px', borderRadius: '14px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '10px', color: '#10b981', fontSize: '12px', fontWeight: 'bold' }}>
+                <ShieldAlert size={14} /> AI 주요 리스크 탐지 요인 (Top 3)
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                {result.topFactors.map((f, idx) => (
+                  <div key={idx}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', marginBottom: '3px' }}>
+                      <span style={{ color: '#e2e8f0' }}>{f.factor}</span>
+                      <span style={{ color: '#10b981', fontWeight: 'bold' }}>{f.weight}%</span>
+                    </div>
+                    <div style={{ height: '3px', width: '100%', background: 'rgba(255,255,255,0.05)', borderRadius: '2px', overflow: 'hidden' }}>
+                      <div style={{ height: '100%', width: `${f.weight}%`, background: 'linear-gradient(90deg, #10b981, #059669)', transition: 'width 0.5s ease' }} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
       <style>{`
-        .spinning { animation: spin 2s linear infinite; }
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        .primary-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(59, 130, 246, 0.5); }
-        .primary-btn:active { transform: translateY(0); }
       `}</style>
     </div>
   );

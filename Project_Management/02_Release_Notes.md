@@ -1,10 +1,14 @@
 # IB Platform Release Notes
 
-## [v0.3.5] - 2026-03-30
+## [v0.4.0] - 2026-03-30
 ### Added
-- 저장소 동기화 복구 (네트워크 분리 상황 해결 및 내부망 서버 최신화).
-- 개발 환경 단일화 (불필요한 워크트리 정리 및 `projects/ib` 통합).
-- `OPERATIONS.md` 내 저장소 및 브랜치 관리 정책 가이드 추가.
+- **Interactive Probability Bridge (v1.5)**: 3가지 시나리오(Bear/Base/Bull)의 확률 가중치 합성 시스템 도입.
+- **Proportional Auto-balancing UI**: 단일 슬라이더로 3단계 가중치를 비례 제어하는 멀티 슬라이더 UI 구현.
+- **Sensitivity Range (Error Bars)**: Waterfall 차트에 시나리오별 변동폭(Sensitivity) 시각화 추가.
+- **Latency-Free Simulation**: 프론트엔드 실시간 가중 평균 계산 로직 적용 (useMemo 최적화).
+- **Deep Dive Documentation**: 상세 기술 설계 문서(`docs/Interactive_Probability_Bridge_DeepDive.md`) 추가.
+
+## [v0.3.5] - 2026-03-30
 
 ## [v0.3.4] - 2026-03-30
 ### Added

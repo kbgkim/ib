@@ -1,51 +1,74 @@
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, List, Dict
+import logging
 
 from app.store.feature_store import feature_store
+from app.models.risk_predictor import predictor
 
+logger = logging.getLogger(__name__)
 router = APIRouter()
 
 class RiskPredictRequest(BaseModel):
     dealId: str
 
+class RiskFactor(BaseModel):
+    factor: str
+    impact: float
+    weight: float
+
 class RiskPredictResponse(BaseModel):
     dealId: str
     mlScore: float
+    riskProbability: float
     confidenceLevel: str
+    topFactors: List[RiskFactor]
     featuresUsed: dict
 
 @router.post("/predict-risk", response_model=RiskPredictResponse)
 async def predict_risk(request: RiskPredictRequest):
     """
-    Mock ML Prediction Endpoint.
-    Takes a Deal ID, fetches offline feature sets, and returns a calculated ML probability score.
+    ML Prediction Endpoint using LightGBM.
+    Fetches offline feature sets, runs LightGBM inference, and returns 
+    Safety Score with Top Risk Factors.
     """
-    features = feature_store.get_features(request.dealId)
+    deal_id = request.dealId
+    features = feature_store.get_features(deal_id)
     
     if not features:
-        # For MVP, if not found, simulate a neutral default risk
-        features = {"f_vdr_anomaly_score": 50.0, "historical_default_rate": 0.05}
+        # For new deals, if not found, use a baseline features
+        # In production, this would trigger an asynchronous feature engineering pipeline
+        features = {
+            "f_vdr_anomaly_score": 50.0, 
+            "historical_default_rate": 0.05,
+            "f_ebitda_growth_3y": 0.05,
+            "f_litigation_ratio": 0.1
+        }
         
-    # Dummy ML Logic: Anomaly * historical rate 
-    # e.g., 50.0 * 0.05 = 2.5
-    vdr_score = features.get("f_vdr_anomaly_score", 50.0)
-    historic_rate = features.get("historical_default_rate", 0.05)
-    
-    # Calculate an arbitrary ML risk score (0-100) where 100 means very risky
-    raw_risk = (vdr_score * historic_rate) * 10
-    ml_score = min(max(raw_risk, 0.0), 100.0) # Clamp between 0 and 100
-    
-    # Convert pure risk to a "safety/health" score to match Java's standard where higher is better
-    # Wait, in Java, totalScore is summing 0-100 where higher is better.
-    # We should return safety_score = 100 - risk_score
-    safety_score = 100.0 - ml_score
-    
-    confidence = "HIGH" if len(features) >= 4 else "LOW"
-    
-    return RiskPredictResponse(
-        dealId=request.dealId,
-        mlScore=round(safety_score, 2),
-        confidenceLevel=confidence,
-        featuresUsed=features
-    )
+    try:
+        # Run LightGBM Inference via RiskPredictor
+        prediction = predictor.predict(features)
+        
+        confidence = "HIGH" if len(features) >= 4 else "LOW"
+        
+        return RiskPredictResponse(
+            dealId=deal_id,
+            mlScore=prediction["mlScore"],
+            riskProbability=prediction["riskProbability"],
+            confidenceLevel=confidence,
+            topFactors=[RiskFactor(**f) for f in prediction["topFactors"]],
+            featuresUsed=features
+        )
+    except Exception as e:
+        logger.error(f"Prediction failed for {deal_id}: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"ML Prediction Engine Error: {str(e)}")
+
+@router.get("/model-info")
+async def get_model_info():
+    """Returns model health and version information."""
+    return {
+        "model_type": "LightGBM Regressor",
+        "version": "1.6.1-LGBM",
+        "status": "HEALTHY",
+        "features_tracked": predictor.feature_names
+    }

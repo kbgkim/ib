@@ -15,5 +15,7 @@ public record RiskEvaluationResponse(
     String evalComment,
     RiskData rawData,
     double mlScore,
-    double vdrScore
+    double vdrScore,
+    String confidenceLevel,
+    java.util.List<com.ib.risk.client.MlServiceClient.RiskFactor> topFactors
 ) {}

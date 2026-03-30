@@ -1,13 +1,13 @@
-# [Context] IB 프로젝트 최종 작업 문맥 및 세션 복구 가이드 (v1.2)
+# [Context] IB 프로젝트 최종 작업 문맥 및 세션 복구 가이드 (v1.6.1)
 
 본 문서는 안티그래비티(Antigravity) 세션을 종료하고 나중에 다시 시작할 때, 최신 통합 아키텍처와 정제된 작업 상태를 즉시 복구하기 위한 **최종 마감 메모리** 문서입니다.
 
 ---
 
-## Project Context: IB Platform Integration (v1.2) - M&A Simulator Implementation Completed
-Last Updated: 2026-03-30
-Status: REPOSITORY UNIFIED / FLOW OPTIMIZED
-Current Version: v1.3
+## Project Context: IB Platform Integration (v1.6.1) - ML Evolution (LightGBM) Complete
+Last Updated: 2026-03-31
+Status: ML ENGINE PROFESSIONALIZED / EXPLAINABILITY ADDED
+Current Version: v1.6.1
 
 ## 1. 프로젝트 아키텍처 및 핵심 결정 (Core Decisions)
 
@@ -35,20 +35,29 @@ Current Version: v1.3
 ## 3. 작업 진행 상태 (Current Status)
 
 *   **Layer 03 - Risk engine integrated**: Completed & merged to master.
-*   **Layer 04 - M&A Scenario Simulator**: Implementation completed (Backend Multiplier support + Frontend Floating Bar Waterfall Chart).
-*   **Operations Guide**: Created [OPERATIONS.md](file:///home/kbgkim/antigravity/projects/ib/OPERATIONS.md) for service management.
+*   **Layer 04 - Interactive Probability Bridge**: Implementation completed.
+    - 3-segment weight control with auto-balancing.
+    - Real-time weighted average calculation.
+    - Sensitivity Range (Error Bar) visualization on Waterfall chart.
+*   **ML Evolution**: `ib-ml-engine` professionalized with **LightGBM** (v1.6.1).
+    - Transitioned from mock arithmetic to GBDT model.
+    - XAI Feature: Top 3 Risk Factors extraction & visualization.
+    - Scoring: Internal Risk Probability -> External Safety Score (100-Risk).
+*   **Operations Guide**: Created [OPERATIONS.md](file:///home/kbgkim/antigravity/projects/ib/OPERATIONS.md).
+*   **Deep Dive Docs**:
+    - [Interactive_Probability_Bridge_DeepDive.md](file:///home/kbgkim/antigravity/projects/ib/docs/Interactive_Probability_Bridge_DeepDive.md)
+    - [ML_Model_Architecture_Rationale.md](file:///home/kbgkim/antigravity/projects/ib/docs/ML_Model_Architecture_Rationale.md)
 
 ---
 
 ## 4. 세션 재개 시 다음 작업 (Next Steps)
 
-1. **[M&A Scenario Simulator]**: Base/Bear/Bull 케이스별 가중치 조절 및 Waterfall 차트의 동적 시뮬레이션 로직 강화.
-2. **[ML Evolution]**: `ib-ml-engine`에 실제 예측 모델 탑재 및 서빙 인터페이스 고도화.
-3. **[E2E Validation]**: 실제 딜 거래(DEAL-001) 기반의 전체 프로세스(실사→리스크분석→밸류에이션) 통합 테스트 수행.
+1. **[E2E Validation]**: 실제 딜 거래(DEAL-001) 기반의 전체 프로세스(실사→리스크분석→밸류에이션) 통합 테스트 수행.
+2. **[Refinement]**: 각 레이어별 예외 처리 고도화 및 운영 대시보드 리포팅 기능 강화.
 
 ---
 
 ## 5. 즉시 복구 명령 (Restore Command)
 
 다음 세션 시작 시 AI에게 이 문장을 입력하십시오:
-> "`/home/kbgkim/antigravity/projects/ib/Project_Management/PROJECT_CONTEXT.md` 파일을 읽고 현재 `master` 브랜치 상태에서 작업을 시작해줘. `ibp` 단축어를 사용하여 서버 동기화를 유지하며 M&A 시나리오 시뮬레이터 고도화를 이어가자."
+> "`/home/kbgkim/antigravity/projects/ib/Project_Management/PROJECT_CONTEXT.md` 파일을 읽고 현재 `master` 브랜치 상태에서 작업을 시작해줘. `ibp` 단축어를 사용하여 서버 동기화를 유지하며 통합 IB 플랫폼의 E2E 검증 단계를 진행하자."

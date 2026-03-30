@@ -1,95 +1,131 @@
 import React from 'react';
-import { Settings, TrendingDown, TrendingUp, Minus } from 'lucide-react';
+import { Settings, TrendingDown, TrendingUp, Minus, Info } from 'lucide-react';
 
-const ScenarioSelector = ({ multiplier, activePreset, onMultiplierChange, onPresetChange }) => {
-  
-  const presets = [
-    { id: 'BEAR', label: '보수적 (Bear)', value: 0.70, color: '#ef4444', icon: <TrendingDown size={18} /> },
-    { id: 'BASE', label: '표준 (Base)', value: 1.00, color: '#3b82f6', icon: <Minus size={18} /> },
-    { id: 'BULL', label: '낙관적 (Bull)', value: 1.30, color: '#10b981', icon: <TrendingUp size={18} /> }
-  ];
+/**
+ * Premium Scenario Selector with 3-Segment Probability Weights
+ * Implements Proportional Auto-balancing logic
+ */
+const ScenarioSelector = ({ weights, onWeightsChange }) => {
+  const { bear = 20, base = 50, bull = 30 } = weights;
 
-  const handleSliderChange = (e) => {
-    onMultiplierChange(parseFloat(e.target.value));
+  const handleWeightChange = (key, newValue) => {
+    const val = parseInt(newValue);
+    const otherKeys = ['bear', 'base', 'bull'].filter(k => k !== key);
+    
+    // Calculate how much we need to adjust the others
+    const currentVal = weights[key];
+    const diff = val - currentVal;
+    
+    let newWeights = { ...weights, [key]: val };
+    
+    // Proportional adjustment for others
+    const othersSum = weights[otherKeys[0]] + weights[otherKeys[1]];
+    
+    if (othersSum === 0) {
+      // If others are both zero, split the diff equally
+      newWeights[otherKeys[0]] = Math.max(0, Math.floor((100 - val) / 2));
+      newWeights[otherKeys[1]] = 100 - val - newWeights[otherKeys[0]];
+    } else {
+      // Distribute diff proportionally
+      const r0 = weights[otherKeys[0]] / othersSum;
+      const r1 = weights[otherKeys[1]] / othersSum;
+      
+      newWeights[otherKeys[0]] = Math.max(0, Math.round(weights[otherKeys[0]] - diff * r0));
+      newWeights[otherKeys[1]] = Math.max(0, 100 - val - newWeights[otherKeys[0]]);
+    }
+
+    onWeightsChange(newWeights);
   };
 
+  const ConfigRow = ({ label, value, color, icon, id }) => (
+    <div style={{ marginBottom: '16px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: color }}>
+          {icon}
+          <span style={{ fontSize: '13px', fontWeight: '500' }}>{label}</span>
+        </div>
+        <span style={{ fontSize: '15px', fontWeight: 'bold', color: '#fff' }}>{value}%</span>
+      </div>
+      <input 
+        type="range" 
+        min="0" 
+        max="100" 
+        value={value}
+        onChange={(e) => handleWeightChange(id, e.target.value)}
+        className={`custom-slider slider-${id}`}
+        style={{ '--accent': color }}
+      />
+    </div>
+  );
+
   return (
-    <div className="glass-panel scenario-selector-card" style={{ padding: '24px', borderRadius: '16px' }}>
+    <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px' }}>
       <h3 style={{ fontSize: '18px', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '10px', color: '#60a5fa' }}>
-        <Settings size={22} className="spinning-slow" /> 시나리오 시뮬레이터
+        <Settings size={22} className="spinning-slow" /> 시나리오 가중치 시뮬레이터 (v1.5)
       </h3>
 
-      {/* Preset Buttons */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px', marginBottom: '24px' }}>
-        {presets.map(p => (
-          <button
-            key={p.id}
-            onClick={() => onPresetChange(p.id, p.value)}
-            style={{
-              padding: '12px 8px',
-              borderRadius: '10px',
-              border: `1px solid ${activePreset === p.id ? p.color : 'rgba(255,255,255,0.1)'}`,
-              background: activePreset === p.id ? `${p.color}22` : 'rgba(255,255,255,0.05)',
-              color: activePreset === p.id ? p.color : '#94a3b8',
-              cursor: 'pointer',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              gap: '6px',
-              transition: 'all 0.2s',
-              fontWeight: activePreset === p.id ? 'bold' : 'normal'
-            }}
-          >
-            {p.icon}
-            <span style={{ fontSize: '11px' }}>{p.label}</span>
-          </button>
-        ))}
+      {/* Distribution Bar */}
+      <div style={{ 
+        height: '12px', 
+        width: '100%', 
+        display: 'flex', 
+        borderRadius: '6px', 
+        overflow: 'hidden', 
+        marginBottom: '28px',
+        background: 'rgba(255,255,255,0.05)',
+        boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.3)'
+      }}>
+        <div style={{ width: `${bear}%`, background: '#ef4444', transition: 'width 0.3s ease' }} />
+        <div style={{ width: `${base}%`, background: '#3b82f6', transition: 'width 0.3s ease' }} />
+        <div style={{ width: `${bull}%`, background: '#10b981', transition: 'width 0.3s ease' }} />
       </div>
 
-      {/* Slider Section */}
-      <div className="slider-wrapper">
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-          <span style={{ fontSize: '13px', color: '#94a3b8' }}>시너지 가처율 (Capture Rate)</span>
-          <span style={{ fontSize: '20px', fontWeight: 'bold', color: '#fff' }}>
-            {(multiplier * 100).toFixed(0)}%
-          </span>
-        </div>
-        <input 
-          type="range" 
-          min="0.5" 
-          max="1.5" 
-          step="0.01" 
-          value={multiplier}
-          onChange={handleSliderChange}
-          style={{ 
-            width: '100%', 
-            height: '6px', 
-            borderRadius: '3px', 
-            appearance: 'none', 
-            background: `linear-gradient(90deg, #ef4444 0%, #3b82f6 50%, #10b981 100%)`, 
-            cursor: 'pointer'
-          }}
-        />
-        <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '8px', fontSize: '10px', color: '#64748b' }}>
-          <span>보수 (50%)</span>
-          <span>표준 (100%)</span>
-          <span>공격 (150%)</span>
-        </div>
+      <ConfigRow id="bear" label="보수적 (Bear - 0.7x)" value={bear} color="#ef4444" icon={<TrendingDown size={16} />} />
+      <ConfigRow id="base" label="표준 (Base - 1.0x)" value={base} color="#3b82f6" icon={<Minus size={16} />} />
+      <ConfigRow id="bull" label="낙관적 (Bull - 1.3x)" value={bull} color="#10b981" icon={<TrendingUp size={16} />} />
+
+      <div style={{ 
+        marginTop: '20px', 
+        padding: '12px', 
+        background: 'rgba(96, 165, 250, 0.1)', 
+        borderRadius: '8px', 
+        fontSize: '11px', 
+        color: '#94a3b8',
+        display: 'flex',
+        gap: '8px'
+      }}>
+        <Info size={14} style={{ flexShrink: 0 }} />
+        <span>가중치 합계는 항상 100%로 유지됩니다. 하나의 비중을 조절하면 다른 비중이 비례적으로 자동 보정됩니다.</span>
       </div>
 
       <style>{`
         .spinning-slow { animation: spin 8s linear infinite; }
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         
-        input[type=range]::-webkit-slider-thumb {
+        .custom-slider {
+          width: 100%;
+          height: 6px;
+          border-radius: 3px;
           appearance: none;
-          height: 18px;
-          width: 18px;
+          background: rgba(255,255,255,0.1);
+          outline: none;
+          cursor: pointer;
+        }
+        
+        .custom-slider::-webkit-slider-thumb {
+          appearance: none;
+          height: 16px;
+          width: 16px;
           border-radius: 50%;
           background: #fff;
+          border: 2px solid var(--accent);
           box-shadow: 0 0 10px rgba(0,0,0,0.5);
           cursor: pointer;
-          border: 2px solid #3b82f6;
+          transition: transform 0.1s;
+        }
+        
+        .custom-slider::-webkit-slider-thumb:hover {
+          transform: scale(1.2);
         }
       `}</style>
     </div>

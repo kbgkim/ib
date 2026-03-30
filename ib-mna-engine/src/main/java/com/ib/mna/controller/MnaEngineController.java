@@ -53,4 +53,9 @@ public class MnaEngineController {
     public Map<String, BigDecimal> simulateScenarios(@RequestParam BigDecimal baseValue) {
         return scenarioService.generateComparison(baseValue);
     }
+
+    @PostMapping("/full-scenario-data")
+    public Map<String, ValuationBridgeResponse> getFullScenarioData(@RequestBody List<SynergyItem> items) {
+        return valuationService.calculateAllScenarios(items);
+    }
 }

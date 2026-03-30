@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import axios from 'axios';
 import SynergyInput from './components/SynergyInput';
 import ValuationWaterfall from './components/ValuationWaterfall';
@@ -11,65 +11,57 @@ import './App.css';
 
 ChartJS.defaults.font.family = "'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif";
 
-
 const API_BASE = 'http://localhost:8080/api/v1/mna';
 
 function App() {
   const [dealId] = useState('DEAL-001');
-  const [valuationData, setValuationData] = useState([2000, 0, 0, -200, 1800]);
-  const [riskProfile, setRiskProfile] = useState([0, 0, 0, 0, 0, 0]);
-  const [activeScenario, setActiveScenario] = useState('BASE');
-  const [multiplier, setMultiplier] = useState(1.00);
   const [synergyItems, setSynergyItems] = useState([]);
+  const [scenarioData, setScenarioData] = useState(null); // { BEAR: {}, BASE: {}, BULL: {} }
+  const [weights, setWeights] = useState({ bear: 20, base: 50, bull: 30 });
+  const [riskProfile, setRiskProfile] = useState([80, 70, 85, 60, 50, 12.5]);
 
   useEffect(() => {
-    fetchRealData();
+    fetchInitialSynergies();
   }, []);
 
-  const fetchRealData = async () => {
+  const fetchInitialSynergies = async () => {
     try {
       const res = await axios.get(`${API_BASE}/synergies/${dealId}`);
       handleSynergyChange(res.data);
     } catch (err) {
-      console.warn("Backend not reachable, using mock data.");
+      console.warn("Backend not reachable, using placeholders.");
     }
   };
 
   const handleSynergyChange = async (items) => {
     setSynergyItems(items);
-    fetchValuation(items, multiplier);
-  };
-
-  const handleScenarioChange = (scenario, val) => {
-    setActiveScenario(scenario);
-    setMultiplier(val);
-    fetchValuation(synergyItems, val);
-  };
-
-  const handleMultiplierChange = (val) => {
-    setMultiplier(val);
-    setActiveScenario('CUSTOM'); 
-    fetchValuation(synergyItems, val);
-  };
-
-  const fetchValuation = async (items, mult) => {
     try {
-      const response = await axios.post(`${API_BASE}/valuation-bridge?multiplier=${mult}`, items);
-      const bridge = response.data;
-      setValuationData([
-        bridge.baseValue,
-        bridge.costSynergy,
-        bridge.revenueSynergy,
-        bridge.integrationCost,
-        bridge.postDealValue
-      ]);
+      const res = await axios.post(`${API_BASE}/full-scenario-data`, items);
+      setScenarioData(res.data);
     } catch (err) {
-      console.error("Valuation Bridge API Error:", err);
+      console.error("Full Scenario API Error:", err);
     }
   };
 
+  // Real-time Weighted Average Calculation (Latency-free Simulation)
+  const weightedValuation = useMemo(() => {
+    if (!scenarioData) return [2000, 0, 0, -200, 1800];
+    
+    const wBear = weights.bear / 100;
+    const wBase = weights.base / 100;
+    const wBull = weights.bull / 100;
+
+    const keys = ['baseValue', 'costSynergy', 'revenueSynergy', 'integrationCost', 'postDealValue'];
+    
+    return keys.map(key => {
+      const valBear = scenarioData.BEAR[key] || 0;
+      const valBase = scenarioData.BASE[key] || 0;
+      const valBull = scenarioData.BULL[key] || 0;
+      return (valBear * wBear) + (valBase * wBase) + (valBull * wBull);
+    });
+  }, [scenarioData, weights]);
+
   const handleRiskResult = (result) => {
-    console.log("Risk Evaluation Result:", result);
     if (result.rawData) {
       setRiskProfile([
         result.rawData.financialScore,
@@ -79,9 +71,6 @@ function App() {
         result.mlScore || 0,
         result.vdrScore || 0
       ]);
-    } else {
-      // Fallback
-      setRiskProfile([80, 70, 85, 60, 50, 12.5]); 
     }
   };
 
@@ -105,29 +94,32 @@ function App() {
         <div className="dashboard-grid">
           <div className="left-column">
             <ScenarioSelector 
-              multiplier={multiplier} 
-              activePreset={activeScenario}
-              onMultiplierChange={handleMultiplierChange}
-              onPresetChange={handleScenarioChange}
+              weights={weights} 
+              onWeightsChange={setWeights}
             />
-            <SynergyInput onSynergyChange={handleSynergyChange} />
+            <div style={{ marginTop: '24px' }}>
+              <SynergyInput onSynergyChange={handleSynergyChange} />
+            </div>
             <div style={{ marginTop: '24px' }}>
               <RiskEvaluationForm onResult={handleRiskResult} />
             </div>
           </div>
           <div className="right-column">
-            <ValuationWaterfall data={valuationData} />
+            <ValuationWaterfall 
+              data={weightedValuation} 
+              scenarios={scenarioData} 
+            />
             <div style={{ marginTop: '24px' }}>
               <RiskRadarChart data={riskProfile} />
             </div>
             <div className="metrics-summary">
               <div className="metric-card">
-                <span className="label">NPV (시너지)</span>
-                <span className="value">$1,118M</span>
+                <span className="label">가중 평균 NPV</span>
+                <span className="value">${weightedValuation[4].toFixed(0)}M</span>
               </div>
               <div className="metric-card">
-                <span className="label">거래 후 멀티플</span>
-                <span className="value">12.6x</span>
+                <span className="label">기대 가중치 (Base)</span>
+                <span className="value">{weights.base}%</span>
               </div>
             </div>
           </div>
