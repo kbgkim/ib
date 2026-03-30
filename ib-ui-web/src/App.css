@@ -1,0 +1,132 @@
+:root {
+  --bg-dark: #0f1115;
+  --panel-bg: rgba(26, 29, 33, 0.7);
+  --accent-blue: #36a2eb;
+  --accent-green: #4bc0c0;
+  --text-primary: #ffffff;
+  --text-secondary: #aaa;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-dark);
+  color: var(--text-primary);
+  font-family: 'Inter', sans-serif;
+}
+
+.app-container {
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar {
+  width: 240px;
+  background-color: #161a1e;
+  padding: 24px;
+  border-right: 1px solid #333;
+}
+
+.logo {
+  font-weight: 800;
+  font-size: 1.2rem;
+  margin-bottom: 40px;
+  color: var(--accent-blue);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  color: var(--text-secondary);
+  border-radius: 8px;
+  cursor: pointer;
+  margin-bottom: 8px;
+}
+
+.nav-item.active {
+  background-color: var(--accent-blue);
+  color: white;
+}
+
+.main-content {
+  flex: 1;
+  padding: 32px;
+  overflow-y: auto;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.scenario-selector {
+  display: flex;
+  background: #222;
+  padding: 4px;
+  border-radius: 20px;
+}
+
+.scenario-btn {
+  background: none;
+  border: none;
+  color: white;
+  padding: 8px 24px;
+  border-radius: 16px;
+  cursor: pointer;
+}
+
+.scenario-btn.active {
+  background: var(--accent-blue);
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 400px 1fr;
+  gap: 24px;
+}
+
+.left-column, .right-column {
+  background: var(--panel-bg);
+  backdrop-filter: blur(10px);
+  padding: 24px;
+  border-radius: 16px;
+  border: 1px solid #333;
+}
+
+.synergy-item-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.synergy-item-row input, .synergy-item-row select {
+  background: #222;
+  border: 1px solid #444;
+  color: white;
+  padding: 8px;
+  border-radius: 4px;
+}
+
+.metrics-summary {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.metric-card {
+  background: #222;
+  padding: 16px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.metric-card .label { color: var(--text-secondary); font-size: 0.8rem; display: block; }
+.metric-card .value { font-size: 1.5rem; font-weight: bold; color: var(--accent-green); }

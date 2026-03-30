@@ -50,4 +50,22 @@
 다음 세션 시작 시 AI에게 이 문장을 입력하십시오:
 > "`/home/kbgkim/antigravity/projects/ib/Project_Management/PROJECT_CONTEXT.md` 파일을 읽고 글로벌 3계층 오케스트레이터 및 로그 시스템을 활성화하여 작업을 시작해줘."
 
+---
 
+## 6. 비정상 종료 대응 가이드 (Crash Recovery Guide)
+
+시스템 크래쉬나 세션 비정상 종료 발생 시, 다음 절차를 통해 작업 상태를 100% 복구하십시오.
+
+1. **AI 컨텍스트 복원 (Context Recovery)**: 
+    - `~/.gemini/antigravity/brain/` 디렉토리 내 가장 최신 세션의 `task.md` 및 `walkthrough.md`를 읽어 마지막 성공 단계와 중단 지점을 확인합니다.
+2. **코드 무결성 점검 (File Integrity)**:
+    - `git status` 및 `git diff`를 실행하여 커밋되지 않은 코드의 유실이나 불완전한 수정사항이 있는지 체크합니다.
+3. **인프라 및 서비스 재기동 (Service Restart)**:
+    - **DB**: `pg_isready`로 PostgreSQL 상태를 확인합니다.
+    - **Backend**: `export JAVA_HOME=...` 후 `./gradlew :ib-mna-engine:bootRun` 실행.
+    - **Frontend**: `ib-ui-web` 디렉토리에서 `npm run dev` 실행.
+4. **연동 검증 (Verification)**:
+    - `ss -tupln`으로 8080(백엔드), 5173(프론트엔드) 포트 리스닝 확인.
+    - `curl -I http://localhost:5173` 등으로 최종 응답 확인 후 작업을 재개합니다.
+
+---

@@ -1,0 +1,12 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot'
+}
+
+dependencies {
+    implementation project(':ib-domain')
+    implementation project(':ib-common')
+    implementation 'org.springframework.boot:spring-boot-starter-web:3.2.0'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:3.2.0'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test:3.2.0'
+}
