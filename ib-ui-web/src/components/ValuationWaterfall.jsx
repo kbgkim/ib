@@ -6,10 +6,10 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
 const ValuationWaterfall = ({ data }) => {
   const chartData = {
-    labels: ['Current Value', 'Cost Synergies', 'Revenue Synergies', 'Integration Costs', 'Post-Deal Value'],
+    labels: ['현재 가치', '비용 시너지', '매출 시너지', '통합 비용', '인수 후 통합 가치'],
     datasets: [
       {
-        label: 'Valuation Bridge ()',
+        label: '가치 평가 브릿지 (백만 달러)',
         data: data || [2000, 500, 300, -200, 2600],
         backgroundColor: [
           'rgba(54, 162, 235, 0.6)', // Current
@@ -27,7 +27,7 @@ const ValuationWaterfall = ({ data }) => {
     responsive: true,
     plugins: {
       legend: { display: false },
-      title: { display: true, text: 'M&A Valuation Bridge', color: '#fff' }
+      title: { display: true, text: 'M&A 밸류에이션 브릿지', color: '#fff' }
     },
     scales: {
       y: { ticks: { color: '#aaa' }, grid: { color: '#444' } },

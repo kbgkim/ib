@@ -6,18 +6,19 @@ ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip, 
 
 const RiskRadarChart = ({ data }) => {
   const chartData = {
-    labels: ['Financial', 'Legal', 'Operational', 'Security', 'AI Confidence'],
+    labels: ['재무', '법무', '운영', '보안', 'AI 신뢰도', 'VDR 보안'],
     datasets: [
       {
-        label: 'Current Deal Risk Profile',
-        data: data || [0, 0, 0, 0, 0],
-        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-        borderColor: 'rgba(255, 99, 132, 1)',
+        label: '현재 딜 리스크 프로파일',
+        data: data || [0, 0, 0, 0, 0, 0],
+        backgroundColor: 'rgba(16, 185, 129, 0.25)', // Emerald 500 transparent
+        borderColor: 'rgba(16, 185, 129, 1)',
         borderWidth: 2,
-        pointBackgroundColor: 'rgba(255, 99, 132, 1)',
+        pointBackgroundColor: 'rgba(16, 185, 129, 1)',
         pointBorderColor: '#fff',
         pointHoverBackgroundColor: '#fff',
-        pointHoverBorderColor: 'rgba(255, 99, 132, 1)'
+        pointHoverBorderColor: 'rgba(16, 185, 129, 1)',
+        tension: 0.1 // Smooth animation/curve
       }
     ]
   };

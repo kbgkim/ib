@@ -1,18 +1,33 @@
 package com.ib.risk.service;
 
+import com.ib.domain.repository.RiskMasterRepository;
+import com.ib.risk.client.MlServiceClient;
 import com.ib.risk.model.RiskData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import static org.junit.jupiter.api.Assertions.*;
 
+@ExtendWith(MockitoExtension.class)
 class RiskCompositeEngineTest {
 
     private RiskCompositeEngine engine;
 
+    @Mock
+    private RiskMasterRepository riskMasterRepository;
+
+    @Mock
+    private MlServiceClient mlServiceClient;
+
+    @Mock
+    private com.ib.risk.integration.RiskVDRAdapter vdrAdapter;
+
     @BeforeEach
     void setUp() {
-        engine = new RiskCompositeEngine();
+        engine = new RiskCompositeEngine(riskMasterRepository, mlServiceClient, vdrAdapter);
     }
 
     @Test

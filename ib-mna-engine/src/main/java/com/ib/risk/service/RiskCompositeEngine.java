@@ -20,6 +20,7 @@ public class RiskCompositeEngine {
 
     private final RiskMasterRepository riskMasterRepository;
     private final com.ib.risk.client.MlServiceClient mlServiceClient;
+    private final com.ib.risk.integration.RiskVDRAdapter vdrAdapter;
 
     // 가중치 정의
     private static final double WEIGHT_FINANCIAL = 0.40;
@@ -48,12 +49,16 @@ public class RiskCompositeEngine {
             mlRawScore = 0.0;
         }
 
-        // 2. 상세 내역 생성 (ML 점수는 별도 가중치 0으로 로깅만 수행)
+        // 1-2. VDR 실시간 보안 리스크 조회
+        double vdrRiskScore = vdrAdapter.getNearRealTimeRisk(dealId);
+
+        // 2. 상세 내역 생성
         List<RiskDetail> details = Arrays.asList(
             createDetail(dealId, "FINANCIAL", "Financial Stability", data.financialScore(), financialWeighted),
             createDetail(dealId, "LEGAL", "Legal Compliance", data.legalScore(), legalWeighted),
             createDetail(dealId, "OPERATIONAL", "Operational Efficiency", data.operationalScore(), operationalWeighted),
             createDetail(dealId, "SECURITY", "Information Security", data.securityScore(), securityWeighted),
+            createDetail(dealId, "VDR_SECURITY", "VDR Near Real-time Risk", vdrRiskScore, 0.0), // 가중치 0으로 로깅
             createDetail(dealId, "MACHINE_LEARNING", "AI Confidence Score", mlRawScore, 0.0)
         );
 

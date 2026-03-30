@@ -14,5 +14,6 @@ public record RiskEvaluationResponse(
     String evaluatorId,
     String evalComment,
     RiskData rawData,
-    double mlScore
+    double mlScore,
+    double vdrScore
 ) {}

@@ -23,9 +23,15 @@ public class RiskController {
             request.evalComment()
         );
         
-        // ML Score 반환용 추출
+        // ML & VDR Score 반환용 추출
         double mlScore = savedMaster.getDetails().stream()
             .filter(d -> "MACHINE_LEARNING".equals(d.getCategory()))
+            .mapToDouble(d -> d.getRawValue().doubleValue())
+            .findFirst()
+            .orElse(0.0);
+            
+        double vdrScore = savedMaster.getDetails().stream()
+            .filter(d -> "VDR_SECURITY".equals(d.getCategory()))
             .mapToDouble(d -> d.getRawValue().doubleValue())
             .findFirst()
             .orElse(0.0);
@@ -39,7 +45,8 @@ public class RiskController {
             savedMaster.getEvaluatorId(),
             savedMaster.getEvalComment(),
             request.rawData(),
-            mlScore
+            mlScore,
+            vdrScore
         );
     }
 }
