@@ -3,6 +3,8 @@
 build/
 .gradle/
 bin/
+!bin/ib_env
+!bin/manage.sh
 out/
 gradle.properties
 # !gradle-wrapper.jar  # Keep wrapper if needed, but usually it's in gradle/wrapper/
