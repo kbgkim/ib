@@ -6,16 +6,17 @@
 
 ## Project Context: IB Platform Integration (v1.2) - M&A Simulator Implementation Completed
 Last Updated: 2026-03-30
-Status: ACTIVE / MILESTONE ACHIEVED
-Current Version: v1.2
+Status: REPOSITORY UNIFIED / FLOW OPTIMIZED
+Current Version: v1.3
 
 ## 1. 프로젝트 아키텍처 및 핵심 결정 (Core Decisions)
 
-- **공식 Superpowers 통합**: `obra/superpowers`의 12+종 정밀 스킬셋 및 TDD 엔지니어링 워크플로우 전면 도입.
-- **기술 스택**: 메인 DB를 **PostgreSQL 14**로 확정. `ib` 스키마 내 통합 리스크 및 오딧 테이블 구축 완료.
-- **모듈 구조**: `ib-mna-engine`(Main Backend), `ib-ui-web`(Premium Dashboard), `ib-ml-engine`(ML Service Integration) 등 멀티 모듈 체계 확립.
-- **통합 엔진**: 재무/법무/운영/보안 + **AI(ML) & VDR(보안)** 실시간 데이터가 결합된 **Layer 03 통합 리스크 엔진** 구현 완료.
-- **작업 관리**: `feature/layer03-risk` 브랜치를 성공적으로 `master`에 병합 완료.
+- **저장소 단일화 (Repository Unification)**: 파편화된 4개의 워크트리를 `~/antigravity/projects/ib`로 통합 완료.
+- **푸시 자동화 (Push Automation)**: `git push origin master` 수행 시 `main` 브랜치까지 자동 업데이트되도록 설정 완료.
+- **IB 전용 단축어 (`ibp`)**: 복잡한 동기화 명령을 `ibp` 하나로 단순화 완료.
+- **네트워크 식별**: 내부망 전용 Git 서버(`20.200.245.247`)와의 통신 상태 정기 점검 필요.
+- **모듈 구조**: `ib-mna-engine`, `ib-ui-web`, `ib-ml-engine` 멀티 모듈 체계 유지.
+- **작업 관리**: 모든 최신 작업물을 `master` 브랜치로 병합 및 강제 추적(`git add -f bin/`) 완료.
 
 ---
 
@@ -50,4 +51,4 @@ Current Version: v1.2
 ## 5. 즉시 복구 명령 (Restore Command)
 
 다음 세션 시작 시 AI에게 이 문장을 입력하십시오:
-> "`/home/kbgkim/antigravity/projects/ib/Project_Management/PROJECT_CONTEXT.md` 파일을 읽고 현재 `master` 브랜치 상태에서 M&A 시나리오 시뮬레이터 통합 및 밸류에이션 엔진 고도화를 시작해줘."
+> "`/home/kbgkim/antigravity/projects/ib/Project_Management/PROJECT_CONTEXT.md` 파일을 읽고 현재 `master` 브랜치 상태에서 작업을 시작해줘. `ibp` 단축어를 사용하여 서버 동기화를 유지하며 M&A 시나리오 시뮬레이터 고도화를 이어가자."
