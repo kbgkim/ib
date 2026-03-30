@@ -25,6 +25,7 @@
     - **[Draft_Purification_Map.md](file:///home/kbgkim/antigravity/projects/ib/Project_Management/Draft_Purification_Map.md)**: 초안 -> 정규 사양서 이식 매핑 로드맵.
     - **[implementation_plan.md](file:///home/kbgkim/.gemini/antigravity/brain/eddece91-5d58-430f-8aff-83f1bb096410/artifacts/implementation_plan.md)**: 현재 진행 중인 통합 고도화 계획.
 - **`logs/`**: 일자별(`YYYY/MM/DD/`) 작업 로그 저장소 (state_log.md, interaction_log.md).
+- **`.gitignore`**: 루트 및 모듈별(ib-ui-web, ib-ml-engine) 독립적/계층적 무시 패턴 적용 (2026-03-30 최적화 완료).
 
 ---
 
@@ -34,6 +35,9 @@
     - M&A 자문 도메인 통합 및 VDR 보안 연동 설계 원칙 확정.
     - 외부 ML 마이크로서비스 및 독립 피처 스토어 구조 채택.
     - **글로벌 3계층 통합 플러그인 및 자동화 로그 시스템 설치 완료.**
+- [x] **2단계: 레포지토리 위생 및 .gitignore 최적화 완료 (2026-03-30)**
+    - 루트 `.gitignore` 신규 생성 및 모듈별(Java, Python, React) 패턴 통합.
+    - 이미 커밋되었던 빌드 아티팩트(`build/`, `.gradle/`, `.class` 등) 87개 파일 인덱스 제거 완료.
 
 ---
 
