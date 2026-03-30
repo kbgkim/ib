@@ -1,13 +1,13 @@
-# [Context] IB 프로젝트 최종 작업 문맥 및 세션 복구 가이드 (v1.6.1)
+# [Context] IB 프로젝트 최종 작업 문맥 및 세션 복구 가이드 (v1.7)
 
 본 문서는 안티그래비티(Antigravity) 세션을 종료하고 나중에 다시 시작할 때, 최신 통합 아키텍처와 정제된 작업 상태를 즉시 복구하기 위한 **최종 마감 메모리** 문서입니다.
 
 ---
 
-## Project Context: IB Platform Integration (v1.6.1) - ML Evolution (LightGBM) Complete
+## Project Context: IB Platform Integration (v1.7) - PF Engine Development In Progress
 Last Updated: 2026-03-31
-Status: ML ENGINE PROFESSIONALIZED / EXPLAINABILITY ADDED
-Current Version: v1.6.1
+Status: M&A + AI RISK COMPLETE / PF ENGINE IN PROGRESS
+Current Version: v1.7
 
 ## 1. 프로젝트 아키텍처 및 핵심 결정 (Core Decisions)
 
@@ -50,14 +50,31 @@ Current Version: v1.6.1
 
 ---
 
-## 4. 세션 재개 시 다음 작업 (Next Steps)
+## 4. 전체 개발 로드맵 (Full Development Roadmap)
 
-1. **[E2E Validation]**: 실제 딜 거래(DEAL-001) 기반의 전체 프로세스(실사→리스크분석→밸류에이션) 통합 테스트 수행.
-2. **[Refinement]**: 각 레이어별 예외 처리 고도화 및 운영 대시보드 리포팅 기능 강화.
+> **결정일**: 2026-03-31 | **우선순위 확정**
+
+### 🔲 Phase 1 (현재 진행 중): PF 엔진 신규 구현
+- **목표**: Project Finance 도메인의 핵심 분석 기능 구현
+- **백엔드**: `ib-pf-engine` 신규 Gradle 모듈 생성
+  - `PfProject` / `PfCashFlow` / `PfTrancheConfig` 엔티티 및 DB 스키마
+  - DSCR / LLCR / PLCR 계산 엔진
+  - Cash Flow Waterfall 분배 로직 (OpEx → 선순위부채 → 메자닌 → Equity)
+  - Sensitivity Analysis API (단일 변수 변화에 따른 지표 변동)
+- **프론트엔드**: PF 전용 대시보드 탭 추가 (`ib-ui-web`)
+  - Drawdown Schedule 시각화
+  - DSCR/LLCR 게이지 차트
+  - Waterfall Cash Flow 차트 (PF용)
+
+### 🔲 Phase 2 (PF 완료 후): M&A/Risk 고도화
+- **시나리오 영속화**: 사용자 조절 가중치/결과를 PostgreSQL에 저장
+- **VDR 실사 연동**: 실제 문서 접근 로그 기반 VDR 리스크 점수 계산
+- **리스크 리포트 자동 생성**: 분석 결과 PDF 출력 기능
+- **스마트 알림**: 리스크 임계치 초과 시 대시보드 경고 배지 표시
 
 ---
 
 ## 5. 즉시 복구 명령 (Restore Command)
 
 다음 세션 시작 시 AI에게 이 문장을 입력하십시오:
-> "`/home/kbgkim/antigravity/projects/ib/Project_Management/PROJECT_CONTEXT.md` 파일을 읽고 현재 `master` 브랜치 상태에서 작업을 시작해줘. `ibp` 단축어를 사용하여 서버 동기화를 유지하며 통합 IB 플랫폼의 E2E 검증 단계를 진행하자."
+> "`/home/kbgkim/antigravity/projects/ib/Project_Management/PROJECT_CONTEXT.md` 파일을 읽고 **Phase 1: PF 엔진 구현** 작업을 이어서 진행해줘. `ibp` 단축어로 서버 동기화를 유지하며 `ib-pf-engine` 모듈 작업을 계속하자."

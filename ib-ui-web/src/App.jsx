@@ -5,7 +5,8 @@ import ValuationWaterfall from './components/ValuationWaterfall';
 import ScenarioSelector from './components/ScenarioSelector';
 import RiskRadarChart from './components/RiskRadarChart';
 import RiskEvaluationForm from './components/RiskEvaluationForm';
-import { TrendingUp, Activity, LayoutDashboard, Database, Shield } from 'lucide-react';
+import PfDashboard from './components/PfDashboard';
+import { TrendingUp, Activity, LayoutDashboard, Database, Shield, Layers } from 'lucide-react';
 import { Chart as ChartJS } from 'chart.js';
 import './App.css';
 
@@ -15,6 +16,7 @@ const API_BASE = 'http://localhost:8080/api/v1/mna';
 
 function App() {
   const [dealId] = useState('DEAL-001');
+  const [activeTab, setActiveTab] = useState('mna'); // 'mna' | 'pf'
   const [synergyItems, setSynergyItems] = useState([]);
   const [scenarioData, setScenarioData] = useState(null); // { BEAR: {}, BASE: {}, BULL: {} }
   const [weights, setWeights] = useState({ bear: 20, base: 50, bull: 30 });
@@ -79,9 +81,23 @@ function App() {
       <nav className="sidebar">
         <div className="logo"><LayoutDashboard size={24} /> IB PLATFORM</div>
         <div className="nav-items">
-          <div className="nav-item active"><Activity size={18} /> M&A 엔진</div>
-          <div className="nav-item"><Shield size={18} /> 리스크 센터</div>
-          <div className="nav-item"><TrendingUp size={18} /> PF 리스크</div>
+          <div
+            className={`nav-item ${activeTab === 'mna' ? 'active' : ''}`}
+            onClick={() => setActiveTab('mna')}
+            style={{ cursor: 'pointer' }}
+          >
+            <Activity size={18} /> M&A 엔진
+          </div>
+          <div
+            className={`nav-item ${activeTab === 'pf' ? 'active' : ''}`}
+            onClick={() => setActiveTab('pf')}
+            style={{ cursor: 'pointer' }}
+          >
+            <Layers size={18} /> PF 파이낸스
+          </div>
+          <div className="nav-item" style={{ cursor: 'default', opacity: 0.4 }}>
+            <Shield size={18} /> ECM/DCM <span style={{ fontSize: '10px', marginLeft: '4px' }}>(준비중)</span>
+          </div>
         </div>
         <div className="db-status"><Database size={16} /> PostgreSQL 연결됨</div>
       </nav>
@@ -92,37 +108,45 @@ function App() {
         </header>
 
         <div className="dashboard-grid">
-          <div className="left-column">
-            <ScenarioSelector 
-              weights={weights} 
-              onWeightsChange={setWeights}
-            />
-            <div style={{ marginTop: '24px' }}>
-              <SynergyInput onSynergyChange={handleSynergyChange} />
-            </div>
-            <div style={{ marginTop: '24px' }}>
-              <RiskEvaluationForm onResult={handleRiskResult} />
-            </div>
-          </div>
-          <div className="right-column">
-            <ValuationWaterfall 
-              data={weightedValuation} 
-              scenarios={scenarioData} 
-            />
-            <div style={{ marginTop: '24px' }}>
-              <RiskRadarChart data={riskProfile} />
-            </div>
-            <div className="metrics-summary">
-              <div className="metric-card">
-                <span className="label">가중 평균 NPV</span>
-                <span className="value">${weightedValuation[4].toFixed(0)}M</span>
+          {activeTab === 'mna' ? (
+            <>
+              <div className="left-column">
+                <ScenarioSelector 
+                  weights={weights} 
+                  onWeightsChange={setWeights}
+                />
+                <div style={{ marginTop: '24px' }}>
+                  <SynergyInput onSynergyChange={handleSynergyChange} />
+                </div>
+                <div style={{ marginTop: '24px' }}>
+                  <RiskEvaluationForm onResult={handleRiskResult} />
+                </div>
               </div>
-              <div className="metric-card">
-                <span className="label">기대 가중치 (Base)</span>
-                <span className="value">{weights.base}%</span>
+              <div className="right-column">
+                <ValuationWaterfall 
+                  data={weightedValuation} 
+                  scenarios={scenarioData} 
+                />
+                <div style={{ marginTop: '24px' }}>
+                  <RiskRadarChart data={riskProfile} />
+                </div>
+                <div className="metrics-summary">
+                  <div className="metric-card">
+                    <span className="label">가중 평균 NPV</span>
+                    <span className="value">${weightedValuation[4].toFixed(0)}M</span>
+                  </div>
+                  <div className="metric-card">
+                    <span className="label">기대 가중치 (Base)</span>
+                    <span className="value">{weights.base}%</span>
+                  </div>
+                </div>
               </div>
+            </>
+          ) : (
+            <div style={{ gridColumn: '1 / -1' }}>
+              <PfDashboard />
             </div>
-          </div>
+          )}
         </div>
       </main>
     </div>
