@@ -18,7 +18,7 @@ public class RiskDetail {
     @Column(name = "DETAIL_ID")
     private Long id;
 
-    @Column(name = "DEAL_ID")
+    @Column(name = "DEAL_ID", insertable = false, updatable = false)
     private String dealId;
 
     @Column(name = "CATEGORY")

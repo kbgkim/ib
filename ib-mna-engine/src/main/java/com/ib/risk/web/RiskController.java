@@ -23,6 +23,13 @@ public class RiskController {
             request.evalComment()
         );
         
+        // ML Score 반환용 추출
+        double mlScore = savedMaster.getDetails().stream()
+            .filter(d -> "MACHINE_LEARNING".equals(d.getCategory()))
+            .mapToDouble(d -> d.getRawValue().doubleValue())
+            .findFirst()
+            .orElse(0.0);
+            
         // 2. 결과 매핑 및 반환
         return new RiskEvaluationResponse(
             savedMaster.getDealId(),
@@ -31,7 +38,8 @@ public class RiskController {
             com.ib.domain.risk.RiskGrade.valueOf(savedMaster.getFinalGrade()).getDescription(),
             savedMaster.getEvaluatorId(),
             savedMaster.getEvalComment(),
-            request.rawData()
+            request.rawData(),
+            mlScore
         );
     }
 }

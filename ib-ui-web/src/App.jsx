@@ -12,7 +12,7 @@ const API_BASE = 'http://localhost:8080/api/v1/mna';
 function App() {
   const [dealId] = useState('DEAL-001');
   const [valuationData, setValuationData] = useState([2000, 0, 0, -200, 1800]);
-  const [riskProfile, setRiskProfile] = useState([0, 0, 0, 0]);
+  const [riskProfile, setRiskProfile] = useState([0, 0, 0, 0, 0]);
 
   useEffect(() => {
     fetchRealData();
@@ -41,11 +41,12 @@ function App() {
         result.rawData.financialScore,
         result.rawData.legalScore,
         result.rawData.operationalScore,
-        result.rawData.securityScore
+        result.rawData.securityScore,
+        result.mlScore || 0
       ]);
     } else {
       // Fallback
-      setRiskProfile([80, 70, 85, 60]); 
+      setRiskProfile([80, 70, 85, 60, 50]); 
     }
   };
 

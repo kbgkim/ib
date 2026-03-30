@@ -6,11 +6,11 @@ ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip, 
 
 const RiskRadarChart = ({ data }) => {
   const chartData = {
-    labels: ['Financial', 'Legal', 'Operational', 'Security'],
+    labels: ['Financial', 'Legal', 'Operational', 'Security', 'AI Confidence'],
     datasets: [
       {
         label: 'Current Deal Risk Profile',
-        data: data || [0, 0, 0, 0],
+        data: data || [0, 0, 0, 0, 0],
         backgroundColor: 'rgba(255, 99, 132, 0.2)',
         borderColor: 'rgba(255, 99, 132, 1)',
         borderWidth: 2,

@@ -35,8 +35,8 @@ public class RiskMaster {
     @Column(name = "LAST_UPDATED")
     private LocalDateTime lastUpdated;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "DEAL_ID")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @JoinColumn(name = "DEAL_ID", nullable = false)
     @Builder.Default
     private List<RiskDetail> details = new ArrayList<>();
 

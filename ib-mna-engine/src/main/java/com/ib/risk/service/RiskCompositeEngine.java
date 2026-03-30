@@ -19,6 +19,7 @@ import java.util.List;
 public class RiskCompositeEngine {
 
     private final RiskMasterRepository riskMasterRepository;
+    private final com.ib.risk.client.MlServiceClient mlServiceClient;
 
     // 가중치 정의
     private static final double WEIGHT_FINANCIAL = 0.40;
@@ -37,23 +38,39 @@ public class RiskCompositeEngine {
         double totalScore = financialWeighted + legalWeighted + operationalWeighted + securityWeighted;
         RiskGrade grade = RiskGradeMapper.toGrade(totalScore);
 
-        // 2. 상세 내역 생성
+        // 1-1. 머신러닝 피처 모델 조회 (Circuit Breaker 적용)
+        double mlRawScore = 0.0;
+        try {
+            com.ib.risk.client.MlServiceClient.MlPredictResponse mlResponse = mlServiceClient.predictRiskScore(dealId);
+            mlRawScore = mlResponse.mlScore();
+        } catch (Exception e) {
+            // 폴백: 호출 실패 시 기본값 0.0
+            mlRawScore = 0.0;
+        }
+
+        // 2. 상세 내역 생성 (ML 점수는 별도 가중치 0으로 로깅만 수행)
         List<RiskDetail> details = Arrays.asList(
             createDetail(dealId, "FINANCIAL", "Financial Stability", data.financialScore(), financialWeighted),
             createDetail(dealId, "LEGAL", "Legal Compliance", data.legalScore(), legalWeighted),
             createDetail(dealId, "OPERATIONAL", "Operational Efficiency", data.operationalScore(), operationalWeighted),
-            createDetail(dealId, "SECURITY", "Information Security", data.securityScore(), securityWeighted)
+            createDetail(dealId, "SECURITY", "Information Security", data.securityScore(), securityWeighted),
+            createDetail(dealId, "MACHINE_LEARNING", "AI Confidence Score", mlRawScore, 0.0)
         );
 
-        // 3. 마스터 레코드 생성 및 저장
-        RiskMaster master = RiskMaster.builder()
-            .dealId(dealId)
-            .totalScore(BigDecimal.valueOf(totalScore))
-            .finalGrade(grade.name())
-            .evaluatorId(evaluatorId)
-            .evalComment(evalComment)
-            .details(details)
-            .build();
+        // 3. 마스터 레코드 갱신 또는 생성
+        RiskMaster master = riskMasterRepository.findById(dealId).orElseGet(() -> RiskMaster.builder().dealId(dealId).build());
+        master.setTotalScore(BigDecimal.valueOf(totalScore));
+        master.setFinalGrade(grade.name());
+        master.setEvaluatorId(evaluatorId);
+        master.setEvalComment(evalComment);
+        
+        // 기존 상세 내역 삭제 후 교체 (orphanRemoval에 의해 DB에서 삭제됨)
+        if (master.getDetails() != null) {
+            master.getDetails().clear();
+            master.getDetails().addAll(details);
+        } else {
+            master.setDetails(details);
+        }
 
         return riskMasterRepository.save(master);
     }
