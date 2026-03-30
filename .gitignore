@@ -2,7 +2,7 @@
 *.class
 build/
 .gradle/
-bin/
+bin/*
 !bin/ib_env
 !bin/manage.sh
 out/
