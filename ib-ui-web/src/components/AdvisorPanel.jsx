@@ -4,7 +4,7 @@ import { Bot, Shield, TrendingUp, Zap, MessageSquare, AlertTriangle, CheckCircle
 
 const API_BASE = 'http://localhost:8080/api/v1/mna/advisor';
 
-const AdvisorPanel = ({ dealId }) => {
+const AdvisorPanel = ({ dealId, onApplyStrategy }) => {
     const [analysis, setAnalysis] = useState(null);
     const [loading, setLoading] = useState(false);
 
@@ -79,6 +79,17 @@ const AdvisorPanel = ({ dealId }) => {
                                     <MessageSquare size={14} className="quote-icon" />
                                     <span>{report.comment}</span>
                                 </div>
+                                {report.action_link && (
+                                    <div className="agent-action">
+                                        <button 
+                                            className="apply-strategy-btn"
+                                            onClick={() => onApplyStrategy(report.action_link)}
+                                        >
+                                            <Zap size={12} fill="currentColor" />
+                                            {report.action_link.label}
+                                        </button>
+                                    </div>
+                                )}
                             </div>
                         ))}
                     </div>

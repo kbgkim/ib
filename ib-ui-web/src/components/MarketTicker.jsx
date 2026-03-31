@@ -57,8 +57,24 @@ const MarketTicker = () => {
         );
     };
 
+    const getStatusColor = () => {
+        if (!data) return "transparent";
+        switch (data.covenantStatus) {
+            case 'BREACH': return "rgba(239, 68, 68, 0.4)"; // red-500
+            case 'WARNING': return "rgba(251, 146, 60, 0.2)"; // orange-400
+            default: return "rgba(15, 17, 21, 0.8)";
+        }
+    };
+
     return (
-        <div className="market-ticker-container">
+        <div 
+            className={`market-ticker-container ${data?.covenantStatus === 'BREACH' ? 'pulse-red-bg' : ''}`}
+            style={{ backgroundColor: getStatusColor() }}
+        >
+            <div className="ticker-status-indicator">
+                {data?.covenantStatus === 'BREACH' && <AlertTriangle size={14} className="neon-glow-d" />}
+                <span className="status-label">{data?.covenantStatus || "LOADING"}</span>
+            </div>
             <div className="ticker-scroll">
                 {renderItem("UST 10Y", "ust10y", "%")}
                 {renderItem("KOR 3Y", "kst3y", "%")}

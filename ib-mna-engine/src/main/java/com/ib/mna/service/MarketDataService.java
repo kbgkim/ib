@@ -29,6 +29,7 @@ public class MarketDataService {
                 .creditSpread(new BigDecimal("45.0"))
                 .carbonPrice(new BigDecimal("18500"))
                 .wti(new BigDecimal("81.20"))
+                .covenantStatus("OK") // Initial status
                 .timestamp(LocalDateTime.now())
                 .build());
     }
@@ -52,8 +53,21 @@ public class MarketDataService {
                 .timestamp(LocalDateTime.now())
                 .build();
 
+        next.setCovenantStatus(checkCovenantStatus(next));
         currentMarketData.set(next);
         log.debug("Market Data Updated: {}", next);
+    }
+
+    private String checkCovenantStatus(MarketDataResponse data) {
+        double yield = data.getUst10y().doubleValue();
+        double spread = data.getCreditSpread().doubleValue();
+
+        if (yield > 4.65 || spread > 58) {
+            return "BREACH";
+        } else if (yield > 4.45 || spread > 52) {
+            return "WARNING";
+        }
+        return "OK";
     }
 
     private BigDecimal adjust(BigDecimal val, double range) {

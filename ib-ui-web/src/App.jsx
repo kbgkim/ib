@@ -21,6 +21,8 @@ const API_BASE = 'http://localhost:8080/api/v1/mna';
 function App() {
   const [dealId] = useState('DEAL-001');
   const [activeTab, setActiveTab] = useState('mna'); // 'mna' | 'pf'
+  const [isMitigated, setIsMitigated] = useState(false);
+  const [mitigationLabel, setMitigationLabel] = useState("");
   const [view, setView] = useState('fleet'); // 'fleet' | 'detail'
   const [selectedProjectId, setSelectedProjectId] = useState('PF-001');
   const [synergyItems, setSynergyItems] = useState([]);
@@ -75,9 +77,22 @@ function App() {
       const valBear = scenarioData.BEAR[key] || 0;
       const valBase = scenarioData.BASE[key] || 0;
       const valBull = scenarioData.BULL[key] || 0;
-      return (valBear * wBear) + (valBase * wBase) + (valBull * wBull);
+      let weighted = (valBear * wBear) + (valBase * wBase) + (valBull * wBull);
+      
+      // Apply Mitigation Effect (Positive impact of strategic advice)
+      if (isMitigated) {
+        if (key === 'postDealValue' || key === 'baseValue') weighted *= 1.08; // 8% value recovery
+        if (key === 'integrationCost') weighted *= 0.8; // 20% cost reduction
+      }
+      return weighted;
     });
-  }, [scenarioData, weights]);
+  }, [scenarioData, weights, isMitigated]);
+
+  const handleApplyStrategy = (action) => {
+    setIsMitigated(true);
+    setMitigationLabel(action.label);
+    alert(`[전략 실행] ${action.label} 전략이 재무 모델에 반영되었습니다. 가치 회복 및 리스크 완화 시뮬레이션을 시작합니다.`);
+  };
 
   const handleRiskResult = (result) => {
     if (result.rawData) {
@@ -154,7 +169,12 @@ function App() {
                   <div style={{ marginTop: '24px' }}>
                     <VdrInsightPanel onRiskUpdate={(adj) => setRiskProfile(prev => [prev[0], prev[1], prev[2], prev[3] + adj, prev[4], prev[5]])} />
                   </div>
-                  <AdvisorPanel dealId={dealId} />
+                  <AdvisorPanel dealId={dealId} onApplyStrategy={handleApplyStrategy} />
+                  {isMitigated && (
+                    <div className="mitigation-active-tag animate-pulse">
+                      ⚡ 전략 적용 중: {mitigationLabel}
+                    </div>
+                  )}
                 </div>
                 <div className="right-column">
                   <ValuationWaterfall 

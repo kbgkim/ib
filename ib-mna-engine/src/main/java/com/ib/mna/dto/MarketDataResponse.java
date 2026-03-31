@@ -14,5 +14,6 @@ public class MarketDataResponse {
     private BigDecimal creditSpread; // AA-BBB Credit Spread (bps)
     private BigDecimal carbonPrice;  // Carbon ETS Price (KRW)
     private BigDecimal wti;         // WTI Oil Price (USD)
+    private String covenantStatus;  // OK | WARNING | BREACH
     private LocalDateTime timestamp;
 }

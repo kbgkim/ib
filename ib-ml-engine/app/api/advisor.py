@@ -42,6 +42,16 @@ async def analyze_project(req: AdvisorRequest):
                 highest_risk = r['risk_level']
 
         summary = f"신규 시장 지표 변화에 따라 프로젝트의 전체 리스크 등급이 {highest_risk}로 조정되었습니다. "
+        
+        # Mapping Actions to Experts
+        for r in reports:
+            if r['agent'] == 'Quantara' and r['risk_level'] == 'HIGH':
+                r['action_link'] = {"type": "SET_RATE", "value": 4.5, "label": "리파이낸싱 실행 (4.5%)"}
+            elif r['agent'] == 'Lex' and r['risk_level'] == 'MEDIUM':
+                r['action_link'] = {"type": "AUDIT_VDR", "value": 0, "label": "계약 위반 법률 실사"}
+            elif r['agent'] == 'Synergy' and r['risk_level'] == 'MEDIUM':
+                r['action_link'] = {"type": "CAPEX_REDUCTION", "value": 200, "label": "운영비용 200M 절감"}
+
         if highest_risk == "HIGH":
             summary += "금리 급변에 따른 자본 조달 리스크가 심각하므로 최우선적으로 리파이낸싱 또는 자본 수납 전략이 필요합니다."
         elif highest_risk == "MEDIUM":
