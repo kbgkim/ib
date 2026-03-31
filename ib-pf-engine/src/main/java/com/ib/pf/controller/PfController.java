@@ -9,6 +9,7 @@ import com.ib.pf.repository.PfProjectRepository;
 import com.ib.pf.repository.PfScenarioRepository;
 import com.ib.pf.service.PfMetricsEngine;
 import com.ib.pf.service.PfReportService;
+import com.ib.pf.service.PfAdvisorService;
 import com.ib.pf.service.PfSensitivityEngine;
 import com.ib.pf.service.PfWaterfallEngine;
 import org.springframework.http.ResponseEntity;
@@ -27,19 +28,22 @@ public class PfController {
     private final PfWaterfallEngine waterfallEngine;
     private final PfSensitivityEngine sensitivityEngine;
     private final PfReportService reportService;
+    private final PfAdvisorService advisorService;
 
     public PfController(PfProjectRepository projectRepo,
                         PfScenarioRepository scenarioRepo,
                         PfMetricsEngine metricsEngine,
                         PfWaterfallEngine waterfallEngine,
                         PfSensitivityEngine sensitivityEngine,
-                        PfReportService reportService) {
+                        PfReportService reportService,
+                        PfAdvisorService advisorService) {
         this.projectRepo = projectRepo;
         this.scenarioRepo = scenarioRepo;
         this.metricsEngine = metricsEngine;
         this.waterfallEngine = waterfallEngine;
         this.sensitivityEngine = sensitivityEngine;
         this.reportService = reportService;
+        this.advisorService = advisorService;
     }
 
     /**
@@ -126,5 +130,16 @@ public class PfController {
     @GetMapping("/{id}/scenarios")
     public ResponseEntity<List<PfScenario>> getScenarios(@PathVariable String id) {
         return ResponseEntity.ok(scenarioRepo.findByProjectIdOrderByCreatedAtDesc(id));
+    }
+
+    /**
+     * GET /api/v1/pf/{id}/advice — 프로젝트 리스크 대응 전략 제언 (AI Advisor)
+     */
+    @GetMapping("/{id}/advice")
+    public ResponseEntity<List<PfAdvisorService.AdviceCard>> getAdvice(@PathVariable String id) {
+        com.ib.pf.model.PfProject project = projectRepo.findById(id).orElseThrow();
+        com.ib.pf.dto.PfMetricsResponse metrics = metricsEngine.calculate(id);
+        
+        return ResponseEntity.ok(advisorService.getAdvice(project, metrics));
     }
 }

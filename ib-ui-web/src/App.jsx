@@ -6,7 +6,8 @@ import ScenarioSelector from './components/ScenarioSelector';
 import RiskRadarChart from './components/RiskRadarChart';
 import RiskEvaluationForm from './components/RiskEvaluationForm';
 import PfDashboard from './components/PfDashboard';
-import { TrendingUp, Activity, LayoutDashboard, Database, Shield, Layers } from 'lucide-react';
+import DealFleetOverview from './components/DealFleetOverview';
+import { TrendingUp, Activity, LayoutDashboard, Database, Shield, Layers, Grid } from 'lucide-react';
 import { Chart as ChartJS } from 'chart.js';
 import './App.css';
 
@@ -17,10 +18,18 @@ const API_BASE = 'http://localhost:8080/api/v1/mna';
 function App() {
   const [dealId] = useState('DEAL-001');
   const [activeTab, setActiveTab] = useState('mna'); // 'mna' | 'pf'
+  const [view, setView] = useState('fleet'); // 'fleet' | 'detail'
+  const [selectedProjectId, setSelectedProjectId] = useState('PF-001');
   const [synergyItems, setSynergyItems] = useState([]);
   const [scenarioData, setScenarioData] = useState(null); // { BEAR: {}, BASE: {}, BULL: {} }
   const [weights, setWeights] = useState({ bear: 20, base: 50, bull: 30 });
   const [riskProfile, setRiskProfile] = useState([80, 70, 85, 60, 50, 12.5]);
+
+  const handleSelectProject = (id) => {
+    setSelectedProjectId(id);
+    setView('detail');
+    setActiveTab('pf');
+  };
 
   useEffect(() => {
     fetchInitialSynergies();
@@ -82,15 +91,23 @@ function App() {
         <div className="logo"><LayoutDashboard size={24} /> IB PLATFORM</div>
         <div className="nav-items">
           <div
-            className={`nav-item ${activeTab === 'mna' ? 'active' : ''}`}
-            onClick={() => setActiveTab('mna')}
+            className={`nav-item ${view === 'fleet' ? 'active' : ''}`}
+            onClick={() => setView('fleet')}
+            style={{ cursor: 'pointer' }}
+          >
+            <Grid size={18} /> Deal Fleet
+          </div>
+          <div style={{ padding: '16px 0 8px 12px', fontSize: '10px', color: '#475569', fontWeight: '800' }}>ASSETS</div>
+          <div
+            className={`nav-item ${view === 'detail' && activeTab === 'mna' ? 'active' : ''}`}
+            onClick={() => { setView('detail'); setActiveTab('mna'); }}
             style={{ cursor: 'pointer' }}
           >
             <Activity size={18} /> M&A 엔진
           </div>
           <div
-            className={`nav-item ${activeTab === 'pf' ? 'active' : ''}`}
-            onClick={() => setActiveTab('pf')}
+            className={`nav-item ${view === 'detail' && activeTab === 'pf' ? 'active' : ''}`}
+            onClick={() => { setView('detail'); setActiveTab('pf'); }}
             style={{ cursor: 'pointer' }}
           >
             <Layers size={18} /> PF 파이낸스
@@ -104,50 +121,56 @@ function App() {
       
       <main className="main-content">
         <header>
-          <h1>통합 IB 대시보드 (대상: {dealId})</h1>
+          <h1>{view === 'fleet' ? 'IB Platform: Deal Fleet' : `통합 IB 대시보드 (대상: ${selectedProjectId})`}</h1>
         </header>
 
-        <div className="dashboard-grid">
-          {activeTab === 'mna' ? (
-            <>
-              <div className="left-column">
-                <ScenarioSelector 
-                  weights={weights} 
-                  onWeightsChange={setWeights}
-                />
-                <div style={{ marginTop: '24px' }}>
-                  <SynergyInput onSynergyChange={handleSynergyChange} />
-                </div>
-                <div style={{ marginTop: '24px' }}>
-                  <RiskEvaluationForm onResult={handleRiskResult} />
-                </div>
-              </div>
-              <div className="right-column">
-                <ValuationWaterfall 
-                  data={weightedValuation} 
-                  scenarios={scenarioData} 
-                />
-                <div style={{ marginTop: '24px' }}>
-                  <RiskRadarChart data={riskProfile} />
-                </div>
-                <div className="metrics-summary">
-                  <div className="metric-card">
-                    <span className="label">가중 평균 NPV</span>
-                    <span className="value">${weightedValuation[4].toFixed(0)}M</span>
+        {view === 'fleet' ? (
+          <div style={{ padding: '24px' }}>
+            <DealFleetOverview onSelectProject={handleSelectProject} />
+          </div>
+        ) : (
+          <div className="dashboard-grid">
+            {activeTab === 'mna' ? (
+              <>
+                <div className="left-column">
+                  <ScenarioSelector 
+                    weights={weights} 
+                    onWeightsChange={setWeights}
+                  />
+                  <div style={{ marginTop: '24px' }}>
+                    <SynergyInput onSynergyChange={handleSynergyChange} />
                   </div>
-                  <div className="metric-card">
-                    <span className="label">기대 가중치 (Base)</span>
-                    <span className="value">{weights.base}%</span>
+                  <div style={{ marginTop: '24px' }}>
+                    <RiskEvaluationForm onResult={handleRiskResult} />
                   </div>
                 </div>
+                <div className="right-column">
+                  <ValuationWaterfall 
+                    data={weightedValuation} 
+                    scenarios={scenarioData} 
+                  />
+                  <div style={{ marginTop: '24px' }}>
+                    <RiskRadarChart data={riskProfile} />
+                  </div>
+                  <div className="metrics-summary">
+                    <div className="metric-card">
+                      <span className="label">가중 평균 NPV</span>
+                      <span className="value">${weightedValuation[4].toFixed(0)}M</span>
+                    </div>
+                    <div className="metric-card">
+                      <span className="label">기대 가중치 (Base)</span>
+                      <span className="value">{weights.base}%</span>
+                    </div>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <div style={{ gridColumn: '1 / -1' }}>
+                <PfDashboard key={selectedProjectId} />
               </div>
-            </>
-          ) : (
-            <div style={{ gridColumn: '1 / -1' }}>
-              <PfDashboard />
-            </div>
-          )}
-        </div>
+            )}
+          </div>
+        )}
       </main>
     </div>
   );

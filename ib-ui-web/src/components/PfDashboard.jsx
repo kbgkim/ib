@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip as ChartTooltip, Legend as ChartLegend } from 'chart.js';
-import { TrendingUp, TrendingDown, AlertTriangle, CheckCircle, XCircle, BarChart2, Layers, Activity, Save, List, History, ShieldAlert } from 'lucide-react';
+import { TrendingUp, TrendingDown, AlertTriangle, CheckCircle, XCircle, BarChart2, Layers, Activity, Save, List, History, ShieldAlert, Lightbulb, Settings } from 'lucide-react';
+import StrategyAdvisor from './StrategyAdvisor';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, ChartTooltip, ChartLegend);
 
@@ -213,24 +214,30 @@ const PfDashboard = () => {
   const [showSaveModal, setShowSaveModal] = useState(false);
   const [newScenarioName, setNewScenarioName] = useState('');
   const [saving, setSaving] = useState(false);
+  const [advice, setAdvice] = useState([]);
+  const [simulationMode, setSimulationMode] = useState(false);
+  const [originalProject, setOriginalProject] = useState(null);
 
   const PROJECT_ID = 'PF-001';
 
   useEffect(() => {
     const fetchAll = async () => {
       try {
-        const [projRes, metRes, wfRes, senRes, scRes] = await Promise.all([
+        const [projRes, metRes, wfRes, senRes, scRes, adRes] = await Promise.all([
           axios.get(`${PF_API}/${PROJECT_ID}`),
           axios.get(`${PF_API}/${PROJECT_ID}/metrics`),
           axios.get(`${PF_API}/${PROJECT_ID}/waterfall`),
           axios.get(`${PF_API}/${PROJECT_ID}/sensitivity`),
           axios.get(`${PF_API}/${PROJECT_ID}/scenarios`),
+          axios.get(`${PF_API}/${PROJECT_ID}/advice`),
         ]);
         setProject(projRes.data);
+        setOriginalProject(projRes.data);
         setMetrics(metRes.data);
         setWaterfall(wfRes.data);
         setSensitivity(senRes.data);
         setScenarios(scRes.data);
+        setAdvice(adRes.data);
       } catch (e) {
         setError('PF 엔진 연결 실패. 포트 8082 서버를 확인해주세요.');
       } finally {
@@ -281,6 +288,28 @@ const PfDashboard = () => {
     window.open(`${PF_API}/${PROJECT_ID}/report`, '_blank');
   };
 
+  const handleApplySimulation = (item) => {
+    if (simulationMode) {
+       // Reset first if already in simulation
+       setProject(originalProject);
+    }
+    
+    setSimulationMode(true);
+    // Mock simulation effect based on advice category
+    if (item.actionType === 'REFINANCE') {
+       setProject(prev => ({ ...prev, interestRate: item.diffValue, status: 'REFINANCING SIMULATED' }));
+    } else if (item.actionType === 'EQUITY_INJECTION') {
+       setProject(prev => ({ ...prev, totalOpeningCash: prev.totalOpeningCash + item.diffValue, status: 'EQUITY SIMULATED' }));
+    }
+    
+    alert(`시나리오 [${item.title}]를 가상으로 적용했습니다. 차트 데이터를 확인하세요.`);
+  };
+
+  const handleResetSimulation = () => {
+    setProject(originalProject);
+    setSimulationMode(false);
+  };
+
   if (loading) return (
     <div className="glass-panel" style={{ padding: '40px', textAlign: 'center', color: '#64748b' }}>
       <Activity size={32} style={{ margin: '0 auto 12px', display: 'block', color: '#3b82f6' }} />
@@ -315,6 +344,23 @@ const PfDashboard = () => {
             <div style={{ fontSize: '11px', color: '#fca5a5' }}>최소 DSCR({metrics.minDscr.toFixed(2)}x)이 대주단 약정 임계치(1.15x)를 하회하고 있습니다.</div>
           </div>
           <button style={{ background: 'transparent', border: 'none', color: '#94a3b8', fontSize: '11px', cursor: 'pointer', textDecoration: 'underline' }}>대응 전략 확인</button>
+        </div>
+      )}
+
+      {/* Strategy Advisor Section */}
+      <StrategyAdvisor advice={advice} onApplySimulation={handleApplySimulation} />
+
+      {/* Simulation Mode Banner */}
+      {simulationMode && (
+        <div className="glass-panel animate-fade-in" style={{ 
+          padding: '12px 20px', borderRadius: '12px', border: '1px solid rgba(59, 130, 246, 0.4)',
+          background: 'rgba(59, 130, 246, 0.1)', display: 'flex', alignItems: 'center', gap: '12px'
+        }}>
+          <Settings color="var(--risk-aa)" size={18} className="animate-spin" />
+          <div style={{ flex: 1, fontSize: '12px', fontWeight: '800', color: '#fff' }}>
+             현재 <span style={{ color: 'var(--risk-aa)' }}>시뮬레이션 모드</span> 작동 중입니다. 하단 차트가 가상 결과로 업데이트되었습니다.
+          </div>
+          <button onClick={handleResetSimulation} className="glass-button" style={{ fontSize: '11px', padding: '6px 12px' }}>시뮬레이션 종료</button>
         </div>
       )}
 
