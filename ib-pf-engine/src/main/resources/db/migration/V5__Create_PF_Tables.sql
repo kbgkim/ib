@@ -14,6 +14,8 @@ CREATE TABLE pf_project (
     discount_rate   DECIMAL(5,4)   NOT NULL,
     project_life    INT            NOT NULL,
     status          VARCHAR(20)    DEFAULT 'STRUCTURING',
+    inflation_rate  DECIMAL(19,4)  DEFAULT 0.02,
+    yield_curve_id  VARCHAR(50)    DEFAULT 'STEEP',
     created_at      TIMESTAMP      DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -60,11 +62,24 @@ CREATE TABLE pf_waterfall (
     FOREIGN KEY (project_id) REFERENCES pf_project(id)
 );
 
+-- 시나리오별 결과 스냅샷 저장 (Simulation Results Snapshot)
+CREATE TABLE pf_scenario (
+    id              VARCHAR(36)    PRIMARY KEY,
+    project_id      VARCHAR(36)    NOT NULL,
+    scenario_name   VARCHAR(100)   NOT NULL,
+    parameters      TEXT,
+    metrics         TEXT,
+    waterfall_data  TEXT,
+    sensitivity_data TEXT,
+    created_at      TIMESTAMP      DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (project_id) REFERENCES pf_project(id)
+);
+
 -- 초기 데모 프로젝트 데이터
 INSERT INTO pf_project (id, project_name, deal_type, total_capex, equity_ratio, debt_ratio,
-    loan_tenure, construction_period, discount_rate, project_life, status)
+    loan_tenure, construction_period, discount_rate, project_life, status, inflation_rate, yield_curve_id)
 VALUES ('PF-001', '한강변 복합에너지 발전소 PF딜', 'ENERGY',
-    100000.00, 30.00, 70.00, 15, 3, 0.0750, 25, 'STRUCTURING');
+    100000.00, 30.00, 70.00, 15, 3, 0.0750, 25, 'STRUCTURING', 0.0200, 'STEEP');
 
 -- 건설기간 현금흐름 (project_year 1~3: 인출만 발생)
 INSERT INTO pf_cashflow (project_id, project_year, revenue, opex, tax_amount, capex, cfads)

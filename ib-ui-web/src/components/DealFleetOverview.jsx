@@ -6,49 +6,49 @@ const DealFleetOverview = ({ onSelectProject }) => {
     {
       id: 'PF-001',
       name: '태양광 발전 PF (Project Aurora)',
-      type: 'Renewable energy PF',
-      region: 'Busan, Korea',
-      status: 'UNDERWRITING',
-      metrics: { primary: '1.24x', label: 'MIN DSCR', grade: 'SAFE' },
+      type: '신재생에너지 PF',
+      region: '부산, 대한민국',
+      status: '인수 심사 중',
+      metrics: { primary: '1.24x', label: '최소 DSCR', grade: 'SAFE' },
       risk: 12.5,
       progress: 75,
-      lastUpdated: '10 mins ago',
+      lastUpdated: '10분 전',
       category: 'pf'
     },
     {
       id: 'DEAL-001',
-      name: 'Global Tech M&A Integration',
-      type: 'Cross-border M&A',
-      region: 'Seoul / Silicon Valley',
-      status: 'DUE DILIGENCE',
-      metrics: { primary: 'AA', label: 'RISK GRADE', grade: 'SAFE' },
+      name: 'Global Tech M&A 통합 프로젝트',
+      type: '크로스보더 M&A',
+      region: '서울 / 실리콘밸리',
+      status: '실사 진행 중',
+      metrics: { primary: 'AA', label: '리스크 등급', grade: 'SAFE' },
       risk: 45.2,
       progress: 40,
-      lastUpdated: '2 hours ago',
+      lastUpdated: '2시간 전',
       category: 'mna'
     },
     {
       id: 'PF-002',
       name: '인천 데이터센터 개발사업',
-      type: 'Infrastructure PF',
-      region: 'Incheon, Korea',
-      status: 'PLANNING',
-      metrics: { primary: '1.14x', label: 'MIN DSCR', grade: 'WARNING' },
+      type: '인프라 PF',
+      region: '인천, 대한민국',
+      status: '사업 기획',
+      metrics: { primary: '1.14x', label: '최소 DSCR', grade: 'WARNING' },
       risk: 28.1,
       progress: 15,
-      lastUpdated: '1 day ago',
+      lastUpdated: '1일 전',
       category: 'pf'
     },
     {
       id: 'DEAL-002',
       name: '바이오 코리아 지분 인수',
-      type: 'Buy-out M&A',
-      region: 'Daejeon, Korea',
-      status: 'PRE-MODULATION',
-      metrics: { primary: 'B', label: 'RISK GRADE', grade: 'CAUTION' },
+      type: '바이아웃 M&A',
+      region: '대전, 대한민국',
+      status: '조정 전 (Pre-mod)',
+      metrics: { primary: 'B', label: '리스크 등급', grade: 'CAUTION' },
       risk: 62.8,
       progress: 10,
-      lastUpdated: '5 mins ago',
+      lastUpdated: '5분 전',
       category: 'mna'
     }
   ];
@@ -67,16 +67,16 @@ const DealFleetOverview = ({ onSelectProject }) => {
     <div className="animate-fade-in">
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '32px' }}>
         <div>
-          <div style={{ color: 'var(--neon-blue)', fontSize: '12px', fontWeight: '800', letterSpacing: '2px', marginBottom: '8px' }}>FLEET MANAGEMENT</div>
-          <h2 style={{ fontSize: '32px', fontWeight: '900', margin: 0, letterSpacing: '-1px' }}>Deal Fleet Overview</h2>
+          <div style={{ color: 'var(--neon-blue)', fontSize: '12px', fontWeight: '800', letterSpacing: '2px', marginBottom: '8px' }}>딜 종합 관리 (Fleet)</div>
+          <h2 style={{ fontSize: '32px', fontWeight: '900', margin: 0, letterSpacing: '-1px' }}>딜 플릿 총괄 현황</h2>
         </div>
         <div style={{ display: 'flex', gap: '12px' }}>
           <div className="glass-panel" style={{ padding: '12px 20px', borderRadius: '12px', textAlign: 'right' }}>
-            <div style={{ fontSize: '10px', color: '#64748b', fontWeight: '700' }}>TOTAL AUM</div>
+            <div style={{ fontSize: '10px', color: '#64748b', fontWeight: '700' }}>총 운용자산 (AUM)</div>
             <div style={{ fontSize: '18px', fontWeight: '900', color: '#fff' }}>$4.2B</div>
           </div>
           <div className="glass-panel" style={{ padding: '12px 20px', borderRadius: '12px', textAlign: 'right' }}>
-            <div style={{ fontSize: '10px', color: '#64748b', fontWeight: '700' }}>ACTIVE DEALS</div>
+            <div style={{ fontSize: '10px', color: '#64748b', fontWeight: '700' }}>진행 중인 딜</div>
             <div style={{ fontSize: '18px', fontWeight: '900', color: 'var(--risk-aa)' }}>12</div>
           </div>
         </div>
@@ -137,7 +137,7 @@ const DealFleetOverview = ({ onSelectProject }) => {
 
               <div style={{ marginBottom: '20px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', marginBottom: '8px' }}>
-                  <span style={{ color: '#64748b', fontWeight: '700' }}>DEAL PROGRESS</span>
+                  <span style={{ color: '#64748b', fontWeight: '700' }}>진행률 (Deal Progress)</span>
                   <span style={{ color: '#fff', fontWeight: '800' }}>{deal.progress}%</span>
                 </div>
                 <div style={{ height: '6px', background: 'rgba(255,255,255,0.05)', borderRadius: '3px', overflow: 'hidden' }}>
@@ -163,7 +163,7 @@ const DealFleetOverview = ({ onSelectProject }) => {
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                    <div style={{ textAlign: 'center' }}>
                       <div style={{ fontSize: '14px', fontWeight: '900', color: deal.risk > 50 ? 'var(--risk-d)' : 'var(--risk-aa)' }}>{deal.risk}</div>
-                      <div style={{ fontSize: '8px', color: '#475569', fontWeight: '800' }}>RISK PTS</div>
+                      <div style={{ fontSize: '8px', color: '#475569', fontWeight: '800' }}>리스크 점수</div>
                    </div>
                    <div style={{ width: '1px', height: '20px', background: 'rgba(255,255,255,0.1)' }} />
                    <div style={{ fontSize: '11px', fontWeight: '700', color: '#cbd5e1' }}>{deal.status}</div>
@@ -172,7 +172,7 @@ const DealFleetOverview = ({ onSelectProject }) => {
                   className="glass-button"
                   style={{ padding: '6px 12px', fontSize: '11px', display: 'flex', alignItems: 'center', gap: '6px' }}
                 >
-                  View Details <ArrowRight size={12} />
+                  상세 보기 <ArrowRight size={12} />
                 </button>
               </div>
             </div>

@@ -1,7 +1,7 @@
 package com.ib.pf.service;
 
 import com.ib.pf.model.PfProject;
-import com.ib.pf.model.PfMetricsResponse;
+import com.ib.pf.dto.PfMetricsResponse;
 import com.lowagie.text.*;
 import com.lowagie.text.Font;
 import com.lowagie.text.pdf.PdfPCell;
@@ -9,7 +9,7 @@ import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 import org.springframework.stereotype.Service;
 
-import java.awt.*;
+import java.awt.Color;
 import java.io.ByteArrayOutputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -67,9 +67,9 @@ public class PfReportService {
             PdfPTable metricsTable = new PdfPTable(3);
             metricsTable.setWidthPercentage(100);
 
-            addMetricCell(metricsTable, "Min DSCR", String.format("%.2fx", metrics.minDscr()), metrics.dscrGrade(), labelFont, gradeFont);
-            addMetricCell(metricsTable, "LLCR", String.format("%.2fx", metrics.llcr()), metrics.llcrGrade(), labelFont, gradeFont);
-            addMetricCell(metricsTable, "PLCR", String.format("%.2fx", metrics.plcr()), metrics.plcrGrade(), labelFont, gradeFont);
+            addMetricCell(metricsTable, "Min DSCR", String.format("%.2fx", metrics.getMinDscr()), metrics.getDscrGrade(), labelFont, gradeFont);
+            addMetricCell(metricsTable, "LLCR", String.format("%.2fx", metrics.getLlcr()), metrics.getLlcrGrade(), labelFont, gradeFont);
+            addMetricCell(metricsTable, "PLCR", String.format("%.2fx", metrics.getPlcr()), metrics.getPlcrGrade(), labelFont, gradeFont);
 
             document.add(metricsTable);
 
@@ -80,7 +80,7 @@ public class PfReportService {
             String analysisText = String.format(
                 "The project maintains an average DSCR of %.3fx. Based on the current simulation, " +
                 "the debt coverage remains within safe levels. The sensitivity analysis indicates that " +
-                "Capex variations have the highest impact on loan stability.", metrics.avgDscr()
+                "Capex variations have the highest impact on loan stability.", metrics.getAvgDscr()
             );
             document.add(new Paragraph(analysisText, valueFont));
 

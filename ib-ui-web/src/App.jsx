@@ -93,16 +93,16 @@ function App() {
   return (
     <div className="app-container">
       <nav className="sidebar">
-        <div className="logo"><LayoutDashboard size={24} /> IB PLATFORM</div>
+        <div className="logo"><LayoutDashboard size={24} /> IB 통합 플랫폼</div>
         <div className="nav-items">
           <div
             className={`nav-item ${view === 'fleet' ? 'active' : ''}`}
             onClick={() => setView('fleet')}
             style={{ cursor: 'pointer' }}
           >
-            <Grid size={18} /> Deal Fleet
+            <Grid size={18} /> 딜 플릿 현황
           </div>
-          <div style={{ padding: '16px 0 8px 12px', fontSize: '10px', color: '#475569', fontWeight: '800' }}>ASSETS</div>
+          <div style={{ padding: '16px 0 8px 12px', fontSize: '10px', color: '#475569', fontWeight: '800' }}>자산 유형 (ASSETS)</div>
           <div
             className={`nav-item ${view === 'detail' && activeTab === 'mna' ? 'active' : ''}`}
             onClick={() => { setView('detail'); setActiveTab('mna'); }}
@@ -126,7 +126,7 @@ function App() {
       
       <main className="main-content">
         <header>
-          <h1>{view === 'fleet' ? 'IB Platform: Deal Fleet' : `통합 IB 대시보드 (대상: ${selectedProjectId})`}</h1>
+          <h1 style={{ fontWeight: '900', letterSpacing: '-1px' }}>{view === 'fleet' ? 'IB 통합 플랫폼: 딜 플릿 총괄 현황' : `통합 IB 대시보드 (대상: ${selectedProjectId})`}</h1>
         </header>
 
         {view === 'fleet' ? (

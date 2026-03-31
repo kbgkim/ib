@@ -17,7 +17,7 @@ const StrategyAdvisor = ({ advice, onApplySimulation }) => {
     <div className="glass-panel animate-fade-in" style={{ padding: '24px', borderRadius: '16px' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px' }}>
         <Lightbulb color="var(--risk-aa)" size={24} />
-        <h3 style={{ fontSize: '18px', fontWeight: '800', color: '#fff', margin: 0 }}>AI Strategy Advisor</h3>
+        <h3 style={{ fontSize: '18px', fontWeight: '800', color: '#fff', margin: 0 }}>AI 전략 제언 (AI Strategy Advisor)</h3>
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '16px' }}>

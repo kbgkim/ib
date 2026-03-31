@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from app.api.predict import router as predict_router
 from app.api.intelligence import router as intelligence_router
 
 app = FastAPI(

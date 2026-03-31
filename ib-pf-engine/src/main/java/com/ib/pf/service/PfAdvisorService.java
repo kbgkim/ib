@@ -23,9 +23,9 @@ public class PfAdvisorService {
     public List<AdviceCard> getAdvice(PfProject project, PfMetricsResponse metrics) {
         List<AdviceCard> adviceList = new ArrayList<>();
 
-        double minDscr = metrics.minDscr().doubleValue();
-        double totalDebt = metrics.totalDebt().doubleValue();
-        double annualDebtService = metrics.annualDebtService().doubleValue();
+        double minDscr = metrics.getMinDscr().doubleValue();
+        double totalDebt = metrics.getTotalDebt().doubleValue();
+        double annualDebtService = metrics.getAnnualDebtService().doubleValue();
         double currentInterestRate = 0.06; // Mock/Default if not per Tranche
 
         // 1. Refinancing Advice (Interest Rate focus)
@@ -53,7 +53,7 @@ public class PfAdvisorService {
         }
 
         // 3. Operational Reserve (Volatility focus)
-        if (metrics.llcr().doubleValue() < 1.30) {
+        if (metrics.getLlcr().doubleValue() < 1.30) {
             adviceList.add(new AdviceCard(
                 "Establish DSRA Top-up",
                 "현금흐름 변동성에 대비하여 Debt Service Reserve Account 적립금을 6개월분에서 12개월분으로 상향 추천합니다.",

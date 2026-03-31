@@ -365,35 +365,35 @@ const PfDashboard = () => {
       <StrategyAdvisor advice={advice} onApplySimulation={handleApplySimulation} />
 
       {/* Macro Scenario Controls */}
-      <div className="glass-panel animate-fade-in" style={{ padding: '20px', borderRadius: '16px', display: 'flex', gap: '20px', alignItems: 'center' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--neon-blue)', fontWeight: '800', fontSize: '14px', borderRight: '1px solid rgba(255,255,255,0.1)', paddingRight: '20px' }}>
-          <TrendingUp size={18} /> MACRO STRESS TEST
+      <div className="glass-panel animate-fade-in" style={{ padding: '24px', borderRadius: '16px', display: 'flex', gap: '20px', alignItems: 'center' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--neon-blue)', fontWeight: '800', fontSize: '14px', borderRight: '1px solid rgba(255,255,255,0.1)', paddingRight: '24px' }}>
+          <TrendingUp size={18} /> 거시경제 스트레스 테스트 (Macro Stress)
         </div>
-        <div style={{ display: 'flex', gap: '15px', flex: 1 }}>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-            <span style={{ fontSize: '10px', color: '#64748b', fontWeight: '700' }}>YIELD CURVE</span>
-            <div style={{ display: 'flex', gap: '6px' }}>
+        <div style={{ display: 'flex', gap: '20px', flex: 1 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+            <span style={{ fontSize: '10px', color: '#64748b', fontWeight: '800', letterSpacing: '0.5px' }}>금리 수익률 곡선 (YIELD CURVE)</span>
+            <div style={{ display: 'flex', gap: '8px' }}>
               <button 
                 onClick={() => handleMacroUpdate('yieldCurveId', 'STEEP')}
                 className="glass-button" 
-                style={{ fontSize: '10px', padding: '4px 10px', background: project?.yieldCurveId === 'STEEP' ? 'var(--neon-blue)' : '', color: project?.yieldCurveId === 'STEEP' ? '#000' : '' }}>STEEP</button>
+                style={{ fontSize: '11px', padding: '6px 14px', background: project?.yieldCurveId === 'STEEP' ? 'var(--neon-blue)' : '', color: project?.yieldCurveId === 'STEEP' ? '#000' : '', fontWeight: '700' }}>스티프닝 (상승)</button>
               <button 
                 onClick={() => handleMacroUpdate('yieldCurveId', 'INVERTED')}
                 className="glass-button" 
-                style={{ fontSize: '10px', padding: '4px 10px', background: project?.yieldCurveId === 'INVERTED' ? 'var(--risk-d)' : '', color: project?.yieldCurveId === 'INVERTED' ? '#fff' : '' }}>INVERTED</button>
+                style={{ fontSize: '11px', padding: '6px 14px', background: project?.yieldCurveId === 'INVERTED' ? 'var(--risk-d)' : '', color: project?.yieldCurveId === 'INVERTED' ? '#fff' : '', fontWeight: '700' }}>인버티드 (역전)</button>
             </div>
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-            <span style={{ fontSize: '10px', color: '#64748b', fontWeight: '700' }}>INFLATION (CPI)</span>
-            <div style={{ display: 'flex', gap: '6px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+            <span style={{ fontSize: '10px', color: '#64748b', fontWeight: '800', letterSpacing: '0.5px' }}>인플레이션 (CPI SHOCK)</span>
+            <div style={{ display: 'flex', gap: '8px' }}>
               <button 
                 onClick={() => handleMacroUpdate('inflationRate', 0.02)}
                 className="glass-button" 
-                style={{ fontSize: '10px', padding: '4px 10px', background: project?.inflationRate === 0.02 ? 'var(--risk-aa)' : '', color: project?.inflationRate === 0.02 ? '#000' : '' }}>2% (Base)</button>
+                style={{ fontSize: '11px', padding: '6px 14px', background: project?.inflationRate === 0.02 ? 'var(--risk-aa)' : '', color: project?.inflationRate === 0.02 ? '#000' : '', fontWeight: '700' }}>2% (기본)</button>
               <button 
                 onClick={() => handleMacroUpdate('inflationRate', 0.05)}
                 className="glass-button" 
-                style={{ fontSize: '10px', padding: '4px 10px', background: project?.inflationRate === 0.05 ? 'var(--risk-b)' : '', color: project?.inflationRate === 0.05 ? '#000' : '' }}>5% (Shock)</button>
+                style={{ fontSize: '11px', padding: '6px 14px', background: project?.inflationRate === 0.05 ? 'var(--risk-b)' : '', color: project?.inflationRate === 0.05 ? '#000' : '', fontWeight: '700' }}>5% (충격)</button>
             </div>
           </div>
         </div>
