@@ -1,13 +1,13 @@
-# [Context] IB 프로젝트 최종 작업 문맥 및 세션 복구 가이드 (v2.0)
+# [Context] IB 프로젝트 최종 작업 문맥 및 세션 복구 가이드 (v3.0)
 
 본 문서는 안티그래비티(Antigravity) 세션을 종료하고 나중에 다시 시작할 때, 최신 통합 아키텍처와 정제된 작업 상태를 즉시 복구하기 위한 **최종 마감 메모리** 문서입니다.
 
 ---
 
-## Project Context: IB Platform Integration (v2.0) - All Phases COMPLETE
+## Project Context: IB Platform Integration (v3.0) - Phase 4 COMPLETE
 Last Updated: 2026-03-31
-Status: FULL INTEGRATION (M&A + PF + AI + AUTO-REPORT) COMPLETE
-Current Version: v2.0
+Status: FULL STRATEGIC AI ADVISOR & MULTI-DEAL FLEET INTEGRATED
+Current Version: v3.0
 
 ## 1. 프로젝트 아키텍처 및 핵심 결정 (Core Decisions)
 
@@ -62,14 +62,14 @@ Current Version: v2.0
 - **VDR 지능화**: 실시간 문서 로그 분석을 통한 동적 리스크 점수 반영.
 - **스마트 알림**: 약정(Covenant) 위반 시 자동 경고 배너 및 시각화 반영.
 
-### 🔲 Phase 4: AI 전략 제언 및 멀티 딜 확장 (진행 예정)
-- **AI 리스크 어드바이저**: 약정 위반 시 대응 전략(Refinancing, Equity Injection 등) 자동 추천.
-- **멀티 딜 대시보드**: 여러 프로젝트의 상태를 한눈에 모니터링하는 총괄 대시보드.
-- **VDR NLP 요약**: 업로드된 문서의 핵심 내용을 AI가 요약하여 리스크 요인 자동 추출.
+### ✅ Phase 4: AI 전략 제언 및 멀티 딜 확장 (완료)
+- **AI 리스크 어드바이저**: 약정 위반 시 대응 전략(Refinancing, Equity Injection 등) 자동 추천 및 시뮬레이션 적용.
+- **멀티 딜 대시보드 (Deal Fleet)**: 전사 딜 상태를 한눈에 모니터링하고 개별 프로젝트로 진입하는 총괄 뷰 구현.
+- **통합 내비게이션**: Fleet View와 Detail View(M&A/PF) 간의 유기적인 전환 로직 완성.
 
 ---
 
 ## 5. 즉시 복구 명령 (Restore Command)
 
 다음 세션 시작 시 AI에게 이 문장을 입력하십시오:
-> "`/home/kbgkim/antigravity/projects/ib/Project_Management/PROJECT_CONTEXT.md` 파일을 읽고 **Phase 4: AI 전략 제언 및 멀티 딜 확장** 작업을 진행해줘. 약정 위반 시 AI가 대응 시나리오를 추천하는 기능부터 설계하자."
+> "`/home/kbgkim/antigravity/projects/ib/Project_Management/PROJECT_CONTEXT.md` 파일을 읽고 **Phase 5: VDR NLP 고도화 및 매크로 시나리오 통합** 작업을 준비해줘."

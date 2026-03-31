@@ -28,7 +28,11 @@ function App() {
   const handleSelectProject = (id) => {
     setSelectedProjectId(id);
     setView('detail');
-    setActiveTab('pf');
+    if (id.startsWith('PF')) {
+      setActiveTab('pf');
+    } else {
+      setActiveTab('mna');
+    }
   };
 
   useEffect(() => {
