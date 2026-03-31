@@ -38,12 +38,23 @@ public class PfProject {
     @Column(name = "project_life", nullable = false)
     private int projectLife;
 
+    @Column(name = "status")
     private String status;
+
+    @Column(name = "inflation_rate")
+    private BigDecimal inflationRate = BigDecimal.valueOf(0.02); // 2% Default
+
+    @Column(name = "yield_curve_id")
+    private String yieldCurveId; // e.g., "LIBOR_3M", "KORIBOR_3M"
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
     // Getters & Setters
+    public BigDecimal getInflationRate() { return inflationRate; }
+    public void setInflationRate(BigDecimal inflationRate) { this.inflationRate = inflationRate; }
+    public String getYieldCurveId() { return yieldCurveId; }
+    public void setYieldCurveId(String yieldCurveId) { this.yieldCurveId = yieldCurveId; }
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
     public String getProjectName() { return projectName; }

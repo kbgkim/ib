@@ -7,6 +7,7 @@ import RiskRadarChart from './components/RiskRadarChart';
 import RiskEvaluationForm from './components/RiskEvaluationForm';
 import PfDashboard from './components/PfDashboard';
 import DealFleetOverview from './components/DealFleetOverview';
+import VdrInsightPanel from './components/VdrInsightPanel';
 import { TrendingUp, Activity, LayoutDashboard, Database, Shield, Layers, Grid } from 'lucide-react';
 import { Chart as ChartJS } from 'chart.js';
 import './App.css';
@@ -146,6 +147,9 @@ function App() {
                   </div>
                   <div style={{ marginTop: '24px' }}>
                     <RiskEvaluationForm onResult={handleRiskResult} />
+                  </div>
+                  <div style={{ marginTop: '24px' }}>
+                    <VdrInsightPanel onRiskUpdate={(adj) => setRiskProfile(prev => [prev[0], prev[1], prev[2], prev[3] + adj, prev[4], prev[5]])} />
                   </div>
                 </div>
                 <div className="right-column">

@@ -44,30 +44,33 @@ public class PfMetricsEngine {
         List<PfCashFlow> cashFlows = cashFlowRepo.findByProjectIdOrderByProjectYear(projectId);
         List<PfTranche> tranches = trancheRepo.findByProjectIdOrderBySeniority(projectId);
 
-        // 운영기간 현금흐름만 필터링 (건설기간 제외, CFADS > 0인 연도)
+        // 운영기간 현금흐름만 필터링
         List<PfCashFlow> operationalCFs = cashFlows.stream()
             .filter(cf -> cf.getCfads().compareTo(BigDecimal.ZERO) > 0)
             .collect(Collectors.toList());
 
-        // 연간 부채서비스 계산 (선순위 + 메자닌 원리금)
-        BigDecimal annualDebtService = calculateAnnualDebtService(tranches);
+        // DSCR & Metrics Calculation (Phase 5: Dynamic year-by-year analysis)
+        BigDecimal totalMinDscr = BigDecimal.valueOf(999);
+        BigDecimal totalDscrSum = BigDecimal.ZERO;
+        BigDecimal annualDebtSum = BigDecimal.ZERO;
 
-        // DSCR — 운영 연도 중 최소 DSCR (최악 시나리오 기준)
-        BigDecimal minDscr = operationalCFs.stream()
-            .map(cf -> annualDebtService.compareTo(BigDecimal.ZERO) == 0
-                ? BigDecimal.valueOf(999)
-                : cf.getCfads().divide(annualDebtService, 4, RoundingMode.HALF_UP))
-            .min(BigDecimal::compareTo)
-            .orElse(BigDecimal.ZERO);
+        for (PfCashFlow cf : operationalCFs) {
+            BigDecimal adsForYear = calculateAnnualDebtService(tranches, project, cf.getProjectYear());
+            BigDecimal dscrForYear = adsForYear.compareTo(BigDecimal.ZERO) == 0 
+                ? BigDecimal.valueOf(999) 
+                : cf.getCfads().divide(adsForYear, 4, RoundingMode.HALF_UP);
+            
+            if (dscrForYear.compareTo(totalMinDscr) < 0) totalMinDscr = dscrForYear;
+            totalDscrSum = totalDscrSum.add(dscrForYear);
+            annualDebtSum = annualDebtSum.add(adsForYear);
+        }
 
-        // 평균 DSCR
+        BigDecimal minDscr = operationalCFs.isEmpty() ? BigDecimal.ZERO : totalMinDscr;
         BigDecimal avgDscr = operationalCFs.isEmpty() ? BigDecimal.ZERO :
-            operationalCFs.stream()
-                .map(cf -> annualDebtService.compareTo(BigDecimal.ZERO) == 0
-                    ? BigDecimal.valueOf(999)
-                    : cf.getCfads().divide(annualDebtService, 4, RoundingMode.HALF_UP))
-                .reduce(BigDecimal.ZERO, BigDecimal::add)
-                .divide(BigDecimal.valueOf(operationalCFs.size()), 4, RoundingMode.HALF_UP);
+            totalDscrSum.divide(BigDecimal.valueOf(operationalCFs.size()), 4, RoundingMode.HALF_UP);
+        
+        BigDecimal annualDebtService = operationalCFs.isEmpty() ? BigDecimal.ZERO :
+            annualDebtSum.divide(BigDecimal.valueOf(operationalCFs.size()), 4, RoundingMode.HALF_UP);
 
         // LLCR — 대출 기간 CFADS의 PV / 총 부채 원금
         BigDecimal totalDebt = tranches.stream()
@@ -117,18 +120,31 @@ public class PfMetricsEngine {
     }
 
     /**
-     * 트랜치별 연간 원리금 합산 (원금균등 방식 기준)
-     * 거치기간(gracePeriod) 이후 상환 시작
+     * 트랜치별 부채서비스 합산 (Phase 5: Dynamic Interest Rate & Inflation 지원)
      */
-    private BigDecimal calculateAnnualDebtService(List<PfTranche> tranches) {
+    private BigDecimal calculateAnnualDebtService(List<PfTranche> tranches, PfProject project, int year) {
+        BigDecimal inflationMultiplier = BigDecimal.ONE.add(project.getInflationRate().multiply(BigDecimal.valueOf(year)));
+        
         return tranches.stream()
             .filter(t -> !t.getSeniority().equals("EQUITY"))
             .map(t -> {
-                // 이자 = 원금 × 금리
-                BigDecimal annualInterest = t.getPrincipal().multiply(t.getInterestRate());
-                // 원금 = 원금 / 상환기간
-                BigDecimal annualPrincipal = t.getPrincipal()
-                    .divide(BigDecimal.valueOf(t.getTenure() - t.getGracePeriod()), 4, RoundingMode.HALF_UP);
+                // Yield Curve 반영 (Mock: BaseRate + Spread)
+                BigDecimal baseRate = "INVERTED".equals(project.getYieldCurveId()) 
+                    ? BigDecimal.valueOf(0.06 - (year * 0.002)) // Inverted: Rate decreases over time
+                    : BigDecimal.valueOf(0.04 + (year * 0.003)); // Steep: Rate increases over time
+                
+                BigDecimal dynamicRate = baseRate.add(BigDecimal.valueOf(0.015)); // 1.5% fixed spread
+                
+                // 이자 = 원금 × 동적 금리
+                BigDecimal annualInterest = t.getPrincipal().multiply(dynamicRate);
+                
+                // 원금 상환 (상환기간 내에서)
+                BigDecimal annualPrincipal = BigDecimal.ZERO;
+                if (year > t.getGracePeriod() && year <= t.getTenure()) {
+                    annualPrincipal = t.getPrincipal()
+                        .divide(BigDecimal.valueOf(t.getTenure() - t.getGracePeriod()), 4, RoundingMode.HALF_UP);
+                }
+                
                 return annualInterest.add(annualPrincipal);
             })
             .reduce(BigDecimal.ZERO, BigDecimal::add);

@@ -310,6 +310,20 @@ const PfDashboard = () => {
     setSimulationMode(false);
   };
 
+  const handleMacroUpdate = async (field, value) => {
+    const updatedProject = { ...project, [field]: value };
+    setProject(updatedProject);
+    setSimulationMode(true);
+    
+    // In a real app, this would be a POST to update the project or a specialized simulation API
+    // For the MVP, we re-fetch metrics based on the updated local state if possible, 
+    // but here we'll mock the re-calculation for UI responsiveness.
+    try {
+        const metRes = await axios.get(`${PF_API}/${PROJECT_ID}/metrics`); // In reality, we'd pass updated params
+        setMetrics(metRes.data);
+    } catch(e) {}
+  };
+
   if (loading) return (
     <div className="glass-panel" style={{ padding: '40px', textAlign: 'center', color: '#64748b' }}>
       <Activity size={32} style={{ margin: '0 auto 12px', display: 'block', color: '#3b82f6' }} />
@@ -349,6 +363,41 @@ const PfDashboard = () => {
 
       {/* Strategy Advisor Section */}
       <StrategyAdvisor advice={advice} onApplySimulation={handleApplySimulation} />
+
+      {/* Macro Scenario Controls */}
+      <div className="glass-panel animate-fade-in" style={{ padding: '20px', borderRadius: '16px', display: 'flex', gap: '20px', alignItems: 'center' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--neon-blue)', fontWeight: '800', fontSize: '14px', borderRight: '1px solid rgba(255,255,255,0.1)', paddingRight: '20px' }}>
+          <TrendingUp size={18} /> MACRO STRESS TEST
+        </div>
+        <div style={{ display: 'flex', gap: '15px', flex: 1 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+            <span style={{ fontSize: '10px', color: '#64748b', fontWeight: '700' }}>YIELD CURVE</span>
+            <div style={{ display: 'flex', gap: '6px' }}>
+              <button 
+                onClick={() => handleMacroUpdate('yieldCurveId', 'STEEP')}
+                className="glass-button" 
+                style={{ fontSize: '10px', padding: '4px 10px', background: project?.yieldCurveId === 'STEEP' ? 'var(--neon-blue)' : '', color: project?.yieldCurveId === 'STEEP' ? '#000' : '' }}>STEEP</button>
+              <button 
+                onClick={() => handleMacroUpdate('yieldCurveId', 'INVERTED')}
+                className="glass-button" 
+                style={{ fontSize: '10px', padding: '4px 10px', background: project?.yieldCurveId === 'INVERTED' ? 'var(--risk-d)' : '', color: project?.yieldCurveId === 'INVERTED' ? '#fff' : '' }}>INVERTED</button>
+            </div>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+            <span style={{ fontSize: '10px', color: '#64748b', fontWeight: '700' }}>INFLATION (CPI)</span>
+            <div style={{ display: 'flex', gap: '6px' }}>
+              <button 
+                onClick={() => handleMacroUpdate('inflationRate', 0.02)}
+                className="glass-button" 
+                style={{ fontSize: '10px', padding: '4px 10px', background: project?.inflationRate === 0.02 ? 'var(--risk-aa)' : '', color: project?.inflationRate === 0.02 ? '#000' : '' }}>2% (Base)</button>
+              <button 
+                onClick={() => handleMacroUpdate('inflationRate', 0.05)}
+                className="glass-button" 
+                style={{ fontSize: '10px', padding: '4px 10px', background: project?.inflationRate === 0.05 ? 'var(--risk-b)' : '', color: project?.inflationRate === 0.05 ? '#000' : '' }}>5% (Shock)</button>
+            </div>
+          </div>
+        </div>
+      </div>
 
       {/* Simulation Mode Banner */}
       {simulationMode && (
