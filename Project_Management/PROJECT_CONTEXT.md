@@ -1,13 +1,13 @@
-# [Context] IB 프로젝트 최종 작업 문맥 및 세션 복구 가이드 (v1.7)
+# [Context] IB 프로젝트 최종 작업 문맥 및 세션 복구 가이드 (v2.0)
 
 본 문서는 안티그래비티(Antigravity) 세션을 종료하고 나중에 다시 시작할 때, 최신 통합 아키텍처와 정제된 작업 상태를 즉시 복구하기 위한 **최종 마감 메모리** 문서입니다.
 
 ---
 
-## Project Context: IB Platform Integration (v1.7) - PF Engine Development In Progress
+## Project Context: IB Platform Integration (v2.0) - All Phases COMPLETE
 Last Updated: 2026-03-31
-Status: M&A + AI RISK COMPLETE / PF ENGINE IN PROGRESS
-Current Version: v1.7
+Status: FULL INTEGRATION (M&A + PF + AI + AUTO-REPORT) COMPLETE
+Current Version: v2.0
 
 ## 1. 프로젝트 아키텍처 및 핵심 결정 (Core Decisions)
 
@@ -17,6 +17,7 @@ Current Version: v1.7
 - **네트워크 식별**: 내부망 전용 Git 서버(`20.200.245.247`)와의 통신 상태 정기 점검 필요.
 - **모듈 구조**: `ib-mna-engine`, `ib-ui-web`, `ib-ml-engine` 멀티 모듈 체계 유지.
 - **작업 관리**: 모든 최신 작업물을 `master` 브랜치로 병합 및 강제 추적(`git add -f bin/`) 완료.
+- **문서화 표준**: [DEVELOPMENT_PROTOCOL.md](file:///home/kbgkim/antigravity/projects/ib/Project_Management/DEVELOPMENT_PROTOCOL.md)에 따른 기술 상세 및 세션 기록 강제 준수.
 
 ---
 
@@ -54,27 +55,21 @@ Current Version: v1.7
 
 > **결정일**: 2026-03-31 | **우선순위 확정**
 
-### 🔲 Phase 1 (현재 진행 중): PF 엔진 신규 구현
-- **목표**: Project Finance 도메인의 핵심 분석 기능 구현
-- **백엔드**: `ib-pf-engine` 신규 Gradle 모듈 생성
-  - `PfProject` / `PfCashFlow` / `PfTrancheConfig` 엔티티 및 DB 스키마
-  - DSCR / LLCR / PLCR 계산 엔진
-  - Cash Flow Waterfall 분배 로직 (OpEx → 선순위부채 → 메자닌 → Equity)
-  - Sensitivity Analysis API (단일 변수 변화에 따른 지표 변동)
-- **프론트엔드**: PF 전용 대시보드 탭 추가 (`ib-ui-web`)
-  - Drawdown Schedule 시각화
-  - DSCR/LLCR 게이지 차트
-  - Waterfall Cash Flow 차트 (PF용)
+### ✅ Phase 1, 2 & 3: 플랫폼 통합 및 자동화 완성 (완료)
+- **PF/M&A 통합**: `ib-pf-engine`과 `ib-mna-engine`의 UI/UX 단일화 및 기능 통합.
+- **시나리오 관리**: 시뮬레이션 결과 영속화(`PostgreSQL`) 및 과거 스냅샷 **로드(State Restore)** 기능 완비.
+- **자동화 리포트**: OpenPDF 기반 **전문 리스크 리포트(PDF)** 자동 생성 및 다운로드 기능 구현.
+- **VDR 지능화**: 실시간 문서 로그 분석을 통한 동적 리스크 점수 반영.
+- **스마트 알림**: 약정(Covenant) 위반 시 자동 경고 배너 및 시각화 반영.
 
-### 🔲 Phase 2 (PF 완료 후): M&A/Risk 고도화
-- **시나리오 영속화**: 사용자 조절 가중치/결과를 PostgreSQL에 저장
-- **VDR 실사 연동**: 실제 문서 접근 로그 기반 VDR 리스크 점수 계산
-- **리스크 리포트 자동 생성**: 분석 결과 PDF 출력 기능
-- **스마트 알림**: 리스크 임계치 초과 시 대시보드 경고 배지 표시
+### 🔲 Phase 4: AI 전략 제언 및 멀티 딜 확장 (진행 예정)
+- **AI 리스크 어드바이저**: 약정 위반 시 대응 전략(Refinancing, Equity Injection 등) 자동 추천.
+- **멀티 딜 대시보드**: 여러 프로젝트의 상태를 한눈에 모니터링하는 총괄 대시보드.
+- **VDR NLP 요약**: 업로드된 문서의 핵심 내용을 AI가 요약하여 리스크 요인 자동 추출.
 
 ---
 
 ## 5. 즉시 복구 명령 (Restore Command)
 
 다음 세션 시작 시 AI에게 이 문장을 입력하십시오:
-> "`/home/kbgkim/antigravity/projects/ib/Project_Management/PROJECT_CONTEXT.md` 파일을 읽고 **Phase 1: PF 엔진 구현** 작업을 이어서 진행해줘. `ibp` 단축어로 서버 동기화를 유지하며 `ib-pf-engine` 모듈 작업을 계속하자."
+> "`/home/kbgkim/antigravity/projects/ib/Project_Management/PROJECT_CONTEXT.md` 파일을 읽고 **Phase 4: AI 전략 제언 및 멀티 딜 확장** 작업을 진행해줘. 약정 위반 시 AI가 대응 시나리오를 추천하는 기능부터 설계하자."

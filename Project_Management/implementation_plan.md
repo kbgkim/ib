@@ -1,49 +1,62 @@
-# [로드맵] IB 문서 고도화 및 시스템 전환 계획 (Korean/English Mix)
+# [구현 보고서] IB 플랫폼 통합 및 고도화 (v2.0)
 
-본 계획은 현재의 IB(Investment Banking) 문서들을 "정밀화 및 정제(Purification)"하여, 단순한 개념 단계를 넘어 실제 시스템 구축이 가능한 사양서 수준으로 격상시키기 위한 방법론을 제시합니다.
+본 문서는 초기 구상 단계를 넘어, 실제 구현된 **IB(Investment Banking) 통합 플랫폼(M&A Risk + PF Engine)**의 기술 사양과 상세 구현 내역을 기록한 마스터 보고서입니다.
 
-## 사용자 검토 필요 사항 (User Review Required)
+## 1. 아키텍처 개요 (Architecture Overview)
 
-> [!IMPORTANT]
-> **디렉토리 재구조화**: 기존의 모든 개념 단계 폴더(01~05)를 `Archive_Drafts` 폴더로 이동하여 '초기 구상'과 '정식 사양'을 명확히 분리합니다.
-
-> [!NOTE]
-> 모든 신규 문서는 `Formal_Specs` 구조 아래에서 Mermaid 다이어그램 및 AI 생성 이미지를 활용하여 시각적으로 고도화된 상태로 작성됩니다.
-
----
-
-## 제안하는 디렉토리 구조 (Proposed Structure)
-
-`/home/kbgkim/antigravity/projects/ib/` 폴더 내:
-
--   **`Research/`**: `PF_Industry_Research.md` 포함 (조사된 지표 및 생애주기 단계 기록).
--   **`Archive_Drafts/`**: 기존 `01_Concepts` ~ `05_Market_Operations` 및 Resource 등 이동 보관.
--   **`Formal_Specs/`**: 정제된 정규 "gstack" 사양서.
-    -   `01_Market_Domain/`: 고도화된 비즈니스 개요 및 도메인 맵.
-    -   `02_Product_Structures/`: 고도화된 PF 구조 및 상환 Waterfall.
-    -   `03_Risk_Metrics/`: 리스크 분석 모델 및 지표.
-    -   `04_Logic_Engines/`: 계산 로직 Pseudocode 및 DB 스키마.
--   **`Project_Management/`**: 구현 계획서, 할 일 목록, 결과 보고서(Walkthrough) 통합 관리.
+### 1.1 모듈 구조
+- **`ib-mna-engine`**: M&A 가치평가 및 AI 기반 통합 리스크 엔진 (Java/Spring Boot).
+- **`ib-pf-engine`**: Project Finance 현금흐름 및 자본구조 시뮬레이션 엔진 (Java/Spring Boot).
+- **`ib-ml-engine`**: LightGBM 기반의 리스크 예측 및 XAI 피처 추출 서버 (Python/FastAPI).
+- **`ib-ui-web`**: 통합 프리미엄 대시보드 (React/Vite).
 
 ---
 
-## 단계별 실행 계획 (Step-by-Step)
+## 2. 핵심 모듈별 구현 상세 (Implementation Details)
 
-### 1. 연구 결과 문서화 (Research Documentation)
-- **[신규] [PF_Industry_Research.md](file:///home/kbgkim/antigravity/projects/ib/Research/PF_Industry_Research.md)**: PF 생애주기, DSCR/LLCR/PLCR 지표 및 Waterfall 우선순위 등 전문 지식 기록.
+### 2.1 PF(Project Finance) 엔진 (v2.0)
+- **자산/부채 모델링**: `PfProject` 엔티티를 통한 총사업비(Capex), 자본구조(Equity/Debt), 운영 파라미터 관리.
+- **메트릭 엔진 (`PfMetricsEngine`)**:
+    - **DSCR (Debt Service Coverage Ratio)**: 원리금 상환 능력 실시간 산출.
+    - **LLCR/PLCR**: 대출 전 기간 및 프로젝트 전 기간 커버리지 지수 계산.
+- **Waterfall 로직 (`PfWaterfallEngine`)**: 연도별 매출액에서 OpEx, Tax, Debt Service, DSRA 적립, 배당 순으로 배분되는 현금흐름 시뮬레이션.
+- **시나리오 영속화**:
+    - `PfScenario` 모델링: 파라미터 및 결과값의 JSON 직렬화 저장 (PostgreSQL).
+    - **State Restore**: 저장된 스냅샷 로딩 시 대시보드 상태 즉각 복구 기능.
 
-### 2. 물리적 재구조화 (Physical Restructuring)
-- **[이동]**: 기존 모든 디렉토리를 `/ib/Archive_Drafts/`로 이전.
-- **[신규]**: `Formal_Specs/` 및 `Project_Management/` 디렉토리 계층 생성.
-
-### 3. 정식 문서 생산 (Formal Production)
-- **[신규] [IB_Domain_Standard.md](file:///home/kbgkim/antigravity/projects/ib/Formal_Specs/01_Market_Domain/IB_Domain_Standard.md)**: 첫 번째 정문화된 사양서. 비즈니스 개요, 생애주기 단계, Swimlane 다이어그램 포함.
-- **[신규] [PF_CashFlow_Financial_Spec.md](file:///home/kbgkim/antigravity/projects/ib/Formal_Specs/02_Product_Structures/PF_CashFlow_Financial_Spec.md)**: 고급 지표 산식, Waterfall 계층 및 우선순위 시각화.
+### 2.2 M&A 리스크 & VDR 엔진 (v2.0)
+- **AI 리스크 평가**: LightGBM 모델 연동, Top 3 리스크 요인 추출(XAI) 및 시각화.
+- **VDR(Virtual Data Room) 연동**: 
+    - `VdrLogProcessor`: 사용자 접근 로그(Anomaly), 민감 문서 노출(Exposure), Q&A 지연율 등을 기반으로 실시간 보안 리스크 점수 산출.
+- **통합 가중치 브릿지**: Financial(40%), Legal(20%), Operational(20%), Security(20%)의 동적 가중치 반영 산식.
 
 ---
 
-## 확인 질문 (Open Questions)
+## 3. 프론트엔드 및 지능화 (Frontend & Intelligence)
 
-> [!IMPORTANT]
-> 1. **아카이브 명칭**: 현재 초안 파일들을 보관할 폴더명으로 `Archive_Drafts`가 적절합니까?
-> 2. **제작 순서**: `01_Market_Domain`을 먼저 완벽히 마무리한 후 다음 단계로 넘어갈까요, 아니면 병렬적으로 구축할까요?
+### 3.1 프리미엄 UI 디자인
+- **Glassmorphism**: 투명도와 블러 효과를 활용한 레이어드 디자인 시스템.
+- **Neon Glow Charts**: Chart.js 기반의 커스텀 스타일링 (Radar, Tornado, Waterfall 차트).
+- **Smart Alert**: 최소 DSCR 임계치(1.15x) 하회 시 **Covenant Breach Warning** 배너 자동 상주.
+
+### 3.2 자동 리포트 시스템 (Reporting)
+- **Library**: `OpenPDF` (LGPL/MPL) 활용.
+- **Output**: 프로젝트 개요, 핵심 지수(Gauges), 민감도 요약 등을 포함한 전문 리스크 리포트(PDF) 자동 생성 API 구축.
+
+---
+
+## 4. 데이터베이스 스키마 (DB Schema)
+
+| 테이블명 | 용도 | 주요 컬럼 |
+| :--- | :--- | :--- |
+| `pf_project` | PF 프로젝트 원천 정보 | `projectName`, `totalCapex`, `status` 등 |
+| `pf_scenario` | 시뮬레이션 스냅샷 | `parameters`(JSON), `metrics`(JSON), `waterfall_data`(JSON) |
+| `risk_master` | M&A 리스크 평가 결과 | `totalScore`, `finalGrade`, `evalComment` |
+| `risk_detail` | 항목별 상세 리스크 | `category`, `score`, `weight` |
+
+---
+
+## 5. 최종 결과물 검증 (Verification)
+- **시나리오 로드**: 저장된 팩터로의 대시보드 복귀 상태 확인 완료.
+- **리포트 출력**: PDF 파일의 시각적 무결성 및 데이터 정확도 확인 완료.
+- **통합 엔진**: M&A와 PF 서비스 간 포트 간섭(8080/8082) 없는 동시 구동 확인 완료.

@@ -21,6 +21,7 @@ public class RiskCompositeEngine {
     private final RiskMasterRepository riskMasterRepository;
     private final com.ib.risk.client.MlServiceClient mlServiceClient;
     private final com.ib.risk.integration.RiskVDRAdapter vdrAdapter;
+    private final VdrLogProcessor vdrLogProcessor;
 
     // 가중치 정의
     private static final double WEIGHT_FINANCIAL = 0.40;
@@ -48,8 +49,9 @@ public class RiskCompositeEngine {
             mlResponse = new com.ib.risk.client.MlServiceClient.MlPredictResponse(dealId, 0.0, 0.0, "ERROR", java.util.Collections.emptyList(), null);
         }
 
-        // 1-2. VDR 실시간 보안 리스크 조회
-        double vdrRiskScore = vdrAdapter.getNearRealTimeRisk(dealId);
+        // 1-2. VDR 실시간 보안 리스크 및 상세 로그 분석 (Phase 2)
+        com.ib.risk.service.VdrLogProcessor.VdrRiskMetrics vdrMetrics = vdrLogProcessor.analyzeLogs(dealId);
+        double vdrRiskScore = vdrMetrics.totalRisk();
 
         // 2. 상세 내역 생성
         List<RiskDetail> details = Arrays.asList(
@@ -81,6 +83,7 @@ public class RiskCompositeEngine {
         return com.ib.risk.model.RiskEvaluationResult.builder()
             .master(savedMaster)
             .mlResponse(mlResponse)
+            .vdrMetrics(vdrMetrics)
             .build();
     }
 

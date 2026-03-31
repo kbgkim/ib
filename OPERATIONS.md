@@ -63,7 +63,23 @@ aib  # 또는 source /home/kbgkim/antigravity/projects/ib/bin/ib_env
 
 ---
 
-## 4. 트러블슈팅 (Troubleshooting)
+## 4. 주요 기능 가이드 (Feature Guide - v2.0)
+
+### 4.1 시나리오 관리 (Scenario Snapshot)
+- **저장**: PF 대시보드 상단의 '시나리오 저장' 버튼을 통해 현재 파라미터와 결과 메트릭을 스냅샷으로 기록합니다.
+- **로드**: '최근 저장된 시나리오' 목록에서 '로드' 버튼을 클릭하여 즉각적으로 과거 시뮬레이션 상태를 복원합니다.
+
+### 4.2 자동화 리포트 (PDF Export)
+- **기능**: PF 대시보드의 '리포트 PDF' 버튼을 클릭하면 `OpenPDF` 엔진을 통해 전문적인 분석 리포트가 생성됩니다.
+- **포함 내용**: 프로젝트 개요, 핵심 커버리지 지표(DSCR, LLCR, PLCR), 요약 평가 의견.
+
+### 4.3 실시간 VDR 리스크 모니터링
+- **연동**: `ib-mna-engine`의 `VdrLogProcessor`가 문서 접근 로그를 분석하여 실시간 보안 점수를 산출합니다.
+- **경고**: 최소 DSCR이 임계치(1.15x) 이하로 떨어질 경우 대시보드 상단에 **Covenant Breach Warning** 배너가 자동 표시됩니다.
+
+---
+
+## 5. 트러블슈팅 (Troubleshooting)
 
 ### 4.1 포트 충돌 발생 시
 특정 포트가 이미 사용 중인 경우 해당 단축어(`is`)로 종료하거나 아래 명령을 사용하세요.
@@ -115,3 +131,11 @@ ML 엔진 구동 시 가상환경이 활성화되어야 합니다. `ib-ml-engine
 *   **권장 경로**: `~/antigravity/projects/ib`
 *   **목록 확인**: `git worktree list`
 *   **정리**: 불필요한 워크트리는 `git worktree remove [경로] --force`로 삭제하여 환경을 단순하게 유지하십시오.
+
+---
+
+## 6. 프로젝트 관리 문서 (Management Docs)
+- **[PROJECT_CONTEXT.md](file:///home/kbgkim/antigravity/projects/ib/Project_Management/PROJECT_CONTEXT.md)**: 전체 상태 및 로드맵 (v2.0)
+- **[action_log.md](file:///home/kbgkim/antigravity/projects/ib/logs/2026/03/31/action_log.md)**: 상세 구현 내역 및 데일리 기록
+- **[Formal_Specs/](file:///home/kbgkim/antigravity/projects/ib/Formal_Specs/)**: 비즈니스 로직 및 도메인 사양서
+

@@ -32,8 +32,19 @@ const RiskEvaluationForm = ({ onResult }) => {
         }
       };
       const res = await axios.post(`${API_BASE}/evaluate`, payload);
-      setResult(res.data);
-      if (onResult) onResult(res.data);
+      
+      // Phase 2: Map nested backend record to UI flat structure
+      const mapped = {
+        totalScore: res.data.master.totalScore,
+        finalGrade: res.data.master.finalGrade,
+        mlScore: res.data.mlResponse ? res.data.mlResponse.mlScore : 0,
+        vdrScore: res.data.vdrMetrics ? res.data.vdrMetrics.totalRisk : 0,
+        topFactors: res.data.mlResponse ? res.data.mlResponse.topFactors : [],
+        rawData: payload.rawData
+      };
+
+      setResult(mapped);
+      if (onResult) onResult(mapped);
     } catch (err) {
       console.error(err);
       alert('분석에 실패했습니다. 백엔드 상태를 확인해주세요.');

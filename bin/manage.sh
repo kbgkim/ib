@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # IB Project Management Script
-# Usage: ./manage.sh {start|run|stop|status|log} {b|f|m|a} (default target is 'a')
+# Usage: ./manage.sh {start|run|stop|status|log} {b|f|m|p|a} (default target is 'a')
 
 IB_HOME="/home/kbgkim/antigravity/projects/ib"
 
@@ -95,7 +95,7 @@ manage_frontend() {
 }
 
 manage_ml() {
-    action=$1
+    local action=$1
     case $action in
         start)
             echo "Starting ML Engine (FastAPI) in background..."
@@ -183,10 +183,10 @@ case $1 in
                 echo "--------------------------------------"
                 manage_frontend start
                 ;;
-            *) echo "Usage: $0 run [b|f|m|a]" ;;
+            *) echo "Usage: $0 run [b|f|m|p|a]" ;;
         esac
         ;;
-    stop)
+    stop|kill)
         target=${2:-a}
         case $target in
             b|backend) manage_backend stop ;;
@@ -202,10 +202,10 @@ case $1 in
                 echo "--------------------------------------"
                 manage_ml stop
                 ;;
-            *) echo "Usage: $0 stop [b|f|m|a]" ;;
+            *) echo "Usage: $0 stop [b|f|m|p|a]" ;;
         esac
         ;;
-    status)
+    status|sts)
         target=${2:-a}
         case $target in
             b|backend) manage_backend status ;;
@@ -234,7 +234,7 @@ case $1 in
         esac
         ;;
     *)
-        echo "Usage: $0 {run|stop|status|log} [b|f|m|a]"
+        echo "Usage: $0 {run|stop|status|log} [b|f|m|p|a]"
         exit 1
         ;;
 esac

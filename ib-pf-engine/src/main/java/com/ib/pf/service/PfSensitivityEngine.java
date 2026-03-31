@@ -55,6 +55,8 @@ public class PfSensitivityEngine {
         results.add(analyzeVariable(projectId, "OpEx (운영비용)", baseDscr, "OPEX"));
         // 금리 민감도
         results.add(analyzeVariable(projectId, "Interest Rate (금리)", baseDscr, "INTEREST"));
+        // 건설비(Capex) 민감도
+        results.add(analyzeVariable(projectId, "Capex (건설비)", baseDscr, "CAPEX"));
 
         return results;
     }
@@ -93,6 +95,9 @@ public class PfSensitivityEngine {
         if ("INTEREST".equals(type)) {
             // 금리 변화 시 DS 재계산
             annualDS = recalcAnnualDSWithInterestDelta(tranches, delta);
+        } else if ("CAPEX".equals(type)) {
+            // CAPEX 변화 시 부채 원금 비례 변화 가정하여 DS 재계산
+            annualDS = recalcAnnualDSWithCapexDelta(tranches, delta);
         }
 
         double totalCfads = 0;
@@ -107,6 +112,10 @@ public class PfSensitivityEngine {
             } else if ("OPEX".equals(type)) {
                 double adjustedOpex = cf.getOpex().doubleValue() * (1 + delta);
                 cfads = cf.getRevenue().doubleValue() - adjustedOpex - cf.getTaxAmount().doubleValue();
+            } else if ("CAPEX".equals(type)) {
+                // CAPEX 민감도: 연간 DS에 직접 반영 (부채 규모의 비례적 변화 가정)
+                // 이미 아래에서 recalcAnnualDSWithCapexDelta 로 처리됨
+                cfads = cf.getCfads().doubleValue();
             }
             totalCfads += cfads;
             count++;
@@ -126,6 +135,22 @@ public class PfSensitivityEngine {
                 int repayYears = t.getTenure() - t.getGracePeriod();
                 BigDecimal principal = repayYears > 0
                     ? t.getPrincipal().divide(BigDecimal.valueOf(repayYears), 4, RoundingMode.HALF_UP)
+                    : BigDecimal.ZERO;
+                return interest.add(principal);
+            })
+            .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    private BigDecimal recalcAnnualDSWithCapexDelta(List<PfTranche> tranches, double delta) {
+        return tranches.stream()
+            .filter(t -> !"EQUITY".equals(t.getSeniority()))
+            .map(t -> {
+                // 원금 자체에 delta 적용 (Capex가 늘어나면 동일 비율로 부채도 늘어난다고 가정)
+                BigDecimal newPrincipal = t.getPrincipal().multiply(BigDecimal.valueOf(1 + delta));
+                BigDecimal interest = newPrincipal.multiply(t.getInterestRate());
+                int repayYears = t.getTenure() - t.getGracePeriod();
+                BigDecimal principal = repayYears > 0
+                    ? newPrincipal.divide(BigDecimal.valueOf(repayYears), 4, RoundingMode.HALF_UP)
                     : BigDecimal.ZERO;
                 return interest.add(principal);
             })
