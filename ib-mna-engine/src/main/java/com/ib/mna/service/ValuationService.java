@@ -60,17 +60,24 @@ public class ValuationService {
         return dcfValue.multiply(dcfWeight).add(multipleValue.multiply(multipleWeight));
     }
 
+    @Autowired
+    private MarketDataService marketDataService;
+
     /**
      * Calculate 5 points for Waterfall Bridge with Scenario Multiplier
      */
     public ValuationBridgeResponse calculateValuationBridge(List<SynergyItem> items, BigDecimal multiplier) {
         BigDecimal baseValue = new BigDecimal("2000"); // Fixed starting value
-        BigDecimal wacc = new BigDecimal("0.10");
+        
+        // Dynamic WACC based on real-time US 10Y Yield + 5% Equity Risk Premium
+        BigDecimal marketYield = marketDataService.getLatestData().getUst10y().divide(new BigDecimal("100"), 4, RoundingMode.HALF_UP);
+        BigDecimal wacc = marketYield.add(new BigDecimal("0.05")); 
+        
         int years = 3;
 
         BigDecimal costNPV = calculateCategoryNPV(items, "COST", wacc, years).multiply(multiplier);
         BigDecimal revenueNPV = calculateCategoryNPV(items, "REVENUE", wacc, years).multiply(multiplier);
-        BigDecimal integrationNPV = calculateCategoryNPV(items, "FINANCIAL", wacc, years); // Integration costs usually fixed
+        BigDecimal integrationNPV = calculateCategoryNPV(items, "FINANCIAL", wacc, years); 
         
         // Integration costs are usually negative in the bridge
         if (integrationNPV.compareTo(BigDecimal.ZERO) > 0) {

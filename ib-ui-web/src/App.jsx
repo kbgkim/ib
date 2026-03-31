@@ -8,6 +8,8 @@ import RiskEvaluationForm from './components/RiskEvaluationForm';
 import PfDashboard from './components/PfDashboard';
 import DealFleetOverview from './components/DealFleetOverview';
 import VdrInsightPanel from './components/VdrInsightPanel';
+import MarketTicker from './components/MarketTicker';
+import AdvisorPanel from './components/AdvisorPanel';
 import { TrendingUp, Activity, LayoutDashboard, Database, Shield, Layers, Grid } from 'lucide-react';
 import { Chart as ChartJS } from 'chart.js';
 import './App.css';
@@ -125,6 +127,7 @@ function App() {
       </nav>
       
       <main className="main-content">
+        <MarketTicker />
         <header>
           <h1 style={{ fontWeight: '900', letterSpacing: '-1px' }}>{view === 'fleet' ? 'IB 통합 플랫폼: 딜 플릿 총괄 현황' : `통합 IB 대시보드 (대상: ${selectedProjectId})`}</h1>
         </header>
@@ -151,6 +154,7 @@ function App() {
                   <div style={{ marginTop: '24px' }}>
                     <VdrInsightPanel onRiskUpdate={(adj) => setRiskProfile(prev => [prev[0], prev[1], prev[2], prev[3] + adj, prev[4], prev[5]])} />
                   </div>
+                  <AdvisorPanel dealId={dealId} />
                 </div>
                 <div className="right-column">
                   <ValuationWaterfall 
