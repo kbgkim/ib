@@ -2,7 +2,7 @@
 ID: IB-DOC-R03
 Title: 통합 PF 리스크 및 시뮬레이션 시스템 사양서 / Integrated PF Risk & Simulation System Specification
 Category: Risk Engine / System
-Version: 1.2
+Version: 1.3
 Status: Formalized
 ---
 
@@ -20,34 +20,58 @@ Status: Formalized
 
 ---
 
-## 2. 데이터 접근 전략 (Data Access Strategy)
+## 2. 리스크 엔진 상세 산식 (Risk Metrics Formulation)
+
+확률론적 기법을 기반으로 예상 손실 및 최악 시나리오의 손실 규모를 산출합니다.
+
+### 2.1 기대 손실 (Expected Loss, EL)
+미래에 발생할 것으로 예상되는 평균 손실 금액을 계산합니다.
+$$EL = PD \times LGD \times EAD$$
+- **PD (Probability of Default)**: 부도 확률 (분양률, 공정률, 시장 상황 등에 의해 결정).
+- **LGD (Loss Given Default)**: 부도 시 손실률 (LTV, 회수율, 경매 가치 등에 의해 결정).
+- **EAD (Exposure at Default)**: 부도 시점의 노출 금액 (대출 잔액 및 약정 한도).
+
+### 2.2 부도 확률 분포 및 시뮬레이션 지표
+몬테카를로 시뮬레이션을 통해 생성된 손실 분포에서 다음 지표를 도출합니다.
+
+| 지표명 | 영문명 | 산식 및 의미 |
+| :--- | :--- | :--- |
+| **VaR** | Value at Risk | $P(Loss > VaR) = \alpha$, 특정 신뢰수준($\alpha$)에서의 최대 예상 손실 경계값. |
+| **CVaR** | Conditional VaR | $E[Loss \mid Loss \ge VaR]$, VaR를 초과하는 최악 구간의 평균 손실액 (Tail Risk). |
+
+---
+
+## 3. 시뮬레이션 프로세스 (Monte Carlo Process)
+
+`SimulationService`는 다음 5단계 프로세스를 통해 리스크를 정교화합니다.
+
+1.  **변수 정의**: 분양률(Absorption Rate), 금리(Interest Rate), 공사비(CapEx) 등 핵심 변수의 확률 분포 설정.
+2.  **시나리오 생성**: 난수 생성기(Mersenne Twister 등)를 활용하여 $N=10,000$ 개 이상의 가상 시나리오 생성.
+3.  **Waterfall 가상 기동**: 각 시나리오별 `WaterfallEngine`을 통한 현금흐름 및 수익률 산출.
+4.  **분포 분석**: 결과값(NPV, IRR, DSCR)을 정렬하여 임계값 및 통계량 산출.
+5.  **의사결정 지원**: VaR/CVaR 기반의 스트레스 상황 대응 전략(Mitigation Strategy) 도출.
+
+---
+
+## 4. 데이터 접근 및 실무 SQL 구현
 
 > [!IMPORTANT]
-> **Legacy Compatibility**: Oracle 9i 환경과의 호환성 및 대량 데이터 처리 성능을 위해 JPA 대신 **JdbcTemplate** 기반의 DAO 패턴을 사용합니다.
+> **Legacy Compatibility**: Oracle 9i 환경 및 PostgreSQL 호환성을 위해 표준 SQL 함수를 권장합니다.
 
-### 2.1 핵심 DAO 역할
-- **TrancheDao**: 프로젝트 구조 정보 조회.
-- **CashFlowDao**: 실제 및 가상 현금흐름 데이터 관리.
-- **DistributionDao**: Waterfall 배분 결과 저장 (Audit Trail).
-
----
-
-## 3. 리스크 평가 및 트리거 (Risk Evaluation)
-
-시스템은 배치(Batch) 또는 실시간 이벤트 수신 시 다음 로직을 실행합니다.
-
-1.  **DSCR Calculation**: $DSCR = \frac{Cash Inflow}{Debt Service}$
-2.  **Threshold Monitoring**: DSCR < 1.2x 인 경우, 즉시 `RISK_WARNING_LOG`에 기록하고 담당 심사역에게 알림 푸시.
-3.  **Early Warning System**: 3분기 연속 DSCR 하락 추세 시 'Cautious' 등급 상향 조정.
-
----
-
-## 4. 시뮬레이션 및 What-if 분석
-
-현업 사용자가 대시보드에서 특정 변수(분양률, 금리 등)를 입력하면 즉시 전체 워터폴 시뮬레이션을 수행하여 수익률 변화를 예측합니다.
-- **Input**: User-defined shock parameters.
-- **Process**: `SimulationService` -> `WaterfallEngine` (Virtual Run).
-- **Output**: Simulated Equity IRR, Default Probability.
+### 4.1 VaR/CVaR SQL (PostgreSQL 예시)
+```sql
+-- 신뢰수준 95% VaR 및 CVaR 산출
+WITH var_calc AS (
+    SELECT percentile_cont(0.95) WITHIN GROUP (ORDER BY loss_amount) AS var_95
+    FROM simulation_result
+)
+SELECT 
+    v.var_95,
+    AVG(s.loss_amount) AS cvar_95
+FROM simulation_result s, var_calc v
+WHERE s.loss_amount >= v.var_95
+GROUP BY v.var_95;
+```
 
 ---
 

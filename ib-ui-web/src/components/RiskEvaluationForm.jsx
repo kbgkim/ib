@@ -12,7 +12,7 @@ const RiskEvaluationForm = ({ onResult, t, lang }) => {
     operational: 85,
     security: 60,
     evaluatorId: 'IB_USER_01',
-    evalComment: 'DEAL-001 리스크 심사 초안'
+    evalComment: `DEAL-001 ${t('eval_draft')}`
   });
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -65,13 +65,13 @@ const RiskEvaluationForm = ({ onResult, t, lang }) => {
       setResult(mapped);
       if (onResult) onResult(mapped);
 
-      const notifTitle = lang === 'ko' ? "리스크 분석 완료" : "Risk Analysis Done";
-      const notifBody = `${lang === 'ko' ? '종합 등급' : 'Final Grade'}: ${mapped.finalGrade}`;
+      const notifTitle = t('analysis_done');
+      const notifBody = `${t('final_grade_lbl')}: ${mapped.finalGrade}`;
       showNotification(notifTitle, notifBody);
 
     } catch (err) {
       console.error(err);
-      alert(lang === 'ko' ? '분석 실패' : 'Analysis Failed');
+      alert(t('analysis_failed'));
     } finally {
       setLoading(false);
     }
@@ -125,7 +125,7 @@ const RiskEvaluationForm = ({ onResult, t, lang }) => {
             }}
           >
             {loading ? <RefreshCcw size={16} style={{ animation: 'spin 1s linear infinite' }} /> : <Activity size={16} />}
-            {loading ? (lang === 'ko' ? '분석 중...' : 'Analyzing...') : t('execute_analysis')}
+            {loading ? t('analyzing') : t('execute_analysis')}
           </button>
         </form>
       </div>
@@ -144,7 +144,7 @@ const RiskEvaluationForm = ({ onResult, t, lang }) => {
         }}>
           <Shield size={36} color="#334155" />
           <p style={{ margin: 0, fontSize: '13px', lineHeight: 1.5 }}>
-            {lang === 'ko' ? <>데이터를 입력하고<br />분석을 시작하세요</> : <>Input data and<br />start risk analysis</>}
+            {t('start_analysis_prompt')}
           </p>
         </div>
       ) : (

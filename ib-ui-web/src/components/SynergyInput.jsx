@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Plus, Trash2, DollarSign } from 'lucide-react';
 
-const SynergyInput = ({ onSynergyChange }) => {
+const SynergyInput = ({ onSynergyChange, t }) => {
   const [items, setItems] = useState([
-    { id: 1, category: 'COST', name: '인력 구조화 절감', value: 500, year: 1 },
-    { id: 2, category: 'REVENUE', name: '교차 판매 증대', value: 300, year: 2 }
+    { id: 1, category: 'COST', name: t('cost_synergy_lbl'), value: 500, year: 1 },
+    { id: 2, category: 'REVENUE', name: t('rev_synergy_lbl'), value: 300, year: 2 }
   ]);
 
   const addItem = () => {
@@ -25,36 +25,36 @@ const SynergyInput = ({ onSynergyChange }) => {
   };
 
   return (
-    <div className="synergy-input-container">
+    <div className="synergy-input-container glass-panel" style={{ padding: '24px', borderRadius: '16px' }}>
       <div className="header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-        <h3 style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '8px', color: '#fff' }}><DollarSign size={20} /> 시너지 항목</h3>
-        <button onClick={addItem} className="add-btn" style={{ padding: '6px 12px', background: '#3b82f6', color: '#fff', border: 'none', borderRadius: '6px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px', fontSize: '12px', fontWeight: 'bold' }}>
-          <Plus size={16} /> 추가
+        <h3 style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '8px', color: '#fff', fontSize: '18px' }}><DollarSign size={20} color="var(--neon-green)" /> {t('synergy_items')}</h3>
+        <button onClick={addItem} className="add-btn" style={{ padding: '8px 16px', background: 'rgba(59, 130, 246, 0.2)', color: '#fff', border: '1px solid #3b82f6', borderRadius: '8px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', fontWeight: '900' }}>
+          <Plus size={16} /> {t('add')}
         </button>
       </div>
       <div className="items-list">
         {items.map(item => (
           <div key={item.id} className="synergy-item-row" style={{ display: 'flex', gap: '8px', marginBottom: '12px', width: '100%', boxSizing: 'border-box' }}>
-            <select value={item.category} onChange={(e) => updateItem(item.id, 'category', e.target.value)} style={{ flex: '1 1 25%', minWidth: 0, padding: '8px', background: '#222', border: '1px solid #444', color: '#fff', borderRadius: '4px', width: '100%' }}>
-              <option value="COST">비용(Cost)</option>
-              <option value="REVENUE">매출(Revenue)</option>
-              <option value="FINANCIAL">재무(Financial)</option>
+            <select value={item.category} onChange={(e) => updateItem(item.id, 'category', e.target.value)} style={{ flex: '1 1 25%', minWidth: 0, padding: '10px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', borderRadius: '8px', width: '100%', fontSize: '12px' }}>
+              <option value="COST" style={{ background: '#1a1d21' }}>{t('cost')}</option>
+              <option value="REVENUE" style={{ background: '#1a1d21' }}>{t('revenue')}</option>
+              <option value="FINANCIAL" style={{ background: '#1a1d21' }}>{t('financial')}</option>
             </select>
             <input 
               type="text" 
-              placeholder="시너지 명칭" 
+              placeholder={t('synergy_name')} 
               value={item.name} 
               onChange={(e) => updateItem(item.id, 'name', e.target.value)} 
-              style={{ flex: '1 1 45%', minWidth: 0, padding: '8px', background: '#222', border: '1px solid #444', color: '#fff', borderRadius: '4px', width: '100%', boxSizing: 'border-box' }}
+              style={{ flex: '1 1 45%', minWidth: 0, padding: '10px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', borderRadius: '8px', width: '100%', boxSizing: 'border-box', fontSize: '12px' }}
             />
             <input 
               type="number" 
-              placeholder="금액($M)" 
+              placeholder={t('amount_m')} 
               value={item.value} 
               onChange={(e) => updateItem(item.id, 'value', parseFloat(e.target.value))} 
-              style={{ flex: '1 1 20%', minWidth: 0, padding: '8px', background: '#222', border: '1px solid #444', color: '#fff', borderRadius: '4px', width: '100%', boxSizing: 'border-box' }}
+              style={{ flex: '1 1 20%', minWidth: 0, padding: '10px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', borderRadius: '8px', width: '100%', boxSizing: 'border-box', fontSize: '12px' }}
             />
-            <button onClick={() => removeItem(item.id)} className="delete-btn" style={{ flex: '0 0 auto', padding: '8px', background: '#ef4444', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <button onClick={() => removeItem(item.id)} className="delete-btn" style={{ flex: '0 0 auto', padding: '10px', background: 'rgba(239, 68, 68, 0.1)', color: '#ef4444', border: '1px solid rgba(239, 68, 68, 0.2)', borderRadius: '8px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <Trash2 size={16} />
             </button>
           </div>

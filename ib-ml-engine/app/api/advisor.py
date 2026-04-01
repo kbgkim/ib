@@ -38,8 +38,9 @@ async def analyze_project(req: AdvisorRequest):
         highest_risk = "LOW"
         risk_priorities = {"LOW": 1, "MEDIUM": 2, "HIGH": 3}
         for r in reports:
-            if risk_priorities[r['risk_level']] > risk_priorities[highest_risk]:
-                highest_risk = r['risk_level']
+            curr_risk = r.get('risk_level', 'LOW')
+            if risk_priorities.get(curr_risk, 1) > risk_priorities.get(highest_risk, 1):
+                highest_risk = curr_risk
 
         summary = f"신규 시장 지표 변화에 따라 프로젝트의 전체 리스크 등급이 {highest_risk}로 조정되었습니다. "
         

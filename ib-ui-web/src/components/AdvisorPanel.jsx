@@ -4,7 +4,7 @@ import { Bot, Shield, TrendingUp, Zap, MessageSquare, AlertTriangle, CheckCircle
 
 const API_BASE = 'http://localhost:8080/api/v1/mna/advisor';
 
-const AdvisorPanel = ({ dealId, onApplyStrategy }) => {
+const AdvisorPanel = ({ dealId, onApplyStrategy, t }) => {
     const [analysis, setAnalysis] = useState(null);
     const [loading, setLoading] = useState(false);
 
@@ -49,17 +49,17 @@ const AdvisorPanel = ({ dealId, onApplyStrategy }) => {
             <div className="advisor-header">
                 <div className="title">
                     <Bot size={20} className="neon-blue" />
-                    <span>Aura Multi-Agent Advisor</span>
+                    <span>{t('aura_advisor_title')}</span>
                 </div>
                 <button className="refresh-btn" onClick={fetchAnalysis} disabled={loading}>
-                    {loading ? "Analyzing..." : "Refresh"}
+                    {loading ? t('analyzing') : t('refresh')}
                 </button>
             </div>
 
             {analysis && (
                 <div className="advisor-content">
                     <div className="summary-card">
-                        <div className="summary-title">종합 전략 권고</div>
+                        <div className="summary-title">{t('consensus_summary')}</div>
                         <p className="summary-text">{analysis.summary}</p>
                     </div>
 

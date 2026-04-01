@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { FileText, Cpu, AlertCircle, CheckCircle2, Loader2, Sparkles, Send } from 'lucide-react';
 
-const VdrInsightPanel = ({ onRiskUpdate }) => {
+const VdrInsightPanel = ({ onRiskUpdate, t }) => {
   const [text, setText] = useState('');
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
@@ -19,7 +19,7 @@ const VdrInsightPanel = ({ onRiskUpdate }) => {
           onRiskUpdate(res.data.riskAdjustment);
       }
     } catch (err) {
-      setError('분석 엔진 연결 실패. M&A 엔진과 ML 엔진 상태를 확인하세요.');
+      setError(t('analysis_failed'));
     } finally {
       setLoading(false);
     }
@@ -31,14 +31,14 @@ const VdrInsightPanel = ({ onRiskUpdate }) => {
         <div style={{ background: 'rgba(99, 102, 241, 0.1)', padding: '8px', borderRadius: '10px' }}>
           <Cpu size={20} color="var(--neon-blue)" />
         </div>
-        <h3 style={{ fontSize: '18px', fontWeight: '800', color: '#fff', margin: 0 }}>AI VDR 지능형 분석</h3>
+        <h3 style={{ fontSize: '18px', fontWeight: '800', color: '#fff', margin: 0 }}>{t('vdr_ai_title')}</h3>
       </div>
 
       <div style={{ marginBottom: '20px' }}>
         <textarea
           value={text}
           onChange={(e) => setText(e.target.value)}
-          placeholder="VDR 문서 내용이나 실사 보고서 텍스트를 입력하세요..."
+          placeholder={t('vdr_placeholder')}
           style={{
             width: '100%',
             height: '120px',
@@ -70,7 +70,7 @@ const VdrInsightPanel = ({ onRiskUpdate }) => {
             }}
           >
             {loading ? <Loader2 size={16} className="animate-spin" /> : <Sparkles size={16} />}
-            {loading ? 'AI 분석 중...' : '문서 분석 실행'}
+            {loading ? t('analyzing') : t('vdr_analyze_btn')}
           </button>
         </div>
       </div>
@@ -90,7 +90,7 @@ const VdrInsightPanel = ({ onRiskUpdate }) => {
           border: '1px solid rgba(255, 255, 255, 0.05)'
         }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-            <span style={{ fontSize: '11px', color: '#64748b', fontWeight: '800', letterSpacing: '1px' }}>AI 요약 분석 (Summary)</span>
+            <span style={{ fontSize: '11px', color: '#64748b', fontWeight: '800', letterSpacing: '1px' }}>{t('summary_label')}</span>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
               <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: result.sentiment_score > 0.5 ? 'var(--risk-aa)' : 'var(--risk-d)' }} />
               <span style={{ fontSize: '11px', color: '#94a3b8' }}>감성 지수 (Sentiment): {(result.sentiment_score * 100).toFixed(0)}%</span>
@@ -113,7 +113,7 @@ const VdrInsightPanel = ({ onRiskUpdate }) => {
           <div style={{ marginTop: '24px', paddingTop: '16px', borderTop: '1px solid rgba(255, 255, 255, 0.05)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <span style={{ fontSize: '11px', color: '#475569' }}>분석 소요 시간: {result.processing_time.toFixed(3)}s</span>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--risk-aa)', fontSize: '11px', fontWeight: '800' }}>
-               <CheckCircle2 size={14} /> 검증 완료 (Verification Passed)
+               <CheckCircle2 size={14} /> {t('verification_passed')}
             </div>
           </div>
         </div>

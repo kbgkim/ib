@@ -4,14 +4,21 @@ import { Chart as ChartJS, RadialLinearScale, PointElement, LineElement, Filler,
 
 ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend);
 
-const RiskRadarChart = ({ data }) => {
+const RiskRadarChart = ({ data, t }) => {
   const chartData = {
-    labels: ['재무', '법무', '운영', '보안', 'AI 신뢰도', 'VDR 보안'],
+    labels: [
+      t('risk_fin'), 
+      t('risk_legal'), 
+      t('risk_ops'), 
+      t('risk_sec'), 
+      t('risk_ai'), 
+      t('risk_vdr')
+    ],
     datasets: [
       {
-        label: '현재 딜 리스크 프로파일',
+        label: t('risk_profile_title'),
         data: data || [0, 0, 0, 0, 0, 0],
-        backgroundColor: 'rgba(16, 185, 129, 0.25)', // Emerald 500 transparent
+        backgroundColor: 'rgba(16, 185, 129, 0.2)', // Emerald 500 transparent
         borderColor: 'rgba(16, 185, 129, 1)',
         borderWidth: 2,
         pointBackgroundColor: 'rgba(16, 185, 129, 1)',
@@ -26,21 +33,21 @@ const RiskRadarChart = ({ data }) => {
   const options = {
     scales: {
       r: {
-        angleLines: { color: '#444' },
-        grid: { color: '#444' },
-        pointLabels: { color: '#aaa', font: { size: 14 } },
-        ticks: { backdropColor: 'transparent', color: '#888', stepSize: 20 },
+        angleLines: { color: 'rgba(255,255,255,0.1)' },
+        grid: { color: 'rgba(255,255,255,0.1)' },
+        pointLabels: { color: '#94a3b8', font: { size: 12, weight: '700' } },
+        ticks: { backdropColor: 'transparent', color: '#64748b', stepSize: 20 },
         suggestedMin: 0,
         suggestedMax: 100
       }
     },
     plugins: {
-      legend: { labels: { color: '#fff' } }
+      legend: { labels: { color: '#fff', font: { weight: '800' } } }
     }
   };
 
   return (
-    <div className="radar-container" style={{ background: '#1a1d21', padding: '20px', borderRadius: '12px' }}>
+    <div className="radar-container glass-panel" style={{ padding: '24px', borderRadius: '16px' }}>
       <Radar data={chartData} options={options} />
     </div>
   );

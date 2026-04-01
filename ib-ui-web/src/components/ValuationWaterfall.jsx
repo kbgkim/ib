@@ -8,11 +8,17 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
  * Premium Waterfall Chart with Sensitivity Range (Error Bars)
  * Displays weighted average results and Bear~Bull range
  */
-const ValuationWaterfall = ({ data, scenarios }) => {
+const ValuationWaterfall = ({ data, scenarios, t }) => {
   // data = [base, cost, rev, integ, post]
   const [base, cost, rev, integ, post] = data || [2000, 0, 0, -200, 1800];
 
-  const labels = ['현재 가치', '비용 시너지', '매출 시너지', '통합 비용', '통합 가치'];
+  const labels = [
+    t('current_val'), 
+    t('cost_synergy_lbl'), 
+    t('rev_synergy_lbl'), 
+    t('integration_cost_lbl'), 
+    t('post_deal_val_lbl')
+  ];
 
   // Main floating bar data format [min, max]
   const bridgeData = useMemo(() => [
@@ -87,7 +93,7 @@ const ValuationWaterfall = ({ data, scenarios }) => {
     labels,
     datasets: [
       {
-        label: '가중 평균 가치 ($M)',
+        label: t('weighted_avg_val'),
         data: bridgeData,
         backgroundColor: (context) => {
           const index = context.dataIndex;
@@ -111,7 +117,7 @@ const ValuationWaterfall = ({ data, scenarios }) => {
           label: (context) => {
             const range = context.raw;
             const diff = (range[1] - range[0]).toFixed(1);
-            return `가중평균 변동: ${diff > 0 ? '+' : ''}${diff}M (결과: $${range[1].toFixed(1)}M)`;
+            return `${t('weighted_avg_delta')}: ${diff > 0 ? '+' : ''}${diff}M (Result: $${range[1].toFixed(1)}M)`;
           }
         }
       }
@@ -131,9 +137,9 @@ const ValuationWaterfall = ({ data, scenarios }) => {
 
   return (
     <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px', height: '420px' }}>
-      <h3 style={{ fontSize: '18px', marginBottom: '20px', color: '#60a5fa', display: 'flex', justifyContent: 'space-between' }}>
-        <span>가중 평균 밸류에이션 브릿지 ($M)</span>
-        <span style={{ fontSize: '12px', color: '#94a3b8', fontWeight: 'normal' }}>I-P Bridge v1.5</span>
+      <h3 style={{ fontSize: '18px', marginBottom: '20px', color: '#60a5fa', display: 'flex', justifyContent: 'space-between', fontWeight: '900' }}>
+        <span>{t('val_bridge')}</span>
+        <span style={{ fontSize: '12px', color: '#94a3b8', fontWeight: '800' }}>I-P Bridge v1.5</span>
       </h3>
       <div style={{ height: '320px' }}>
         <Bar data={chartData} options={options} plugins={[sensitivityPlugin]} />

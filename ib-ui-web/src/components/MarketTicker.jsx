@@ -4,7 +4,7 @@ import { TrendingUp, TrendingDown, Minus, Clock } from 'lucide-react';
 
 const API_BASE = 'http://localhost:8080/api/v1/market';
 
-const MarketTicker = () => {
+const MarketTicker = ({ t }) => {
     const [data, setData] = useState(null);
     const [prevData, setPrevData] = useState(null);
     const [lastUpdated, setLastUpdated] = useState(new Date());
@@ -66,19 +66,21 @@ const MarketTicker = () => {
         }
     };
 
-    const getMoodLabel = () => {
-        if (!data) return "CONNECTING";
-        if (data.covenantStatus === 'BREACH') return "HIGH RISK";
-        if (data.wti > 100 || data.ust10y > 4.5) return "VOLATILE";
-        return "STABLE";
+    const getMoodKey = () => {
+        if (!data) return 'connecting';
+        if (data.covenantStatus === 'BREACH') return 'high_risk';
+        if (data.wti > 100 || data.ust10y > 4.5) return 'volatile';
+        return 'stable';
     };
 
     const getMoodColor = () => {
-        const mood = getMoodLabel();
-        if (mood === 'HIGH RISK') return 'var(--risk-d)';
-        if (mood === 'VOLATILE') return '#f59e0b';
+        const key = getMoodKey();
+        if (key === 'high_risk') return 'var(--risk-d)';
+        if (key === 'volatile') return '#f59e0b';
         return 'var(--risk-aa)';
     };
+
+    const moodKey = getMoodKey();
 
     return (
         <div 
@@ -90,18 +92,18 @@ const MarketTicker = () => {
                     width: '6px', height: '6px', borderRadius: '50%', 
                     background: getMoodColor(), marginRight: '8px',
                     boxShadow: `0 0 10px ${getMoodColor()}`
-                }} className={getMoodLabel() !== 'STABLE' ? 'animate-pulse' : ''} />
-                <span className="status-label" style={{ color: getMoodColor() }}>
-                    {getMoodLabel()}
+                }} className={moodKey !== 'stable' ? 'animate-pulse' : ''} />
+                <span className="status-label" style={{ color: getMoodColor(), textTransform: 'uppercase' }}>
+                    {t(moodKey)}
                 </span>
             </div>
             <div className="ticker-scroll">
-                {renderItem("UST 10Y", "ust10y", "%")}
-                {renderItem("KOR 3Y", "kst3y", "%")}
-                {renderItem("USD/KRW", "usdkrw")}
-                {renderItem("Credit Spread", "creditSpread", "bps")}
-                {renderItem("Carbon Price", "carbonPrice")}
-                {renderItem("WTI Oil", "wti", "$")}
+                {renderItem(t('ust_10y'), "ust10y", "%")}
+                {renderItem(t('kor_3y'), "kst3y", "%")}
+                {renderItem(t('usd_krw'), "usdkrw")}
+                {renderItem(t('credit_spread'), "creditSpread", "bps")}
+                {renderItem(t('carbon_price'), "carbonPrice")}
+                {renderItem(t('wti_oil'), "wti", "$")}
             </div>
             <div className="ticker-time">
                 <Clock size={12} />

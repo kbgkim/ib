@@ -5,7 +5,7 @@ import { Settings, TrendingDown, TrendingUp, Minus, Info } from 'lucide-react';
  * Premium Scenario Selector with 3-Segment Probability Weights
  * Implements Proportional Auto-balancing logic
  */
-const ScenarioSelector = ({ weights, onWeightsChange }) => {
+const ScenarioSelector = ({ weights, onWeightsChange, t }) => {
   const { bear = 20, base = 50, bull = 30 } = weights;
 
   const handleWeightChange = (key, newValue) => {
@@ -61,7 +61,7 @@ const ScenarioSelector = ({ weights, onWeightsChange }) => {
   return (
     <div className="glass-panel" style={{ padding: '24px', borderRadius: '16px' }}>
       <h3 style={{ fontSize: '18px', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '10px', color: '#60a5fa' }}>
-        <Settings size={22} className="spinning-slow" /> 시나리오 가중치 시뮬레이터 (v1.5)
+        <Settings size={22} className="spinning-slow" /> {t('scenario_simulator')}
       </h3>
 
       {/* Distribution Bar */}
@@ -80,22 +80,23 @@ const ScenarioSelector = ({ weights, onWeightsChange }) => {
         <div style={{ width: `${bull}%`, background: '#10b981', transition: 'width 0.3s ease' }} />
       </div>
 
-      <ConfigRow id="bear" label="보수적 (Bear - 0.7x)" value={bear} color="#ef4444" icon={<TrendingDown size={16} />} />
-      <ConfigRow id="base" label="표준 (Base - 1.0x)" value={base} color="#3b82f6" icon={<Minus size={16} />} />
-      <ConfigRow id="bull" label="낙관적 (Bull - 1.3x)" value={bull} color="#10b981" icon={<TrendingUp size={16} />} />
+      <ConfigRow id="bear" label={t('bearish')} value={bear} color="#ef4444" icon={<TrendingDown size={16} />} />
+      <ConfigRow id="base" label={t('neutral')} value={base} color="#3b82f6" icon={<Minus size={16} />} />
+      <ConfigRow id="bull" label={t('bullish')} value={bull} color="#10b981" icon={<TrendingUp size={16} />} />
 
       <div style={{ 
         marginTop: '20px', 
         padding: '12px', 
-        background: 'rgba(96, 165, 250, 0.1)', 
-        borderRadius: '8px', 
+        background: 'rgba(96, 165, 250, 0.05)', 
+        borderRadius: '12px', 
         fontSize: '11px', 
         color: '#94a3b8',
         display: 'flex',
-        gap: '8px'
+        gap: '8px',
+        border: '1px solid rgba(96, 165, 250, 0.1)'
       }}>
-        <Info size={14} style={{ flexShrink: 0 }} />
-        <span>가중치 합계는 항상 100%로 유지됩니다. 하나의 비중을 조절하면 다른 비중이 비례적으로 자동 보정됩니다.</span>
+        <Info size={14} style={{ flexShrink: 0, color: 'var(--neon-blue)' }} />
+        <span>{t('scenario_help')}</span>
       </div>
 
       <style>{`

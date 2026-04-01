@@ -103,7 +103,7 @@ function App() {
     
     const newNotif = {
         id: Date.now(),
-        title: lang === 'ko' ? "전략 실행" : "Strategy Applied",
+        title: t('strategy_applied'),
         message: action.label,
         time: new Date().toLocaleTimeString()
     };
@@ -128,8 +128,8 @@ function App() {
       // Phase 9/10: Track real-time risk notifications
       const newNotif = {
           id: Date.now(),
-          title: lang === 'ko' ? "리스크 분석 완료" : "Risk Analysis Done",
-          message: `${lang === 'ko' ? '종합 등급' : 'Final Grade'}: ${result.finalGrade}`,
+          title: t('analysis_done'),
+          message: `${t('final_grade_lbl')}: ${result.finalGrade}`,
           time: new Date().toLocaleTimeString()
       };
       setNotifications([newNotif, ...notifications]);
@@ -142,69 +142,89 @@ function App() {
         dealId="DEAL-TITAN-2024" 
         valuation={weightedValuation[4]} 
         esgScore={riskProfile[4]} 
+        t={t}
+        lang={lang}
+        onToggleLang={() => setLang(lang === 'ko' ? 'en' : 'ko')}
       />
     );
   }
 
   return (
     <div className={`app-container ${lang}`}>
-      <nav className="sidebar">
-        <div className="logo"><LayoutDashboard size={24} /> <span>{t('title')}</span></div>
+      <aside className="sidebar">
+        <div className="logo">
+            <LayoutDashboard size={28} /> 
+            <span className="text-gradient">{t('title')}</span>
+        </div>
         <div className="nav-items">
           <div
             className={`nav-item ${view === 'command' ? 'active' : ''}`}
             onClick={() => setView('command')}
-            style={{ cursor: 'pointer', borderLeft: view === 'command' ? '3px solid var(--neon-blue)' : '' }}
+            style={{ cursor: 'pointer' }}
           >
-            <LayoutGrid size={18} color={view === 'command' ? 'var(--neon-blue)' : '#475569'} /> 
-            <span style={{ color: view === 'command' ? '#fff' : '' }}>{t('command_center')}</span>
+            <LayoutGrid size={20} /> 
+            <span>{t('command_center')}</span>
           </div>
           <div
             className={`nav-item ${view === 'fleet' ? 'active' : ''}`}
             onClick={() => setView('fleet')}
             style={{ cursor: 'pointer' }}
           >
-            <Grid size={18} /> <span>{t('fleet_status')}</span>
+            <Grid size={20} /> <span>{t('fleet_status')}</span>
           </div>
           <div
             className={`nav-item ${view === 'portal' ? 'active' : ''}`}
             onClick={() => setView('portal')}
-            style={{ cursor: 'pointer', color: '#10b981' }}
+            style={{ cursor: 'pointer' }}
           >
-            <ExternalLink size={18} /> <span>{t('stakeholder_portal')}</span>
+            <ExternalLink size={20} color="#10b981" /> <span style={{ color: '#10b981' }}>{t('stakeholder_portal')}</span>
           </div>
-          <div className="sidebar-divider" style={{ padding: '16px 0 8px 12px', fontSize: '10px', color: '#475569', fontWeight: '800' }}>ASSETS</div>
+          
+          <div style={{ padding: '32px 0 12px 18px', fontSize: '11px', color: '#475569', fontWeight: '900', letterSpacing: '0.1em' }}>{t('strategic_assets')}</div>
+          
           <div
             className={`nav-item ${view === 'detail' && activeTab === 'mna' ? 'active' : ''}`}
             onClick={() => { setView('detail'); setActiveTab('mna'); }}
             style={{ cursor: 'pointer' }}
           >
-            <Activity size={18} /> <span>{t('mna_engine')}</span>
+            <Activity size={20} /> <span>{t('mna_engine')}</span>
           </div>
           <div
             className={`nav-item ${view === 'detail' && activeTab === 'pf' ? 'active' : ''}`}
             onClick={() => { setView('detail'); setActiveTab('pf'); }}
             style={{ cursor: 'pointer' }}
           >
-            <Layers size={18} /> <span>{t('pf_finance')}</span>
+            <Layers size={20} /> <span>{t('pf_finance')}</span>
           </div>
         </div>
-        <div className="db-status"><Database size={16} /> <span>{t('connected')}</span></div>
-      </nav>
+        
+        <div style={{ marginTop: 'auto', padding: '20px', background: 'rgba(255,255,255,0.02)', borderRadius: '16px', border: '1px solid var(--border-glass)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '12px', color: '#94a3b8' }}>
+                <Database size={14} color="var(--neon-green)" />
+                <span>{t('node_label')}: US-EAST-1</span>
+            </div>
+        </div>
+      </aside>
       
       <main className="main-content">
-        <MarketTicker />
-        <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', position: 'relative' }}>
-          <h1 style={{ fontWeight: '900', letterSpacing: '-1px' }}>
-            {view === 'fleet' ? t('fleet_status') : 
-             view === 'command' ? t('command_center') : 
-             `${t('title')} (${selectedProjectId})`}
-          </h1>
+        <MarketTicker t={t} />
+        
+        <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '40px' }}>
+          <div>
+            <h1 className="text-gradient" style={{ fontSize: '32px', marginBottom: '4px' }}>
+                {view === 'fleet' ? t('fleet_status') : 
+                 view === 'command' ? t('command_center') : 
+                 `${t('title')} / ${selectedProjectId}`}
+            </h1>
+            <div style={{ fontSize: '13px', color: '#64748b', fontWeight: '600' }}>
+                {t('terminal_subtitle')}
+            </div>
+          </div>
           
-          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
             {/* Language Toggle */}
             <button className="lang-toggle" onClick={() => setLang(lang === 'ko' ? 'en' : 'ko')}>
-                <Globe size={14} /> {lang.toUpperCase()}
+                <Globe size={16} /> {lang.toUpperCase()}
             </button>
 
             {/* Notification Bell */}
@@ -236,7 +256,7 @@ function App() {
 
             {(view === 'detail' || view === 'command') && (
               <button className="export-report-btn" onClick={handleExportReport} style={{ background: view === 'command' ? 'rgba(59, 130, 246, 0.2)' : '' }}>
-                <FileDown size={18} /> {view === 'command' ? 'Portfolio Report' : 'Intelligence Report'}
+                <FileDown size={18} /> {view === 'command' ? t('portfolio_report') : t('intelligence_report')}
               </button>
             )}
           </div>
@@ -244,7 +264,7 @@ function App() {
 
         {view === 'fleet' ? (
           <div style={{ padding: '24px' }}>
-            <DealFleetOverview onSelectProject={handleSelectProject} />
+            <DealFleetOverview onSelectProject={handleSelectProject} t={t} />
           </div>
         ) : view === 'command' ? (
           <PortfolioCommandCenter t={t} lang={lang} />
@@ -256,9 +276,10 @@ function App() {
                   <ScenarioSelector 
                     weights={weights} 
                     onWeightsChange={setWeights}
+                    t={t}
                   />
                   <div style={{ marginTop: '24px' }}>
-                    <SynergyInput onSynergyChange={handleSynergyChange} />
+                    <SynergyInput onSynergyChange={handleSynergyChange} t={t} />
                   </div>
                   <div style={{ marginTop: '24px' }}>
                     <RiskEvaluationForm onResult={handleRiskResult} t={t} lang={lang} />
@@ -267,10 +288,11 @@ function App() {
                 <div className="right-column">
                   <ValuationWaterfall 
                     data={weightedValuation} 
-                    scenarios={scenarioData} 
+                    scenarios={scenarioData}
+                    t={t} 
                   />
                   <div style={{ marginTop: '24px' }}>
-                    <RiskRadarChart data={riskProfile} />
+                    <RiskRadarChart data={riskProfile} t={t} />
                   </div>
                 </div>
               </>
