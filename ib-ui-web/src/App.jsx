@@ -10,8 +10,11 @@ import DealFleetOverview from './components/DealFleetOverview';
 import VdrInsightPanel from './components/VdrInsightPanel';
 import MarketTicker from './components/MarketTicker';
 import AdvisorPanel from './components/AdvisorPanel';
-import { TrendingUp, Activity, LayoutDashboard, Database, Shield, Layers, Grid } from 'lucide-react';
+import ClientPortal from './components/ClientPortal';
+import PortfolioCommandCenter from './components/PortfolioCommandCenter';
+import { TrendingUp, Activity, LayoutDashboard, Database, Shield, Layers, Grid, ExternalLink, FileDown, Bell, Globe, LayoutGrid } from 'lucide-react';
 import { Chart as ChartJS } from 'chart.js';
+import { translations } from './utils/translations';
 import './App.css';
 
 ChartJS.defaults.font.family = "'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif";
@@ -23,12 +26,19 @@ function App() {
   const [activeTab, setActiveTab] = useState('mna'); // 'mna' | 'pf'
   const [isMitigated, setIsMitigated] = useState(false);
   const [mitigationLabel, setMitigationLabel] = useState("");
-  const [view, setView] = useState('fleet'); // 'fleet' | 'detail'
+  const [view, setView] = useState('command'); // 'fleet' | 'detail' | 'portal' | 'command'
   const [selectedProjectId, setSelectedProjectId] = useState('PF-001');
   const [synergyItems, setSynergyItems] = useState([]);
   const [scenarioData, setScenarioData] = useState(null); // { BEAR: {}, BASE: {}, BULL: {} }
   const [weights, setWeights] = useState({ bear: 20, base: 50, bull: 30 });
   const [riskProfile, setRiskProfile] = useState([80, 70, 85, 60, 50, 12.5]);
+  
+  // Phase 10: Global State (i18n & Notifications)
+  const [lang, setLang] = useState('ko');
+  const [notifications, setNotifications] = useState([]);
+  const [showNotifInbox, setShowNotifInbox] = useState(false);
+
+  const t = (key) => translations[lang][key] || key;
 
   const handleSelectProject = (id) => {
     setSelectedProjectId(id);
@@ -63,7 +73,7 @@ function App() {
     }
   };
 
-  // Real-time Weighted Average Calculation (Latency-free Simulation)
+  // Real-time Weighted Average Calculation
   const weightedValuation = useMemo(() => {
     if (!scenarioData) return [2000, 0, 0, -200, 1800];
     
@@ -79,10 +89,9 @@ function App() {
       const valBull = scenarioData.BULL[key] || 0;
       let weighted = (valBear * wBear) + (valBase * wBase) + (valBull * wBull);
       
-      // Apply Mitigation Effect (Positive impact of strategic advice)
       if (isMitigated) {
-        if (key === 'postDealValue' || key === 'baseValue') weighted *= 1.08; // 8% value recovery
-        if (key === 'integrationCost') weighted *= 0.8; // 20% cost reduction
+        if (key === 'postDealValue' || key === 'baseValue') weighted *= 1.08;
+        if (key === 'integrationCost') weighted *= 0.8;
       }
       return weighted;
     });
@@ -91,7 +100,18 @@ function App() {
   const handleApplyStrategy = (action) => {
     setIsMitigated(true);
     setMitigationLabel(action.label);
-    alert(`[전략 실행] ${action.label} 전략이 재무 모델에 반영되었습니다. 가치 회복 및 리스크 완화 시뮬레이션을 시작합니다.`);
+    
+    const newNotif = {
+        id: Date.now(),
+        title: lang === 'ko' ? "전략 실행" : "Strategy Applied",
+        message: action.label,
+        time: new Date().toLocaleTimeString()
+    };
+    setNotifications([newNotif, ...notifications]);
+  };
+
+  const handleExportReport = () => {
+    window.open(`http://localhost:8080/api/v1/mna/report/download/${dealId}`);
   };
 
   const handleRiskResult = (result) => {
@@ -104,53 +124,130 @@ function App() {
         result.mlScore || 0,
         result.vdrScore || 0
       ]);
+      
+      // Phase 9/10: Track real-time risk notifications
+      const newNotif = {
+          id: Date.now(),
+          title: lang === 'ko' ? "리스크 분석 완료" : "Risk Analysis Done",
+          message: `${lang === 'ko' ? '종합 등급' : 'Final Grade'}: ${result.finalGrade}`,
+          time: new Date().toLocaleTimeString()
+      };
+      setNotifications([newNotif, ...notifications]);
     }
   };
 
+  if (view === 'portal') {
+    return (
+      <ClientPortal 
+        dealId="DEAL-TITAN-2024" 
+        valuation={weightedValuation[4]} 
+        esgScore={riskProfile[4]} 
+      />
+    );
+  }
+
   return (
-    <div className="app-container">
+    <div className={`app-container ${lang}`}>
       <nav className="sidebar">
-        <div className="logo"><LayoutDashboard size={24} /> IB 통합 플랫폼</div>
+        <div className="logo"><LayoutDashboard size={24} /> <span>{t('title')}</span></div>
         <div className="nav-items">
+          <div
+            className={`nav-item ${view === 'command' ? 'active' : ''}`}
+            onClick={() => setView('command')}
+            style={{ cursor: 'pointer', borderLeft: view === 'command' ? '3px solid var(--neon-blue)' : '' }}
+          >
+            <LayoutGrid size={18} color={view === 'command' ? 'var(--neon-blue)' : '#475569'} /> 
+            <span style={{ color: view === 'command' ? '#fff' : '' }}>{t('command_center')}</span>
+          </div>
           <div
             className={`nav-item ${view === 'fleet' ? 'active' : ''}`}
             onClick={() => setView('fleet')}
             style={{ cursor: 'pointer' }}
           >
-            <Grid size={18} /> 딜 플릿 현황
+            <Grid size={18} /> <span>{t('fleet_status')}</span>
           </div>
-          <div style={{ padding: '16px 0 8px 12px', fontSize: '10px', color: '#475569', fontWeight: '800' }}>자산 유형 (ASSETS)</div>
+          <div
+            className={`nav-item ${view === 'portal' ? 'active' : ''}`}
+            onClick={() => setView('portal')}
+            style={{ cursor: 'pointer', color: '#10b981' }}
+          >
+            <ExternalLink size={18} /> <span>{t('stakeholder_portal')}</span>
+          </div>
+          <div className="sidebar-divider" style={{ padding: '16px 0 8px 12px', fontSize: '10px', color: '#475569', fontWeight: '800' }}>ASSETS</div>
           <div
             className={`nav-item ${view === 'detail' && activeTab === 'mna' ? 'active' : ''}`}
             onClick={() => { setView('detail'); setActiveTab('mna'); }}
             style={{ cursor: 'pointer' }}
           >
-            <Activity size={18} /> M&A 엔진
+            <Activity size={18} /> <span>{t('mna_engine')}</span>
           </div>
           <div
             className={`nav-item ${view === 'detail' && activeTab === 'pf' ? 'active' : ''}`}
             onClick={() => { setView('detail'); setActiveTab('pf'); }}
             style={{ cursor: 'pointer' }}
           >
-            <Layers size={18} /> PF 파이낸스
-          </div>
-          <div className="nav-item" style={{ cursor: 'default', opacity: 0.4 }}>
-            <Shield size={18} /> ECM/DCM <span style={{ fontSize: '10px', marginLeft: '4px' }}>(준비중)</span>
+            <Layers size={18} /> <span>{t('pf_finance')}</span>
           </div>
         </div>
-        <div className="db-status"><Database size={16} /> PostgreSQL 연결됨</div>
+        <div className="db-status"><Database size={16} /> <span>{t('connected')}</span></div>
       </nav>
       
       <main className="main-content">
         <MarketTicker />
-        <header>
-          <h1 style={{ fontWeight: '900', letterSpacing: '-1px' }}>{view === 'fleet' ? 'IB 통합 플랫폼: 딜 플릿 총괄 현황' : `통합 IB 대시보드 (대상: ${selectedProjectId})`}</h1>
+        <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', position: 'relative' }}>
+          <h1 style={{ fontWeight: '900', letterSpacing: '-1px' }}>
+            {view === 'fleet' ? t('fleet_status') : 
+             view === 'command' ? t('command_center') : 
+             `${t('title')} (${selectedProjectId})`}
+          </h1>
+          
+          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+            {/* Language Toggle */}
+            <button className="lang-toggle" onClick={() => setLang(lang === 'ko' ? 'en' : 'ko')}>
+                <Globe size={14} /> {lang.toUpperCase()}
+            </button>
+
+            {/* Notification Bell */}
+            <div className="notification-bell" onClick={() => setShowNotifInbox(!showNotifInbox)}>
+                <Bell size={20} color="#94a3b8" />
+                {notifications.length > 0 && <div className="notification-dot"></div>}
+            </div>
+
+            {showNotifInbox && (
+                <div className="notification-inbox animate-fade-in">
+                    <div style={{ padding: '16px', borderBottom: '1px solid rgba(255,255,255,0.1)', fontWeight: 'bold', fontSize: '14px' }}>
+                        {t('notifications')}
+                    </div>
+                    {notifications.length === 0 ? (
+                        <div style={{ padding: '40px 20px', textAlign: 'center', color: '#475569', fontSize: '12px' }}>
+                            {t('no_notifications')}
+                        </div>
+                    ) : (
+                        notifications.map(n => (
+                            <div key={n.id} className="notification-item">
+                                <div style={{ fontSize: '13px', fontWeight: 'bold', color: '#fff' }}>{n.title}</div>
+                                <div style={{ fontSize: '12px', color: '#94a3b8', margin: '4px 0' }}>{n.message}</div>
+                                <div style={{ fontSize: '10px', color: '#475569' }}>{n.time}</div>
+                            </div>
+                        ))
+                    )}
+                </div>
+            )}
+
+            {(view === 'detail' || view === 'command') && (
+              <button className="export-report-btn" onClick={handleExportReport} style={{ background: view === 'command' ? 'rgba(59, 130, 246, 0.2)' : '' }}>
+                <FileDown size={18} /> {view === 'command' ? 'Portfolio Report' : 'Intelligence Report'}
+              </button>
+            )}
+          </div>
         </header>
 
         {view === 'fleet' ? (
           <div style={{ padding: '24px' }}>
             <DealFleetOverview onSelectProject={handleSelectProject} />
           </div>
+        ) : view === 'command' ? (
+          <PortfolioCommandCenter t={t} lang={lang} />
         ) : (
           <div className="dashboard-grid">
             {activeTab === 'mna' ? (
@@ -164,17 +261,8 @@ function App() {
                     <SynergyInput onSynergyChange={handleSynergyChange} />
                   </div>
                   <div style={{ marginTop: '24px' }}>
-                    <RiskEvaluationForm onResult={handleRiskResult} />
+                    <RiskEvaluationForm onResult={handleRiskResult} t={t} lang={lang} />
                   </div>
-                  <div style={{ marginTop: '24px' }}>
-                    <VdrInsightPanel onRiskUpdate={(adj) => setRiskProfile(prev => [prev[0], prev[1], prev[2], prev[3] + adj, prev[4], prev[5]])} />
-                  </div>
-                  <AdvisorPanel dealId={dealId} onApplyStrategy={handleApplyStrategy} />
-                  {isMitigated && (
-                    <div className="mitigation-active-tag animate-pulse">
-                      ⚡ 전략 적용 중: {mitigationLabel}
-                    </div>
-                  )}
                 </div>
                 <div className="right-column">
                   <ValuationWaterfall 
@@ -184,21 +272,16 @@ function App() {
                   <div style={{ marginTop: '24px' }}>
                     <RiskRadarChart data={riskProfile} />
                   </div>
-                  <div className="metrics-summary">
-                    <div className="metric-card">
-                      <span className="label">가중 평균 NPV</span>
-                      <span className="value">${weightedValuation[4].toFixed(0)}M</span>
-                    </div>
-                    <div className="metric-card">
-                      <span className="label">기대 가중치 (Base)</span>
-                      <span className="value">{weights.base}%</span>
-                    </div>
-                  </div>
                 </div>
               </>
             ) : (
               <div style={{ gridColumn: '1 / -1' }}>
-                <PfDashboard key={selectedProjectId} />
+                <PfDashboard 
+                  key={selectedProjectId} 
+                  t={t} 
+                  lang={lang} 
+                  riskData={riskProfile} 
+                />
               </div>
             )}
           </div>

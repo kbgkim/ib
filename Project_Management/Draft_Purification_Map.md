@@ -8,6 +8,8 @@
 
 | 원본 폴더 (Draft Source) | 타겟 사양서 (Formal Specification Target) | 정제 결과 (Refinement Results) |
 |---|---|---|
+| **urosysib (Inbox)** | `Formal_Specs/` 전반 | **완료**: ABCP 롤오버, 공통코드, 메뉴체계, 정밀 리스크 산식 (EL/VaR/CVA) |
+|---|---|---|
 | ~~**01_Concepts**~~ | `01_Market_Domain/` | **완료**: Lifecycle, BB-Alloc Flow, Game Theory, Auto Strategy |
 | ~~**02_Deal_Structures**~~ | `02_Product_Structures/` | **완료**: Waterfall/Tranche Design & Calc Engine, Optimization |
 | ~~**03_Risk_Monitoring**~~ | `03_Risk_Engines/` | **완료**: Market Shock, Scenario Engine, Integrated Risk Sim |

@@ -66,14 +66,34 @@ const MarketTicker = () => {
         }
     };
 
+    const getMoodLabel = () => {
+        if (!data) return "CONNECTING";
+        if (data.covenantStatus === 'BREACH') return "HIGH RISK";
+        if (data.wti > 100 || data.ust10y > 4.5) return "VOLATILE";
+        return "STABLE";
+    };
+
+    const getMoodColor = () => {
+        const mood = getMoodLabel();
+        if (mood === 'HIGH RISK') return 'var(--risk-d)';
+        if (mood === 'VOLATILE') return '#f59e0b';
+        return 'var(--risk-aa)';
+    };
+
     return (
         <div 
             className={`market-ticker-container ${data?.covenantStatus === 'BREACH' ? 'pulse-red-bg' : ''}`}
             style={{ backgroundColor: getStatusColor() }}
         >
-            <div className="ticker-status-indicator">
-                {data?.covenantStatus === 'BREACH' && <AlertTriangle size={14} className="neon-glow-d" />}
-                <span className="status-label">{data?.covenantStatus || "LOADING"}</span>
+            <div className="ticker-status-indicator" style={{ borderColor: getMoodColor() }}>
+                <div style={{ 
+                    width: '6px', height: '6px', borderRadius: '50%', 
+                    background: getMoodColor(), marginRight: '8px',
+                    boxShadow: `0 0 10px ${getMoodColor()}`
+                }} className={getMoodLabel() !== 'STABLE' ? 'animate-pulse' : ''} />
+                <span className="status-label" style={{ color: getMoodColor() }}>
+                    {getMoodLabel()}
+                </span>
             </div>
             <div className="ticker-scroll">
                 {renderItem("UST 10Y", "ust10y", "%")}

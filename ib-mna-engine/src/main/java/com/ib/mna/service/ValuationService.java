@@ -63,6 +63,9 @@ public class ValuationService {
     @Autowired
     private MarketDataService marketDataService;
 
+    @Autowired
+    private RiskEvaluationService riskEvaluationService;
+
     /**
      * Calculate 5 points for Waterfall Bridge with Scenario Multiplier
      */
@@ -86,12 +89,16 @@ public class ValuationService {
 
         BigDecimal postDealValue = baseValue.add(costNPV).add(revenueNPV).add(integrationNPV);
 
+        // Phase 8 Refinement: Advanced Risk Evaluation based on Post-deal value exposure
+        RiskMetricResponse riskMetrics = riskEvaluationService.evaluateAdvancedMetrics("MNA-CALC", postDealValue);
+
         return ValuationBridgeResponse.builder()
                 .baseValue(baseValue)
                 .costSynergy(costNPV.setScale(2, RoundingMode.HALF_UP))
                 .revenueSynergy(revenueNPV.setScale(2, RoundingMode.HALF_UP))
                 .integrationCost(integrationNPV.setScale(2, RoundingMode.HALF_UP))
                 .postDealValue(postDealValue.setScale(2, RoundingMode.HALF_UP))
+                .riskMetrics(riskMetrics)
                 .build();
     }
 

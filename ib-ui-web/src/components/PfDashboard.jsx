@@ -203,7 +203,7 @@ const WaterfallTable = ({ data }) => {
 };
 
 // Main PF Dashboard Component
-const PfDashboard = () => {
+const PfDashboard = ({ t, lang, riskData }) => {
   const [metrics, setMetrics] = useState(null);
   const [waterfall, setWaterfall] = useState(null);
   const [sensitivity, setSensitivity] = useState(null);
@@ -468,7 +468,7 @@ const PfDashboard = () => {
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 400px', gap: '24px' }}>
+      <div className="dashboard-grid">
         <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
           {/* 핵심 지표 */}
           <div className="glass-panel animate-fade-in" style={{ padding: '24px', borderRadius: '16px', animationDelay: '0.1s' }}>
@@ -521,11 +521,11 @@ const PfDashboard = () => {
                 </div>
                 <div className="metric-card" style={{ border: '1px solid rgba(245, 158, 11, 0.2)', background: 'rgba(245, 158, 11, 0.05)' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <span className="label" style={{ color: '#f59e0b' }}>VDR 실시간 리스크</span>
+                    <span className="label" style={{ color: '#f59e0b' }}>VDR {lang === 'ko' ? '실시간 리스크' : 'Real-time Risk'}</span>
                     <ShieldAlert size={16} color="#f59e0b" />
                   </div>
-                  <span className="value" style={{color: '#f59e0b', fontSize: '28px'}}>12.5 <span style={{fontSize: '14px'}}>pts</span></span>
-                  <div style={{ fontSize: '10px', color: '#92400e', marginTop: '4px' }}>* 문서 접근 로그 분석 기반 (Near Real-time)</div>
+                  <span className="value" style={{color: '#f59e0b', fontSize: '28px'}}>{riskData[5] || '12.5'} <span style={{fontSize: '14px'}}>pts</span></span>
+                  <div style={{ fontSize: '10px', color: '#92400e', marginTop: '4px' }}>* {lang === 'ko' ? '문서 접근 로그 분석 기반' : 'Based on real-time log data'}</div>
                 </div>
              </div>
           </div>

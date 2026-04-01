@@ -15,6 +15,9 @@ public class ValuationBridgeResponse {
     private BigDecimal integrationCost;
     private BigDecimal postDealValue;
     
+    // Phase 8 Refinement: Advanced Risk Data
+    private RiskMetricResponse riskMetrics;
+    
     /**
      * Helper to return as a list of 5 values for Chart.js
      */
