@@ -9,6 +9,11 @@ Last Updated: 2026-04-01
 Status: STAKEHOLDER PORTAL PREMIUM UI & GLOBAL LOCALIZATION COMPLETE
 Current Version: v5.0
 
+## 📚 플랫폼 상세 기록 색인 (Documentation Index)
+
+> [!TIP]
+> **전 단계 상세 기록 확보**: Phase 1부터 Phase 14까지의 모든 기술 상세 설계 문서는 [DOCUMENTATION_INDEX.md](file:///home/kbgkim/antigravity/projects/ib/docs/DOCUMENTATION_INDEX.md)에서 통합 관리됩니다.
+
 ## 1. 프로젝트 아키텍처 및 핵심 결정 (Core Decisions)
 
 - **저장소 단일화 (Repository Unification)**: 파편화된 4개의 워크트리를 `~/antigravity/projects/ib`로 통합 완료.
