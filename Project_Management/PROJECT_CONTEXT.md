@@ -4,10 +4,10 @@
 
 ---
 
-## Project Context: IB Platform Integration (v4.0) - Phase 5 COMPLETE
-Last Updated: 2026-03-31
-Status: AI VDR, MACRO SCENARIO & STAKEHOLDER PORTAL INTEGRATED
-Current Version: v4.2
+## Project Context: IB Platform Integration (v5.0) - Phase 14 COMPLETE
+Last Updated: 2026-04-01
+Status: STAKEHOLDER PORTAL PREMIUM UI & GLOBAL LOCALIZATION COMPLETE
+Current Version: v5.0
 
 ## 1. 프로젝트 아키텍처 및 핵심 결정 (Core Decisions)
 
@@ -78,15 +78,18 @@ Current Version: v4.2
 - **Strategy Execution Interface**: 전문가 봇의 조언을 원클릭으로 재무 모델에 주입하여 시뮬레이션하는 기능 구현 완료.
 - **완료 리포트**: [2026-03-31-phase7-completion.md](file:///home/kbgkim/antigravity/projects/ib/docs/superpowers/plans/2026-03-31-phase7-completion.md)
 
-### ✅ Phase 11: 글로벌 시장 대응 및 포트폴리오 통합 관제 (완료)
-- **Portfolio Command Center**: 전사 자산(AUM) 및 가중 리스크 통합 모니터링 대시보드 신설.
-- **Macro Stress Simulator**: 금리, 에너지, 변동성 시나리오에 따른 포트폴리오 가치 영향도 실시간 시뮬레이션 구현.
-- **Market Mood Indicator**: 실시간 마켓 티커에 'Stable/Volatile/Risk' 무드 판별 엔진 통합.
-- **완료 리포트**: [walkthrough.md](file:///home/kbgkim/.gemini/antigravity/brain/3ffe5708-6a35-4786-a2f6-f759080796bc/walkthrough.md)
+- **완료 리포트**: [walkthrough.md](file:///home/kbgkim/.gemini/antigravity/brain/3917fa5b-a3d4-482b-b51c-9ce113cd8891/walkthrough.md)
+
+### ✅ Phase 14: 프리미엄 UX 개편 및 글로벌 로컬라이징 (완료)
+- **Technical Scanning Login**: 고액 자산가 전용 보안 스캔 및 애니메이션 UI 도입.
+- **Investor Tier Branding**: 티어별 메탈릭 디자인 시스템(Gold/Silver) 적용.
+- **Full Globalization**: `translations.js` 기반의 한국어/영어 전수 동적 번역 체계 구축 및 하드코딩 제거.
+- **Bug Fix**: `InvestorTierCard` 구문 오류 및 `PfDashboard` 내 참조 오류(ReferenceError) 해결.
+- **완료 리포트**: [walkthrough.md](file:///home/kbgkim/.gemini/antigravity/brain/e1b1ef0d-4142-4445-a69c-b10c039de15f/walkthrough.md)
 
 ---
 
 ## 5. 즉시 복구 명령 (Restore Command)
 
 다음 세션 시작 시 AI에게 이 문장을 입력하십시오:
-> "`/home/kbgkim/antigravity/projects/ib/Project_Management/PROJECT_CONTEXT.md` 파일을 읽고 **Phase 12: 실시간 포트폴리오 리밸런싱 및 AI 자산 최적화** 작업을 준비해줘."
+> "`/home/kbgkim/antigravity/projects/ib/Project_Management/PROJECT_CONTEXT.md` 파일을 읽고 **Phase 15: 글로벌 자산 모니터링 및 실시간 위험 전파 시스템 구축** 작업을 준비해줘."

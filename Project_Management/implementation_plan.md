@@ -57,6 +57,15 @@
 - **Library**: `OpenPDF` (LGPL/MPL) 활용.
 - **Output**: 프로젝트 개요, 핵심 지수(Gauges), 민감도 요약 등을 포함한 전문 리스크 리포트(PDF) 자동 생성 API 구축.
 
+### 3.3 스테이홀더 포털 및 라이브 거버넌스 (Phase 13)
+- **Technical Scanning Login**: 2.5초간의 보안 스캔 애니메이션(`isScanning`)을 통한 고딕 스타일 보안 관문 구축.
+- **Investor Tiering**: `T1(Anchor)`, `T2(Institutional)`, `T3(Retail)` 전용 메탈릭 그라데이션 및 네온 글로우 카드 구현.
+- **Premium Notification System**: 브라우저 기본 알림을 대체하는 인-포털 네온 투명 공지 시스템 (`notification` state).
+- **Comprehensive Localization (i18n)**:
+    - `translations.js` 유틸리티를 통한 한국어/영어 전체 동기화.
+    - 화폐 단위(`unit_m`, `unit_b`, `unit_usd`) 및 금융 용어의 동적 번역 체계 구축.
+    - 하드코딩된 문자열 전수 제거 및 컴포넌트(`ClientPortal`, `PfDashboard` 등) 전이.
+
 ---
 
 ## 4. 데이터베이스 스키마 (DB Schema)
