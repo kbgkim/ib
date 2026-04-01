@@ -16,12 +16,25 @@
     - **데이터 모델**: 신규 테이블 스키마, 필드 속성, JSON 직렬화 구조 등.
     - **비즈니스 로직**: 핵심 계산 함수(예: DSCR 산식)의 구현 상세.
 
+## 2. 상세 설계 문서화 (Deep Dive Documentation)
+
+> [!TIP]
+> **영구적 기술 지식 축적**: 브레인 아티팩트에 생성된 상세 계획(`implementation_plan.md`) 및 기술 원리 설명은 요약본 외에 원문 수준의 상세 내용을 별도 문서로 남깁니다.
+
+- **대상 폴더**: `/home/kbgkim/antigravity/projects/ib/docs/`
+- **파일명 규칙**: `Phase[Number]_[Feature_Name]_DeepDive.md`
+- **필수 포함 항목**:
+    - **컴포넌트 설계**: 상세 Props, State 구조 및 컴포넌트 간 상호작용.
+    - **UI/UX 철학**: 적용된 디자인 시스템(Glassmorphism, Neon Glow)의 세부 설정값.
+    - **디버깅 기록**: 해결된 주요 버그(ReferenceError, SyntaxError)와 재발 방지 대책.
+
 ## 2. 작업 일지 및 현황 관리 (Progress Tracking)
 
 - **데일리 로그**: `/home/kbgkim/antigravity/projects/ib/logs/[Year]/[Month]/[Day]/action_log.md`
     - 각 작업 세션의 타임스탬프와 주요 구현 사항을 3~5줄 내외로 요약 기록합니다.
 - **컨텍스트 업데이트**: `/home/kbgkim/antigravity/projects/ib/Project_Management/PROJECT_CONTEXT.md`
     - 전체 버전(vX.X) 및 개발 로드맵(Phase 체크리스트)을 세션 마감 시 최신 상태로 유지합니다.
+- **상세 설계 아카이빙**: 브레인 아티팩트의 상세 내용을 `docs/` 폴더에 물리적 파일로 실착.
 
 ## 3. 세션 마감 절차 (Session Closing)
 
