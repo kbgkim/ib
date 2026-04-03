@@ -22,11 +22,11 @@
 
 ## 🛠️ 공통 기술 문서 (Core Specs)
 
-- **사용자 매뉴얼 (User Manual)**: [USER_MANUAL.md](file:///home/kbgkim/antigravity/projects/ib/docs/USER_MANUAL.md)
-- **운영자 매뉴얼 (Admin Manual)**: [ADMIN_MANUAL.md](file:///home/kbgkim/antigravity/projects/ib/docs/ADMIN_MANUAL.md)
-- **디자인 가이드 (UX Design)**: [Interactive_Probability_Bridge_DeepDive.md](file:///home/kbgkim/antigravity/projects/ib/docs/Interactive_Probability_Bridge_DeepDive.md)
-- **ML 모델 설계 (ML Architecture)**: [ML_Model_Architecture_Rationale.md](file:///home/kbgkim/antigravity/projects/ib/docs/ML_Model_Architecture_Rationale.md)
-- **트러블슈팅 로그 (Troubleshooting)**: [Technical_Troubleshooting_Log.md](file:///home/kbgkim/antigravity/projects/ib/docs/Technical_Troubleshooting_Log.md)
+- **사용자 매뉴얼 (User Manual)**: [USER_MANUAL.md](./USER_MANUAL.md)
+- **운영자 매뉴얼 (Admin Manual)**: [ADMIN_MANUAL.md](./ADMIN_MANUAL.md)
+- **디자인 가이드 (UX Design)**: [Interactive_Probability_Bridge_DeepDive.md](./Interactive_Probability_Bridge_DeepDive.md)
+- **ML 모델 설계 (ML Architecture)**: [ML_Model_Architecture_Rationale.md](./ML_Model_Architecture_Rationale.md)
+- **트러블슈팅 로그 (Troubleshooting)**: [Technical_Troubleshooting_Log.md](./Technical_Troubleshooting_Log.md)
 
 ---
 > Last Audit Date: 2026-04-01 | Auditor: BongGeon KIm
