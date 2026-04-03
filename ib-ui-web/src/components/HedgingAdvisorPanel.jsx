@@ -72,17 +72,17 @@ const HedgingAdvisorPanel = ({ assetId, currentRisk, t }) => {
           }}
         >
           {sentinelMode ? <Zap size={10} /> : null}
-          SENTINEL
+          {t('sentinel_active')}
         </div>
       </div>
 
       <div style={{ marginBottom: '24px', padding: '16px', borderRadius: '12px', background: 'rgba(239, 68, 68, 0.08)', border: '1px solid rgba(239, 68, 68, 0.2)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
           <AlertTriangle color="#ef4444" size={16} />
-          <span style={{ fontSize: '12px', color: '#ef4444', fontWeight: '900', textTransform: 'uppercase' }}>Critical Exposure</span>
+          <span style={{ fontSize: '12px', color: '#ef4444', fontWeight: '900', textTransform: 'uppercase' }}>{t('critical_exposure')}</span>
         </div>
         <div style={{ fontSize: '28px', fontWeight: '900', color: '#fff' }}>
-          {currentRisk.toFixed(1)} <span style={{ fontSize: '12px', color: '#94a3b8', marginLeft: '4px' }}>Risk Points</span>
+          {currentRisk.toFixed(1)} <span style={{ fontSize: '12px', color: '#94a3b8', marginLeft: '4px' }}>{t('risk_points')}</span>
         </div>
       </div>
 
@@ -122,7 +122,7 @@ const HedgingAdvisorPanel = ({ assetId, currentRisk, t }) => {
           </div>
         )) : (
           <div style={{ textAlign: 'center', padding: '40px 0', color: '#64748b', fontSize: '13px' }}>
-            {loading ? 'Analyzing markets...' : 'No hedging required for current levels.'}
+            {loading ? t('analyzing_markets') : t('no_hedging_needed')}
           </div>
         )}
       </div>
@@ -135,8 +135,8 @@ const HedgingAdvisorPanel = ({ assetId, currentRisk, t }) => {
         }}>
           <ShieldCheck color="var(--neon-green)" size={24} />
           <div style={{ fontSize: '11px', color: '#94a3b8', lineHeight: '1.5' }}>
-            <strong style={{ color: 'var(--neon-green)', display: 'block', marginBottom: '2px' }}>Sentinel Active</strong>
-            {t('sentinel_mode_desc') || 'The system will automatically execute hedging strategies for risks over 90 points.'}
+            <strong style={{ color: 'var(--neon-green)', display: 'block', marginBottom: '2px' }}>{t('sentinel_active')}</strong>
+            {t('sentinel_mode_desc')}
           </div>
         </div>
       )}

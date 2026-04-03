@@ -9,8 +9,10 @@ import jakarta.annotation.PostConstruct;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicReference;
+import org.springframework.web.client.RestTemplate;
 
 @Slf4j
 @Service
@@ -18,20 +20,46 @@ public class MarketDataService {
 
     private final AtomicReference<MarketDataResponse> currentMarketData = new AtomicReference<>();
     private final Random random = new Random();
+    private RestTemplate restTemplate = new RestTemplate();
+    private static final String FX_API_URL = "https://www.frankfurter.app/latest?from=USD&to=KRW";
+    private static final BigDecimal FALLBACK_FX_RATE = new BigDecimal("1510.50");
 
     @PostConstruct
     public void init() {
-        // Initial values (v4.0 Baseline)
+        BigDecimal initialFxRate = fetchRealTimeRate();
+        log.info("MarketDataService initialized with USDKRW: {}", initialFxRate);
+
+        // Initial values (v4.1 Baseline with Real-time API)
         currentMarketData.set(MarketDataResponse.builder()
                 .ust10y(new BigDecimal("4.32"))
                 .kst3y(new BigDecimal("3.45"))
-                .usdkrw(new BigDecimal("1345.50"))
+                .usdkrw(initialFxRate)
                 .creditSpread(new BigDecimal("45.0"))
                 .carbonPrice(new BigDecimal("18500"))
                 .wti(new BigDecimal("81.20"))
                 .covenantStatus("OK") // Initial status
                 .timestamp(LocalDateTime.now())
                 .build());
+    }
+
+    private BigDecimal fetchRealTimeRate() {
+        try {
+            log.info("Fetching real-time exchange rate from: {}", FX_API_URL);
+            Map<String, Object> response = restTemplate.getForObject(FX_API_URL, Map.class);
+            if (response != null && response.containsKey("rates")) {
+                Map<String, Object> rates = (Map<String, Object>) response.get("rates");
+                Object krwRate = rates.get("KRW");
+                if (krwRate != null) {
+                    BigDecimal rate = new BigDecimal(krwRate.toString()).setScale(2, RoundingMode.HALF_UP);
+                    log.info("Successfully fetched real-time rate: {}", rate);
+                    return rate;
+                }
+            }
+            log.warn("API response format invalid or missing rates. Using fallback: {}", FALLBACK_FX_RATE);
+        } catch (Exception e) {
+            log.error("Failed to fetch real-time exchange rate: {}. Using fallback: {}", e.getMessage(), FALLBACK_FX_RATE);
+        }
+        return FALLBACK_FX_RATE;
     }
 
     public MarketDataResponse getLatestData() {

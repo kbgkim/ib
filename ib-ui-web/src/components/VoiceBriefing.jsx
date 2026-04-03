@@ -7,11 +7,7 @@ const VoiceBriefing = ({ data, lang: globalLang, t }) => {
     const generateBriefingText = () => {
         if (!data) return globalLang.startsWith('ko') ? "데이터가 없습니다." : "No data available.";
         
-        if (globalLang.startsWith('ko')) {
-            return `위험 요인 분석 결과입니다. 현재 예상 손실액은 ${data.expectedLoss} 달러이며, 95퍼센트 신뢰 수준에서의 최대 예상 손실인 바아는 ${data.var95} 달러입니다. 종합적인 위험 등급은 ${data.riskLevel} 입니다.`;
-        } else {
-            return `Current risk analysis report. The Expected Loss is ${data.expectedLoss} dollars, and the Value at Risk with 95 percent confidence is ${data.var95} dollars. The overall risk level is ${data.riskLevel}.`;
-        }
+        return `${t('voice_briefing_prefix')} ${data.expectedLoss} ${t('currency_label_full')}${t('voice_briefing_infix')} ${data.var95} ${t('currency_label_full')}${t('voice_briefing_suffix').replace('{{riskLevel}}', data.riskLevel)}`;
     };
 
     const speak = () => {

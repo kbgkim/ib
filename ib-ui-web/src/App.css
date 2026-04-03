@@ -569,3 +569,65 @@ h1, h2, h3 {
     -webkit-text-fill-color: transparent;
 }
 
+.export-report-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 24px;
+    background: rgba(0, 210, 255, 0.12);
+    border: 1px solid rgba(0, 210, 255, 0.3);
+    border-radius: 14px;
+    color: var(--neon-blue);
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.export-report-btn:hover {
+    background: rgba(0, 210, 255, 0.25);
+    border-color: var(--neon-blue);
+    box-shadow: 0 0 25px rgba(0, 210, 255, 0.3);
+    transform: translateY(-2px);
+    color: #fff;
+}
+
+.export-report-btn svg {
+    filter: drop-shadow(0 0 5px rgba(0, 210, 255, 0.5));
+}
+
+.value-pulse {
+    animation: value-glow 1s ease-out;
+}
+
+@keyframes value-glow {
+    0% { color: var(--neon-blue); text-shadow: 0 0 15px var(--neon-blue); transform: scale(1.05); }
+    100% { color: inherit; text-shadow: none; transform: scale(1); }
+}
+
+.market-rate-box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 800;
+    color: #94a3b8;
+}
+
+.market-rate-label {
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0.6;
+}
+
+.market-rate-value {
+    color: var(--neon-blue);
+    font-variant-numeric: tabular-nums;
+}
+

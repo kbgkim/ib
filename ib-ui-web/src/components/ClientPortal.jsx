@@ -4,7 +4,7 @@ import MarketTicker from './MarketTicker';
 import AdvisorPanel from './AdvisorPanel';
 import InvestorTierCard from './InvestorTierCard';
 
-const ClientPortal = ({ dealId = "DEAL-TITAN-2024", valuation, esgScore, t, lang, onToggleLang }) => {
+const ClientPortal = ({ dealId = "DEAL-TITAN-2024", valuation, esgScore, t, lang, onToggleLang, formatCurrency }) => {
     const [isAuthorized, setIsAuthorized] = useState(false);
     const [isScanning, setIsScanning] = useState(false);
     const [passcode, setPasscode] = useState("");
@@ -123,7 +123,7 @@ const ClientPortal = ({ dealId = "DEAL-TITAN-2024", valuation, esgScore, t, lang
                         </button>
                     </div>
                     <button className="export-report-btn" onClick={() => window.open(`http://localhost:8080/api/v1/mna/report/download/${dealId}`)}>
-                        <FileText size={18} /> {t('report_pdf')}
+                        <FileText size={18} /> {formatCurrency(valuation / 1000)} {/* Converting M to B for formatCurrency */}
                     </button>
                 </div>
             </nav>
@@ -163,7 +163,9 @@ const ClientPortal = ({ dealId = "DEAL-TITAN-2024", valuation, esgScore, t, lang
                                         <label>{t('target_valuation_npv')}</label>
                                         <BarChart size={16} color="#475569" />
                                     </div>
-                                    <div className="value">{valuation ? `${valuation.toLocaleString(undefined, { maximumFractionDigits: 1 })}${t('unit_m')}` : `4,250.2${t('unit_m')}`} <small style={{fontSize: '14px', color: '#475569'}}>{t('unit_usd')}</small></div>
+                                    <div className="value">
+                                        {formatCurrency(valuation / 1000)}
+                                    </div>
                                     <div style={{ marginTop: '8px', fontSize: '10px', color: '#10b981', fontWeight: '800' }}>• {t('tax_netting_applied')}</div>
                                 </div>
                                 <div className="kpi-card" style={{ background: 'rgba(16, 185, 129, 0.05)', border: '1px solid rgba(16, 185, 129, 0.1)' }}>

@@ -4,7 +4,7 @@ import { TrendingUp, TrendingDown, Minus, Clock } from 'lucide-react';
 
 const API_BASE = 'http://localhost:8080/api/v1/market';
 
-const MarketTicker = ({ t }) => {
+const MarketTicker = ({ t, onRateUpdate }) => {
     const [data, setData] = useState(null);
     const [prevData, setPrevData] = useState(null);
     const [lastUpdated, setLastUpdated] = useState(new Date());
@@ -16,6 +16,11 @@ const MarketTicker = ({ t }) => {
                 setPrevData(data);
                 setData(res.data);
                 setLastUpdated(new Date());
+                
+                // Notify parent of exchange rate update
+                if (res.data.usdkrw && onRateUpdate) {
+                    onRateUpdate(res.data.usdkrw);
+                }
             } catch (err) {
                 console.error("Market Feed Error:", err);
             }
@@ -103,7 +108,7 @@ const MarketTicker = ({ t }) => {
                 {renderItem(t('usd_krw'), "usdkrw")}
                 {renderItem(t('credit_spread'), "creditSpread", "bps")}
                 {renderItem(t('carbon_price'), "carbonPrice")}
-                {renderItem(t('wti_oil'), "wti", "$")}
+                {renderItem(t('wti_oil'), "wti", t('currency_symbol'))}
             </div>
             <div className="ticker-time">
                 <Clock size={12} />

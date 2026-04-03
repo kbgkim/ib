@@ -25,7 +25,7 @@
     - [x] `Project_Management/Draft_Purification_Map.md` 작성 완료
     - [x] M&A 및 VDR 연동 로직 설계 반영
     - [x] ML 마이크로서비스 및 피처 스토어 구조 반영
-- [/] 8. 2단계: 레이어별 정규 사양서 고도화 (Refined Production)
-    - [ ] `Formal_Specs/03_Risk_Analysis/Risk_Monitoring_Spec.md` 예정
-    - [ ] `Formal_Specs/04_Logical_Models/Predictive_Logic_Spec.md` 예정
-    - [ ] `Formal_Specs/05_Market_Ops/System_Integration_Spec.md` 예정
+- [x] 8. 2단계: 레이어별 정규 사양서 고도화 (Refined Production)
+    - [x] `Formal_Specs/03_Risk_Engines/Risk_Propagation_Spec.md` 작성 완료
+    - [x] `Formal_Specs/04_Models_Algorithms/Auto_Hedging_Strategy_Spec.md` 작성 완료
+    - [x] `Formal_Specs/00_System_Architecture/Security_Governance_Spec.md` 작성 완료

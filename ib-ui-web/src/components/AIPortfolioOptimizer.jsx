@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Target, Zap, ArrowRight, CheckCircle, RefreshCcw, Info } from 'lucide-react';
 
-const AIPortfolioOptimizer = ({ scenario, currentWeights, t, onApply }) => {
+const AIPortfolioOptimizer = ({ scenario, currentWeights, t, onApply, formatCurrency }) => {
   const [loading, setLoading] = useState(false);
   const [recommendation, setRecommendation] = useState(null);
   const [error, setError] = useState(null);
@@ -138,16 +138,16 @@ const AIPortfolioOptimizer = ({ scenario, currentWeights, t, onApply }) => {
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
                 <div>
                     <div style={{ fontSize: '11px', color: '#475569', marginBottom: '6px', fontWeight: '700' }}>{t('variable_fee')}</div>
-                    <div style={{ fontSize: '18px', fontWeight: '900', color: '#94a3b8' }}>${recommendation.total_fees}M</div>
+                    <div style={{ fontSize: '18px', fontWeight: '900', color: '#94a3b8' }}>{formatCurrency(recommendation.total_fees, 'M')}</div>
                 </div>
                 <div>
                     <div style={{ fontSize: '11px', color: '#475569', marginBottom: '6px', fontWeight: '700' }}>{t('estimated_tax_lbl')}</div>
-                    <div style={{ fontSize: '18px', fontWeight: '900', color: 'var(--risk-d)' }}>${recommendation.estimated_tax}M</div>
+                    <div style={{ fontSize: '18px', fontWeight: '900', color: 'var(--risk-d)' }}>{formatCurrency(recommendation.estimated_tax, 'M')}</div>
                 </div>
             </div>
             <div style={{ marginTop: '16px', paddingTop: '16px', borderTop: '1px solid rgba(255,255,255,0.05)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <span style={{ fontSize: '14px', color: '#fff', fontWeight: '900' }}>{t('net_portfolio_impact')}</span>
-                <span style={{ fontSize: '22px', fontWeight: '900', color: 'var(--risk-d)' }}>-${recommendation.net_impact_aum}M</span>
+                <span style={{ fontSize: '22px', fontWeight: '900', color: 'var(--risk-d)' }}>-{formatCurrency(recommendation.net_impact_aum, 'M')}</span>
             </div>
           </div>
 

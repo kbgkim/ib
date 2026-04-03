@@ -172,11 +172,11 @@ const RiskEvaluationForm = ({ onResult, t, lang }) => {
              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
                 <div>
                    <div style={{ fontSize: '10px', color: '#94a3b8' }}>{t('expected_loss')}</div>
-                   <div style={{ fontSize: '14px', fontWeight: 'bold', color: '#e2e8f0' }}>${result.advancedRisk.expectedLoss}</div>
+                   <div style={{ fontSize: '14px', fontWeight: 'bold', color: '#e2e8f0' }}>{t('currency_symbol')}{result.advancedRisk.expectedLoss}</div>
                 </div>
-                <div>
-                   <div style={{ fontSize: '10px', color: '#94a3b8' }}>{t('value_at_risk')}</div>
-                   <div style={{ fontSize: '14px', fontWeight: 'bold', color: '#ef4444' }}>${result.advancedRisk.var95}</div>
+                <div className="metric-item">
+                   <div style={{ fontSize: '12px', color: '#94a3b8' }}>{t('value_at_risk')}</div>
+                   <div style={{ fontSize: '14px', fontWeight: 'bold', color: '#ef4444' }}>{t('currency_symbol')}{result.advancedRisk.var95}</div>
                 </div>
              </div>
           </div>

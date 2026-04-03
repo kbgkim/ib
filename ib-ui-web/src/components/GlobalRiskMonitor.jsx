@@ -85,13 +85,13 @@ const GlobalRiskMonitor = ({ t }) => {
         <div>
            <h2 style={{ fontSize: '28px', fontWeight: '900', margin: 0, display: 'flex', alignItems: 'center', gap: '16px' }}>
              <Globe size={32} color="var(--neon-blue)" />
-             <span className="text-gradient">GLOBAL COMMAND CENTER</span>
+             <span className="text-gradient">{t('global_command_center')}</span>
            </h2>
-           <p style={{ opacity: 0.6, fontSize: '14px', marginTop: '8px' }}>Real-time Risk Propagation & Asset Monitoring</p>
+           <p style={{ opacity: 0.6, fontSize: '14px', marginTop: '8px' }}>{t('global_monitor_subtitle')}</p>
         </div>
         <div style={{ display: 'flex', gap: '16px' }}>
-            <div className="stat-badge"><Activity size={16} /> LIVE DATA TUNNEL</div>
-            <div className="stat-badge"><ShieldCheck size={16} /> MESH SECURE</div>
+            <div className="stat-badge"><Activity size={16} /> {t('live_data_tunnel_lbl')}</div>
+            <div className="stat-badge"><ShieldCheck size={16} /> {t('mesh_secure_lbl')}</div>
         </div>
       </div>
 
@@ -108,7 +108,7 @@ const GlobalRiskMonitor = ({ t }) => {
                     color: ecoMode ? 'var(--neon-green)' : '#94a3b8', fontSize: '10px', fontWeight: '900', cursor: 'pointer'
                 }}
              >
-               ECO MODE: {ecoMode ? 'ON' : 'OFF'}
+               {t('eco_mode')}: {ecoMode ? t('on') : t('off')}
              </button>
           </div>
           <ComposableMap projectionConfig={{ scale: 200 }}>
@@ -172,16 +172,16 @@ const GlobalRiskMonitor = ({ t }) => {
                     y={-20}
                     style={{ fontSize: "10px", fontWeight: "900", fill: "#fff", pointerEvents: "none", textShadow: "0 0 10px #000" }}
                   >
-                    {asset.name}
+                    {t(asset.name)}
                   </text>
                 </Marker>
               );
             })}
           </ComposableMap>
 
-          {isSimulating && (
+           {isSimulating && (
               <div style={{ position: 'absolute', top: '20px', left: '20px', background: 'rgba(255, 0, 60, 0.2)', padding: '12px 24px', borderRadius: '12px', border: '1px solid #ff003c', color: '#ff003c', fontWeight: '900', fontSize: '12px', animation: 'blink 1s infinite' }}>
-                  PROPAGATING RISK SHOCK...
+                  {t('propagating_risk_shock')}
               </div>
           )}
         </div>
@@ -197,8 +197,8 @@ const GlobalRiskMonitor = ({ t }) => {
                                 {res.distance === 0 ? <Zap size={18} color={getRiskColor(res.riskImpact)} /> : <AlertTriangle size={18} color={getRiskColor(res.riskImpact)} />}
                             </div>
                             <div style={{ flex: 1 }}>
-                                <div style={{ fontSize: '14px', fontWeight: '800' }}>{res.assetName || res.assetId}</div>
-                                <div style={{ fontSize: '12px', opacity: 0.5 }}>{res.distance === 0 ? "Origin Point" : `Chain Level ${res.distance}`}</div>
+                                <div style={{ fontSize: '14px', fontWeight: '800' }}>{t(res.assetName || res.assetId)}</div>
+                                <div style={{ fontSize: '12px', opacity: 0.5 }}>{res.distance === 0 ? t('origin_point') : t('chain_level', { level: res.distance })}</div>
                             </div>
                             <div style={{ fontSize: '18px', fontWeight: '900', color: getRiskColor(res.riskImpact) }}>
                                 {res.riskImpact.toFixed(1)}
@@ -206,18 +206,18 @@ const GlobalRiskMonitor = ({ t }) => {
                         </div>
                     )) : (
                         <div style={{ padding: '40px 0', textAlign: 'center', opacity: 0.4 }}>
-                            <p style={{ fontSize: '14px' }}>Click an asset node to simulate risk propagation</p>
+                            <p style={{ fontSize: '14px' }}>{t('simulate_risk_desc')}</p>
                         </div>
                     )}
                 </div>
             </div>
 
             <div className="glass-panel" style={{ padding: '24px', background: 'linear-gradient(135deg, rgba(0, 242, 255, 0.05), transparent)' }}>
-                <h4 style={{ margin: '0 0 12px', fontSize: '14px', color: 'var(--neon-blue)' }}>RECOMMENDED ACTION</h4>
+                <h4 style={{ margin: '0 0 12px', fontSize: '14px', color: 'var(--neon-blue)' }}>{t('recommended_action')}</h4>
                 <p style={{ fontSize: '13px', lineHeight: '1.6', opacity: 0.8 }}>
                     {simulationResults.length > 0 ? 
-                        "Immediate liquidity buffer required in EMEA region due to cascading supply chain shock. Rebalance portfolio weight from 'Energy' to 'Tech Defense'." :
-                        "Monitoring nominal. All global asset risk channels are currently within safe thresholds."
+                        t('cascading_shock_msg') :
+                        t('nominal_monitoring_msg')
                     }
                 </p>
             </div>

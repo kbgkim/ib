@@ -203,7 +203,7 @@ const WaterfallTable = ({ data, t }) => {
 };
 
 // Main PF Dashboard Component
-const PfDashboard = ({ t, lang, riskData }) => {
+const PfDashboard = ({ t, lang, riskData, marketRate, formatCurrency }) => {
   const [metrics, setMetrics] = useState(null);
   const [waterfall, setWaterfall] = useState(null);
   const [sensitivity, setSensitivity] = useState(null);
@@ -424,7 +424,9 @@ const PfDashboard = ({ t, lang, riskData }) => {
                 {project?.dealType}
               </span>
               <span style={{ fontSize: '11px', color: '#94a3b8' }}>
-                {t('total_project_cost')} <span style={{color: '#fff', fontWeight: '900'}}>{project?.totalCapex?.toLocaleString()}</span> {t('unit_bkrw')}
+                {t('total_project_cost')} <span style={{color: '#fff', fontWeight: '900'}}>
+                    {formatCurrency(project?.totalCapex / marketRate * 1000 / 1000)}
+                </span>
               </span>
             </div>
           </div>
@@ -507,11 +509,15 @@ const PfDashboard = ({ t, lang, riskData }) => {
              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                 <div className="metric-card">
                   <span className="label">{t('annual_debt_service')}</span>
-                  <span className="value" style={{color: 'var(--accent-blue)', fontSize: '28px'}}>{metrics?.annualDebtService?.toLocaleString()} <span style={{fontSize: '14px'}}>{t('unit_bkrw')}</span></span>
+                  <span className="value" style={{color: 'var(--accent-blue)', fontSize: '28px'}}>
+                    {formatCurrency(metrics?.annualDebtService / marketRate * 10, 'B')}
+                  </span>
                 </div>
                 <div className="metric-card">
                   <span className="label">{t('total_debt_balance')}</span>
-                  <span className="value" style={{color: '#94a3b8', fontSize: '28px'}}>{metrics?.totalDebt?.toLocaleString()} <span style={{fontSize: '14px'}}>{t('unit_bkrw')}</span></span>
+                  <span className="value" style={{color: '#94a3b8', fontSize: '28px'}}>
+                    {formatCurrency(metrics?.totalDebt / marketRate * 10, 'B')}
+                  </span>
                 </div>
                 <div className="metric-card">
                   <span className="label">{t('avg_ops_dscr')}</span>

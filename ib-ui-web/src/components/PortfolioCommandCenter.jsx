@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { LayoutGrid, Globe, TrendingUp, ShieldAlert, BarChart, Server, Zap, ArrowDownRight, ArrowUpRight } from 'lucide-react';
 import AIPortfolioOptimizer from './AIPortfolioOptimizer';
 
-const PortfolioCommandCenter = ({ t, lang }) => {
+const PortfolioCommandCenter = ({ t, lang, marketRate, isRateChanging, formatCurrency }) => {
   const [selectedScenario, setSelectedScenario] = useState('NORMAL');
   const [impactData, setImpactData] = useState({ aumChange: 0, dscrChange: 0, riskAdjust: 0 });
   const [weights, setWeights] = useState({
@@ -49,7 +49,7 @@ const PortfolioCommandCenter = ({ t, lang }) => {
         <div className="glass-panel stat-card">
           <div className="stat-label">{t('total_aum')}</div>
           <div style={{ display: 'flex', alignItems: 'flex-end', gap: '12px' }}>
-            <span className="stat-value">{t('unit_usd') === 'USD' ? '$' : ''}{(4.2 + (impactData.aumChange || 0)).toFixed(2)}{t('unit_b')}</span>
+            <span className={`stat-value ${isRateChanging ? 'value-pulse' : ''}`}>{formatCurrency(4.2 + (impactData.aumChange || 0))}</span>
             {impactData.aumChange !== 0 && (
               <span style={{ fontSize: '14px', color: impactData.aumChange > 0 ? 'var(--risk-aa)' : 'var(--risk-d)', display: 'flex', alignItems: 'center', marginBottom: '8px', fontWeight: '800' }}>
                 {impactData.aumChange > 0 ? <ArrowUpRight size={16} /> : <ArrowDownRight size={16} />}
@@ -113,6 +113,7 @@ const PortfolioCommandCenter = ({ t, lang }) => {
                 currentWeights={weights} 
                 t={t} 
                 onApply={handleApplyRebalance} 
+                formatCurrency={formatCurrency}
             />
         </div>
 
@@ -143,7 +144,9 @@ const PortfolioCommandCenter = ({ t, lang }) => {
                  </div>
                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px' }}>
                     <span style={{ color: '#94a3b8', fontWeight: '600' }}>{t('valuation_delta_label')}</span>
-                    <span style={{ color: impactData.aumChange < 0 ? 'var(--risk-d)' : '#fff', fontWeight: '800' }}>{t('unit_usd') === 'USD' ? '$' : ''}{(impactData.aumChange * 1000).toFixed(0)}{t('unit_m')}</span>
+                     <span style={{ color: impactData.aumChange < 0 ? 'var(--risk-d)' : '#fff', fontWeight: '800' }}>
+                        {formatCurrency(impactData.aumChange * 1000, 'M')}
+                     </span>
                  </div>
               </div>
            </div>

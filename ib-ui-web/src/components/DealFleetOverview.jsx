@@ -1,7 +1,7 @@
 import React from 'react';
 import { Briefcase, TrendingUp, Shield, BarChart2, ArrowRight, Clock, MapPin, Users } from 'lucide-react';
 
-const DealFleetOverview = ({ onSelectProject, t }) => {
+const DealFleetOverview = ({ onSelectProject, t, formatCurrency }) => {
   const deals = [
     {
       id: 'PF-001',
@@ -79,7 +79,7 @@ const DealFleetOverview = ({ onSelectProject, t }) => {
             <div style={{ fontSize: '10px', color: '#64748b', fontWeight: '800', textTransform: 'uppercase', marginBottom: '4px' }}>
                 {t('total_aum')}
             </div>
-            <div style={{ fontSize: '20px', fontWeight: '900', color: '#fff' }}>$4.2B</div>
+            <div style={{ fontSize: '20px', fontWeight: '900', color: '#fff' }}>{formatCurrency(4.2)}</div>
           </div>
           <div className="glass-panel" style={{ padding: '16px 24px', borderRadius: '16px', textAlign: 'right' }}>
             <div style={{ fontSize: '10px', color: '#64748b', fontWeight: '800', textTransform: 'uppercase', marginBottom: '4px' }}>

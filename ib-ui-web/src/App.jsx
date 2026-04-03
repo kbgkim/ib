@@ -38,8 +38,40 @@ function App() {
   const [lang, setLang] = useState('ko');
   const [notifications, setNotifications] = useState([]);
   const [showNotifInbox, setShowNotifInbox] = useState(false);
+  const [marketRate, setMarketRate] = useState(1510.5);
+  const [isRateChanging, setIsRateChanging] = useState(false);
 
-  const t = (key) => translations[lang][key] || key;
+  const t = (key, options = {}) => {
+    let text = translations[lang][key] || key;
+    Object.keys(options).forEach(opt => {
+      text = text.replace(`{{${opt}}}`, options[opt]);
+    });
+    return text;
+  };
+
+  const handleRateUpdate = (newRate) => {
+    if (newRate !== marketRate) {
+      setIsRateChanging(true);
+      setMarketRate(newRate);
+      setTimeout(() => setIsRateChanging(false), 1000);
+    }
+  };
+
+  const formatCurrency = (val, unit = 'B') => {
+    if (lang === 'en') {
+      return unit === 'B' ? `$${val.toFixed(2)}B` : `$${val.toFixed(1)}M`;
+    } else {
+      if (unit === 'B') {
+        // KRW Localization: val (in USD B) * marketRate / 1000 = Trillion KRW (조)
+        const converted = (val * marketRate) / 1000;
+        return `₩${converted.toFixed(2)}조`;
+      } else {
+        // KRW Localization: val (in USD M) * marketRate / 100 = Hundred Million KRW (억)
+        const converted = (val * marketRate) / 100;
+        return `₩${converted.toLocaleString(undefined, { maximumFractionDigits: 1 })}억`;
+      }
+    }
+  };
 
   const handleSelectProject = (id) => {
     setSelectedProjectId(id);
@@ -146,6 +178,7 @@ function App() {
         t={t}
         lang={lang}
         onToggleLang={() => setLang(lang === 'ko' ? 'en' : 'ko')}
+        formatCurrency={formatCurrency}
       />
     );
   }
@@ -216,7 +249,7 @@ function App() {
       </aside>
       
       <main className="main-content">
-        <MarketTicker t={t} />
+        <MarketTicker t={t} onRateUpdate={handleRateUpdate} />
         
         <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '40px' }}>
           <div>
@@ -232,8 +265,17 @@ function App() {
           </div>
           
           <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+            {/* Live Market Rate */}
+            <div className="market-rate-box">
+                <span className="market-rate-label">{t('usd_krw')}</span>
+                <span className={`market-rate-value ${isRateChanging ? 'value-pulse' : ''}`}>
+                    ₩{marketRate.toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                </span>
+                <div className="pulse-glow" style={{ width: '6px', height: '6px', background: 'var(--neon-blue)', borderRadius: '50%' }} />
+            </div>
+
             {/* Language Toggle */}
-            <button className="lang-toggle" onClick={() => setLang(lang === 'ko' ? 'en' : 'ko')}>
+            <button className="lang-toggle" onClick={() => setLang(lang === 'ko' ? 'en' : 'ko')} style={{ minWidth: '80px' }}>
                 <Globe size={16} /> {lang.toUpperCase()}
             </button>
 
@@ -265,7 +307,7 @@ function App() {
             )}
 
             {(view === 'detail' || view === 'command') && (
-              <button className="export-report-btn" onClick={handleExportReport} style={{ background: view === 'command' ? 'rgba(59, 130, 246, 0.2)' : '' }}>
+              <button className="export-report-btn" onClick={handleExportReport}>
                 <FileDown size={18} /> {view === 'command' ? t('portfolio_report') : t('intelligence_report')}
               </button>
             )}
@@ -274,10 +316,14 @@ function App() {
 
         {view === 'fleet' ? (
           <div style={{ padding: '24px' }}>
-            <DealFleetOverview onSelectProject={handleSelectProject} t={t} />
+            <DealFleetOverview 
+              onSelectProject={handleSelectProject} 
+              t={t} 
+              formatCurrency={formatCurrency}
+            />
           </div>
         ) : view === 'command' ? (
-          <PortfolioCommandCenter t={t} lang={lang} />
+          <PortfolioCommandCenter t={t} lang={lang} marketRate={marketRate} isRateChanging={isRateChanging} formatCurrency={formatCurrency} />
         ) : view === 'monitoring' ? (
           <GlobalRiskMonitor t={t} />
         ) : (
@@ -301,7 +347,9 @@ function App() {
                   <ValuationWaterfall 
                     data={weightedValuation} 
                     scenarios={scenarioData}
-                    t={t} 
+                    t={t}
+                    lang={lang}
+                    formatCurrency={formatCurrency}
                   />
                   <div style={{ marginTop: '24px' }}>
                     <RiskRadarChart data={riskProfile} t={t} />
@@ -315,6 +363,8 @@ function App() {
                   t={t} 
                   lang={lang} 
                   riskData={riskProfile} 
+                  marketRate={marketRate}
+                  formatCurrency={formatCurrency}
                 />
               </div>
             )}

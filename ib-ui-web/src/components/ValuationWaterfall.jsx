@@ -8,7 +8,7 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
  * Premium Waterfall Chart with Sensitivity Range (Error Bars)
  * Displays weighted average results and Bear~Bull range
  */
-const ValuationWaterfall = ({ data, scenarios, t }) => {
+const ValuationWaterfall = ({ data, scenarios, t, lang, formatCurrency }) => {
   // data = [base, cost, rev, integ, post]
   const [base, cost, rev, integ, post] = data || [2000, 0, 0, -200, 1800];
 
@@ -117,7 +117,7 @@ const ValuationWaterfall = ({ data, scenarios, t }) => {
           label: (context) => {
             const range = context.raw;
             const diff = (range[1] - range[0]).toFixed(1);
-            return `${t('weighted_avg_delta')}: ${diff > 0 ? '+' : ''}${diff}M (Result: $${range[1].toFixed(1)}M)`;
+            return `${t('weighted_avg_delta')}: ${diff > 0 ? '+' : ''}${diff}M (Result: ${formatCurrency(range[1] / 1000)})`;
           }
         }
       }
