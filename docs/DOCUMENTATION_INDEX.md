@@ -29,4 +29,4 @@
 - **트러블슈팅 로그 (Troubleshooting)**: [Technical_Troubleshooting_Log.md](file:///home/kbgkim/antigravity/projects/ib/docs/Technical_Troubleshooting_Log.md)
 
 ---
-> Last Audit Date: 2026-04-01 | Auditor: Antigravity AI
+> Last Audit Date: 2026-04-01 | Auditor: BongGeon KIm

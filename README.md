@@ -92,4 +92,4 @@ graph TD
 본 플랫폼은 **학습 및 연구용 알고리즘 시뮬레이션 목적**으로 제작되었습니다. 시스템에서 제공되는 모든 가치 산정 및 리스크 지표는 입력된 가상의 데이터와 알고리즘 결과물이며, 실제 투자 자문이나 금융 결정 용도로 사용될 수 없습니다.
 
 ---
-> Last Updated: 2026-04-03 | Maintainer: Antigravity AI Team
+> Last Updated: 2026-04-03 | Maintainer: BongGeon KIm

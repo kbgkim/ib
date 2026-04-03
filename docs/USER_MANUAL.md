@@ -8,6 +8,9 @@
 
 IB 통합 플랫폼은 고도의 보안 환경을 시뮬레이션하며, 첫 접속 시 고액 자산가 전용 보안 스캔 애니메이션과 함께 시작됩니다. 메인 대시보드에서는 전체 포트폴리오의 리스크 상태와 핵심 지표를 한눈에 확인할 수 있습니다.
 
+- **대표 화면**:
+  > ![Integrated Strategy Monitor](./images/integrated_strategy_monitor.jpg)
+
 ---
 
 ## 2. 주요 화면별 가이드 (Feature Guide)
@@ -20,7 +23,7 @@ IB 통합 플랫폼은 고도의 보안 환경을 시뮬레이션하며, 첫 접
     - **딜 진행률 (Deal Progress)**: 각 프로젝트의 현재 단계(Due Diligence, Planning 등) 시각화.
     - **리스크 등급**: Safe, Warning, Caution, Breach 등 4단계 리스크 분류.
 - **이미지 가이드**:
-  > ![Deal Fleet Overview Screen](./images/deal_fleet_overview.png)
+  > ![Deal Fleet Overview Screen](./images/deal_fleet_overview.jpg)
 
 ---
 
@@ -34,7 +37,7 @@ IB 통합 플랫폼은 고도의 보안 환경을 시뮬레이션하며, 첫 접
     - **Tornado Sensitivity Analysis**: Capex, OpEx, 매출 변동 시 평균 DSCR에 미치는 임팩트 시각화.
     - **Scenario Snapshot**: 현재 시뮬레이션 결과를 저장하거나 과거 기록을 로드하여 비교 분석.
 - **이미지 가이드**:
-  > ![PF Dashboard Screen](./images/pf_dashboard.png)
+  > ![PF Dashboard Screen](./images/pf_dashboard.jpg)
 
 ---
 
@@ -46,7 +49,7 @@ IB 통합 플랫폼은 고도의 보안 환경을 시뮬레이션하며, 첫 접
     - **Synergy Input Module**: 비용/매출 시너지 항목을 실시간으로 추가하여 통합 가치 변동 확인.
     - **Valuation Waterfall Chart**: 현재 가치에서 시너지 및 비용 반영을 거쳐 최종 가치에 이르는 과정을 시각화.
 - **이미지 가이드**:
-  > ![M&A Valuation Screen](./images/ma_valuation.png)
+  > ![M&A Valuation Screen](./images/ma_valuation.jpg)
 
 ---
 
@@ -57,7 +60,7 @@ IB 통합 플랫폼은 고도의 보안 환경을 시뮬레이션하며, 첫 접
     - **Risk Propagation Chain**: 특정 자산에 충격(Shock) 발생 시, 상호 의존 관계에 있는 다른 자산으로 리스크가 전파되는 과정을 시뮬레이션.
     - **Intelligent Auto-Hedging**: AI 어드바이저가 리스크 완화를 위해 FX 스왑, CDS 등 최적의 헤징 전략을 추천하며, 센티넬 모드 활성화 시 자동 실행.
 - **이미지 가이드**:
-  > ![Global Risk Monitor Screen](./images/global_risk_monitor.png)
+  > ![Global Risk Monitor Screen](./images/global_risk_monitor.jpg)
 
 ---
 
@@ -67,7 +70,7 @@ IB 통합 플랫폼은 고도의 보안 환경을 시뮬레이션하며, 첫 접
 - **Aura AI Advisor**: 법률, 재무, 운영 전문가 에이전트들의 합의 과정을 거친 최종 전략 권고안을 실시간 제공.
 - **PDF Report**: 분석된 모든 데이터를 전문적인 투자 보고서 형태로 즉시 생성 및 다운로드.
 - **이미지 가이드**:
-  > ![Stakeholder Portal Screen](./images/stakeholder_portal.png)
+  > ![Stakeholder Portal Screen](./images/stakeholder_portal.jpg)
 
 ---
 
@@ -89,4 +92,4 @@ IB 통합 플랫폼은 고도의 보안 환경을 시뮬레이션하며, 첫 접
 > - 기능별 상세 설계 논리는 [상세 설계 문서(Deep Dive)](file:///home/kbgkim/antigravity/projects/ib/docs/DOCUMENTATION_INDEX.md)에서 확인할 수 있습니다.
 
 ---
-> Last Updated: 2026-04-03 | Maintainer: Antigravity AI Team
+> Last Updated: 2026-04-03 | Maintainer: BongGeon KIm
