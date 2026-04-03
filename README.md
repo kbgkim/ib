@@ -72,9 +72,9 @@ graph TD
 
 ## 📚 관련 문서 (Documentation)
 
-- **[사용자 매뉴얼 (User Manual)](file:///home/kbgkim/antigravity/projects/ib/docs/USER_MANUAL.md)**: 비즈니스 관점의 기능 가이드 및 화면별 설명.
-- **[운영자 매뉴얼 (Admin Manual)](file:///home/kbgkim/antigravity/projects/ib/docs/ADMIN_MANUAL.md)**: 기술 아키텍처, 설치 및 배포 구동 가이드.
-- **[전체 문서 색인 (Documentation Index)](file:///home/kbgkim/antigravity/projects/ib/docs/DOCUMENTATION_INDEX.md)**: Phase 1부터 18까지의 상세 설계 기록.
+- **[사용자 매뉴얼 (User Manual)](./docs/USER_MANUAL.md)**: 비즈니스 관점의 기능 가이드 및 화면별 설명.
+- **[운영자 매뉴얼 (Admin Manual)](./docs/ADMIN_MANUAL.md)**: 기술 아키텍처, 설치 및 배포 구동 가이드.
+- **[전체 문서 색인 (Documentation Index)](./docs/DOCUMENTATION_INDEX.md)**: Phase 1부터 18까지의 상세 설계 기록.
 
 ---
 
