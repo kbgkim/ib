@@ -20,7 +20,7 @@ IB 통합 플랫폼은 고도의 보안 환경을 시뮬레이션하며, 첫 접
     - **딜 진행률 (Deal Progress)**: 각 프로젝트의 현재 단계(Due Diligence, Planning 등) 시각화.
     - **리스크 등급**: Safe, Warning, Caution, Breach 등 4단계 리스크 분류.
 - **이미지 가이드**:
-  > [![Deal Fleet Overview Screenshot Placeholder](https://via.placeholder.com/800x400?text=Deal+Fleet+Overview+Screenshot+Placeholder)]
+  > ![Deal Fleet Overview Screen](./images/deal_fleet_overview.png)
 
 ---
 
@@ -34,7 +34,7 @@ IB 통합 플랫폼은 고도의 보안 환경을 시뮬레이션하며, 첫 접
     - **Tornado Sensitivity Analysis**: Capex, OpEx, 매출 변동 시 평균 DSCR에 미치는 임팩트 시각화.
     - **Scenario Snapshot**: 현재 시뮬레이션 결과를 저장하거나 과거 기록을 로드하여 비교 분석.
 - **이미지 가이드**:
-  > [![PF Dashboard Screenshot Placeholder](https://via.placeholder.com/800x400?text=PF+Dashboard+Screenshot+Placeholder)]
+  > ![PF Dashboard Screen](./images/pf_dashboard.png)
 
 ---
 
@@ -46,7 +46,7 @@ IB 통합 플랫폼은 고도의 보안 환경을 시뮬레이션하며, 첫 접
     - **Synergy Input Module**: 비용/매출 시너지 항목을 실시간으로 추가하여 통합 가치 변동 확인.
     - **Valuation Waterfall Chart**: 현재 가치에서 시너지 및 비용 반영을 거쳐 최종 가치에 이르는 과정을 시각화.
 - **이미지 가이드**:
-  > [![M&A Valuation Engine Screenshot Placeholder](https://via.placeholder.com/800x400?text=M&A+Valuation+Engine+Screenshot+Placeholder)]
+  > ![M&A Valuation Screen](./images/ma_valuation.png)
 
 ---
 
@@ -57,7 +57,7 @@ IB 통합 플랫폼은 고도의 보안 환경을 시뮬레이션하며, 첫 접
     - **Risk Propagation Chain**: 특정 자산에 충격(Shock) 발생 시, 상호 의존 관계에 있는 다른 자산으로 리스크가 전파되는 과정을 시뮬레이션.
     - **Intelligent Auto-Hedging**: AI 어드바이저가 리스크 완화를 위해 FX 스왑, CDS 등 최적의 헤징 전략을 추천하며, 센티넬 모드 활성화 시 자동 실행.
 - **이미지 가이드**:
-  > [![Global Risk Monitor Screenshot Placeholder](https://via.placeholder.com/800x400?text=Global+Risk+Monitor+Screenshot+Placeholder)]
+  > ![Global Risk Monitor Screen](./images/global_risk_monitor.png)
 
 ---
 
@@ -67,7 +67,7 @@ IB 통합 플랫폼은 고도의 보안 환경을 시뮬레이션하며, 첫 접
 - **Aura AI Advisor**: 법률, 재무, 운영 전문가 에이전트들의 합의 과정을 거친 최종 전략 권고안을 실시간 제공.
 - **PDF Report**: 분석된 모든 데이터를 전문적인 투자 보고서 형태로 즉시 생성 및 다운로드.
 - **이미지 가이드**:
-  > [![Stakeholder Portal & Aura Screenshot Placeholder](https://via.placeholder.com/800x400?text=Stakeholder+Portal+Aura+Screenshot+Placeholder)]
+  > ![Stakeholder Portal Screen](./images/stakeholder_portal.png)
 
 ---
 
