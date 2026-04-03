@@ -266,7 +266,19 @@ export const translations = {
     status_active: "활성",
     range_label: "변동폭",
     pf_engine_error: "PF 엔진 연결 실패. 포트 8082 서버를 확인해주세요.",
-    load_scenario_btn: "로드"
+    load_scenario_btn: "로드",
+    global_monitoring: "글로벌 자산 관제",
+    risk_propagation_chain: "리스크 전파 체인",
+    asset_name: "자산 명칭",
+    propagation_impact: "전파 임팩트",
+    auto_hedging: "지능형 자동 헤징",
+    sentinel_mode: "센티넬 모드 (완전 자동)",
+    irs_hedging: "금리 스왑 (IRS)",
+    fx_hedging: "환리스크 헤지 (FX)",
+    credit_hedging: "신용 리스크 보호 (CDS)",
+    commodity_hedging: "원자재 지수 선물",
+    execute_hedge: "헤징 즉시 실행",
+    reduction_potential: "리스크 감소 잠재력"
   },
   en: {
     title: "IB Unified Platform",
@@ -554,6 +566,18 @@ export const translations = {
     status_active: "ACTIVE",
     range_label: "Range",
     pf_engine_error: "PF Engine connection failed. Please check Port 8082 server.",
-    load_scenario_btn: "Load"
+    load_scenario_btn: "Load",
+    global_monitoring: "Global Asset Monitoring",
+    risk_propagation_chain: "Risk Propagation Chain",
+    asset_name: "Asset Name",
+    propagation_impact: "Propagation Impact",
+    auto_hedging: "Intelligent Auto-Hedging",
+    sentinel_mode: "Sentinel Mode (Full-Auto)",
+    irs_hedging: "Interest Rate Swap (IRS)",
+    fx_hedging: "FX Risk Hedge",
+    credit_hedging: "Credit Risk Protection (CDS)",
+    commodity_hedging: "Commodity Futures",
+    execute_hedge: "Execute Hedge Now",
+    reduction_potential: "Reduction Potential"
   }
 };

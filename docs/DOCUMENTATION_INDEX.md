@@ -15,6 +15,9 @@
 | **Phase 12** | AI 시나리오 기반 포트폴리오 리밸런싱 로직 | [Phase12_DeepDive.md](file:///home/kbgkim/antigravity/projects/ib/docs/Phase12_Portfolio_Rebalancing_DeepDive.md) |
 | **Phase 13** | 리벨런싱 거래 비용 및 세액 상쇄(Tax Netting) 시뮬레이션 | [Phase13_DeepDive.md](file:///home/kbgkim/antigravity/projects/ib/docs/Phase13_Financial_Overhead_Tax_DeepDive.md) |
 | **Phase 14** | 프리미엄 UX 개편, 보안 스캔 및 전역 로컬라이징 상세 | [Phase14_DeepDive.md](file:///home/kbgkim/antigravity/projects/ib/docs/Phase14_Premium_UI_Localization_DeepDive.md) |
+| **Phase 15** | 글로벌 자산 모니터링 및 실시간 위험 전파 시스템 상세 | [Phase15_DeepDive.md](file:///home/kbgkim/antigravity/projects/ib/docs/Phase15_Global_Risk_Propagation_DeepDive.md) |
+| **Phase 16** | 지능형 자동 헤징(Auto-Hedging) 및 전략 실행 자동화 상세 | [Phase16_DeepDive.md](file:///home/kbgkim/antigravity/projects/ib/docs/Phase16_Auto_Hedging_DeepDive.md) |
+| **Phase 17** | 플랫폼 최적화, 보안 감사 및 최종 거버넌스 상세 | [Phase17_DeepDive.md](file:///home/kbgkim/antigravity/projects/ib/docs/Phase17_Platform_Optimization_Governance_DeepDive.md) |
 
 ## 🛠️ 공통 기술 문서 (Core Specs)
 

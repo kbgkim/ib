@@ -18,8 +18,8 @@ public class ValuationResult {
     @Column(nullable = false)
     private String method; // DCF, MULTIPLES
 
-    @Column(precision = 19, scale = 4)
-    private BigDecimal value;
+    @Column(name = "valuation_amount", precision = 19, scale = 4)
+    private BigDecimal valuationAmount;
 
     @Column(precision = 5, scale = 2)
     private BigDecimal weight; // e.g., 0.60

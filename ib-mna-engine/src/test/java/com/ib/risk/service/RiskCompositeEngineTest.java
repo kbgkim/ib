@@ -25,9 +25,12 @@ class RiskCompositeEngineTest {
     @Mock
     private com.ib.risk.integration.RiskVDRAdapter vdrAdapter;
 
+    @Mock
+    private VdrLogProcessor vdrLogProcessor;
+
     @BeforeEach
     void setUp() {
-        engine = new RiskCompositeEngine(riskMasterRepository, mlServiceClient, vdrAdapter);
+        engine = new RiskCompositeEngine(riskMasterRepository, mlServiceClient, vdrAdapter, vdrLogProcessor);
     }
 
     @Test

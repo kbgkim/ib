@@ -5,6 +5,7 @@ import com.ib.domain.entity.ValuationResult;
 import com.ib.domain.repository.SynergyRepository;
 import com.ib.domain.repository.ValuationRepository;
 import com.ib.mna.dto.ValuationBridgeResponse;
+import com.ib.mna.dto.RiskMetricResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

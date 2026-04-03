@@ -12,6 +12,7 @@ import MarketTicker from './components/MarketTicker';
 import AdvisorPanel from './components/AdvisorPanel';
 import ClientPortal from './components/ClientPortal';
 import PortfolioCommandCenter from './components/PortfolioCommandCenter';
+import GlobalRiskMonitor from './components/GlobalRiskMonitor';
 import { TrendingUp, Activity, LayoutDashboard, Database, Shield, Layers, Grid, ExternalLink, FileDown, Bell, Globe, LayoutGrid } from 'lucide-react';
 import { Chart as ChartJS } from 'chart.js';
 import { translations } from './utils/translations';
@@ -158,6 +159,14 @@ function App() {
         </div>
         <div className="nav-items">
           <div
+            className={`nav-item ${view === 'monitoring' ? 'active' : ''}`}
+            onClick={() => setView('monitoring')}
+            style={{ cursor: 'pointer' }}
+          >
+            <Globe size={20} color="var(--neon-blue)" /> 
+            <span style={{ color: 'var(--neon-blue)' }}>{t('global_monitoring')}</span>
+          </div>
+          <div
             className={`nav-item ${view === 'command' ? 'active' : ''}`}
             onClick={() => setView('command')}
             style={{ cursor: 'pointer' }}
@@ -214,6 +223,7 @@ function App() {
             <h1 className="text-gradient" style={{ fontSize: '32px', marginBottom: '4px' }}>
                 {view === 'fleet' ? t('fleet_status') : 
                  view === 'command' ? t('command_center') : 
+                 view === 'monitoring' ? t('global_monitoring') :
                  `${t('title')} / ${selectedProjectId}`}
             </h1>
             <div style={{ fontSize: '13px', color: '#64748b', fontWeight: '600' }}>
@@ -268,6 +278,8 @@ function App() {
           </div>
         ) : view === 'command' ? (
           <PortfolioCommandCenter t={t} lang={lang} />
+        ) : view === 'monitoring' ? (
+          <GlobalRiskMonitor t={t} />
         ) : (
           <div className="dashboard-grid">
             {activeTab === 'mna' ? (
