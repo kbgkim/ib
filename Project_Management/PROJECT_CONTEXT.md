@@ -110,7 +110,7 @@ Current Version: v9.0 (Gold Master + Real-time Data Sync)
 - **Real-Time Currency API**: Frankfurter API 연동을 통해 실시간 USD/KRW 환율 반영 및 Fallback 메커니즘 구축.
 - **Localization Unification**: `조/억` 단위 체계 기반의 통화 포맷팅 유틸리티 고도화 및 전 컴포넌트 확산 적용.
 - **Global UI Localization**: 글로벌 자산 관제 및 헤징 패널의 모든 영문 라벨을 한국어 표준 용어로 전수 번역.
-- **완료 리포트**: [walkthrough.md](file:///home/kbgkim/.gemini/antigravity/brain/8cda6862-6a61-4f8a-83bc-02da50e07e33/walkthrough.md) (Final Verified)
+- **완료 리포트**: [Phase18_DeepDive.md](file:///home/kbgkim/antigravity/projects/ib/docs/Phase18_RealTime_Currency_Localization_DeepDive.md) (Final Verified)
 
 ---
 
