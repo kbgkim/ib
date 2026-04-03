@@ -4,10 +4,10 @@
 
 ---
 
-## Project Context: IB Platform Integration (v9.0) - PROJECT COMPLETE
+## Project Context: IB Platform Integration (v10.0) - PUBLIC READY
 Last Updated: 2026-04-03
-Status: 🏆 PROJECT COMPLETE & VERIFIED (100%)
-Current Version: v9.0 (Gold Master + Real-time Data Sync)
+Status: 🏆 PUBLIC GITHUB READY (100%)
+Current Version: v10.0 (Final Documentation & Public Release)
 
 ## 📚 플랫폼 상세 기록 색인 (Documentation Index)
 
@@ -50,7 +50,7 @@ Current Version: v9.0 (Gold Master + Real-time Data Sync)
     - Transitioned from mock arithmetic to GBDT model.
     - XAI Feature: Top 3 Risk Factors extraction & visualization.
     - Scoring: Internal Risk Probability -> External Safety Score (100-Risk).
-*   **Operations Guide**: Created [OPERATIONS.md](file:///home/kbgkim/antigravity/projects/ib/OPERATIONS.md).
+*   **User/Admin Support**: Created [USER_MANUAL.md](file:///home/kbgkim/antigravity/projects/ib/docs/USER_MANUAL.md) and [ADMIN_MANUAL.md](file:///home/kbgkim/antigravity/projects/ib/docs/ADMIN_MANUAL.md).
 *   **Deep Dive Docs**:
     - [Interactive_Probability_Bridge_DeepDive.md](file:///home/kbgkim/antigravity/projects/ib/docs/Interactive_Probability_Bridge_DeepDive.md)
     - [ML_Model_Architecture_Rationale.md](file:///home/kbgkim/antigravity/projects/ib/docs/ML_Model_Architecture_Rationale.md)
@@ -120,4 +120,4 @@ Current Version: v9.0 (Gold Master + Real-time Data Sync)
 ---
 
 다음 세션 시작 시 AI에게 이 문장을 입력하십시오:
-> "`/home/kbgkim/antigravity/projects/ib/Project_Management/PROJECT_CONTEXT.md` 파일을 읽고 **Phase 17: 플랫폼 최적화 및 최종 보안 거버넌스 확립** 작업을 준비해줘."
+> "`/home/kbgkim/antigravity/projects/ib/Project_Management/PROJECT_CONTEXT.md` 파일을 읽고 **v10.0: 퍼블릭 릴리즈 후 유지보수** 작업을 준비해줘."
