@@ -53,4 +53,4 @@ $$\epsilon = \frac{dQ/Q}{dP/P}$$
 ---
 
 > [!TIP]
-> **실무 포인트**: 실시간 집계 결과는 [IB_Trader_Dashboard_UX_Spec.md](file:///home/kbgkim/antigravity/projects/ib-risk-worktree/Formal_Specs/05_UI_UX_Prototyping/IB_Trader_Dashboard_UX_Spec.md)의 호가창(Price Ladder)에 즉시 시각화됩니다.
+> **실무 포인트**: 실시간 집계 결과는 [IB_Trader_Dashboard_UX_Spec.md](../..-risk-worktree/Formal_Specs/05_UI_UX_Prototyping/IB_Trader_Dashboard_UX_Spec.md)의 호가창(Price Ladder)에 즉시 시각화됩니다.

@@ -64,4 +64,4 @@ graph LR
 ---
 
 > [!TIP]
-> **실무 포인트**: Allocation 시, 단순 비율보다는 투자자의 과거 행태(FLipping 여부 등)를 반영한 **점수제 배정**이 선호됩니다. 세부 알고리즘은 [Allocation_Strategy_Engine_Spec.md](file:///home/kbgkim/antigravity/projects/ib-risk-worktree/Formal_Specs/03_Risk_Engines/Allocation_Strategy_Engine_Spec.md)를 참조하십시오.
+> **실무 포인트**: Allocation 시, 단순 비율보다는 투자자의 과거 행태(FLipping 여부 등)를 반영한 **점수제 배정**이 선호됩니다. 세부 알고리즘은 [Allocation_Strategy_Engine_Spec.md](../..-risk-worktree/Formal_Specs/03_Risk_Engines/Allocation_Strategy_Engine_Spec.md)를 참조하십시오.

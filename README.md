@@ -80,23 +80,23 @@ graph TD
 ### 1. M&A Valuation Engine (`ib-mna-engine`)
 - **Interactive Probability Bridge**: 3개 시나리오(Bear, Base, Bull)별 가중치 조절 및 실시간 NPV 연동 브릿지 시각화.
 - **Synergy Analysis**: 비용/매출 시너지 실시간 주입 및 가치 변동 시뮬레이션.
-- **Deep Dive**: [M&A 엔진 설계서](file:///home/kbgkim/antigravity/projects/ib/docs/Phase01_03_Platform_Integration_DeepDive.md)
+- **Deep Dive**: [M&A 엔진 설계서](./docs/Phase01_03_Platform_Integration_DeepDive.md)
 
 ### 2. Project Finance Engine (`ib-pf-engine`)
 - **Cash Flow Waterfall**: 복잡한 대출 상환 및 배당 구조의 완벽한 모델링.
 - **Financial Ratios**: DSCR, LLCR, PLCR 등 핵심 금융 지표 실시간 산출.
 - **Tornado Sensitivity**: 주요 변수(Capex, OpEx, Revenue) 20% 변동에 따른 평균 DSCR 민감도 분석.
-- **Deep Dive**: [PF 엔진 설계서](file:///home/kbgkim/antigravity/projects/ib/docs/Phase08_09_Valuation_Risk_Engagement_DeepDive.md)
+- **Deep Dive**: [PF 엔진 설계서](./docs/Phase08_09_Valuation_Risk_Engagement_DeepDive.md)
 
 ### 3. Global Risk Monitor (`Global Asset Control`)
 - **Risk Propagation System**: 자율 주행 지도 기반의 전 세계 자산 상태 실시간 모니터링 및 리스크 전파 시뮬레이션.
 - **Intelligent Auto-Hedging**: 리스크 임계점 도달 시 FX 스왑, CDS, 대출 금리 조정 등 전략 자동 추천 및 실행.
-- **Deep Dive**: [글로벌 리버넌스 상세](file:///home/kbgkim/antigravity/projects/ib/docs/Phase15_Global_Risk_Propagation_DeepDive.md)
+- **Deep Dive**: [글로벌 리버넌스 상세](./Phase15_Global_Risk_Propagation_DeepDive.md)
 
 ### 4. Machine Learning & Intelligence (`ib-ml-engine`)
 - **GBDT-based Scoring**: LightGBM 모델을 통한 실시간 리스크 확률 예측.
 - **XAI Support**: 리스크 점수의 핵심 기여 요인을 추출하여 의사결정의 투명성 확보.
-- **Deep Dive**: [ML 모델 아키텍처](file:///home/kbgkim/antigravity/projects/ib/docs/ML_Model_Architecture_Rationale.md)
+- **Deep Dive**: [ML 모델 아키텍처](./docs/ML_Model_Architecture_Rationale.md)
 
 ---
 

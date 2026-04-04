@@ -12,8 +12,8 @@ Current Version: v10.0 (Final Documentation & Public Release)
 ## 📚 플랫폼 상세 기록 색인 (Documentation Index)
 
 > [!TIP]
-> **전 단계 상세 기록 확보**: Phase 1부터 Phase 14까지의 모든 기술 상세 설계 문서는 [DOCUMENTATION_INDEX.md](file:///home/kbgkim/antigravity/projects/ib/docs/DOCUMENTATION_INDEX.md)에서 통합 관리됩니다. 
-> 최종 안정화 과정의 트러블슈팅 기록은 [Technical_Troubleshooting_Log.md](file:///home/kbgkim/antigravity/projects/ib/docs/Technical_Troubleshooting_Log.md)에서 확인 가능합니다.
+> **전 단계 상세 기록 확보**: Phase 1부터 Phase 14까지의 모든 기술 상세 설계 문서는 [DOCUMENTATION_INDEX.md](../docs/DOCUMENTATION_INDEX.md)에서 통합 관리됩니다. 
+> 최종 안정화 과정의 트러블슈팅 기록은 [Technical_Troubleshooting_Log.md](../docs/Technical_Troubleshooting_Log.md)에서 확인 가능합니다.
 
 ## 1. 프로젝트 아키텍처 및 핵심 결정 (Core Decisions)
 
@@ -23,7 +23,7 @@ Current Version: v10.0 (Final Documentation & Public Release)
 - **네트워크 식별**: 내부망 전용 Git 서버(`20.200.245.247`)와의 통신 상태 정기 점검 필요.
 - **모듈 구조**: `ib-mna-engine`, `ib-ui-web`, `ib-ml-engine` 멀티 모듈 체계 유지.
 - **작업 관리**: 모든 최신 작업물을 `master` 브랜치로 병합 및 강제 추적(`git add -f bin/`) 완료.
-- **문서화 표준**: [DEVELOPMENT_PROTOCOL.md](file:///home/kbgkim/antigravity/projects/ib/Project_Management/DEVELOPMENT_PROTOCOL.md)에 따른 기술 상세 및 세션 기록 강제 준수.
+- **문서화 표준**: [DEVELOPMENT_PROTOCOL.md](../Project_Management/DEVELOPMENT_PROTOCOL.md)에 따른 기술 상세 및 세션 기록 강제 준수.
 
 ---
 
@@ -35,7 +35,7 @@ Current Version: v10.0 (Final Documentation & Public Release)
     - `src/components/`: `RiskEvaluationForm.jsx`, `RiskRadarChart.jsx`, `SynergyInput.jsx`, `ValuationWaterfall.jsx` 등 통합 완료.
 - **Formal_Specs/**: 비즈니스 개념 및 정규 기술 사양서(Risk/Hedge/Security) 완결 (v1.2)
 - **`docs/superpowers/plans/`**:
-    - **[2026-03-28-layer03-risk-scoring.md](file:///home/kbgkim/antigravity/projects/ib/docs/superpowers/plans/2026-03-28-layer03-risk-scoring.md)**: 리스크 엔진 구현 계획 (Task 1~5 완료 및 병합).
+    - **[2026-03-28-layer03-risk-scoring.md](../docs/superpowers/plans/2026-03-28-layer03-risk-scoring.md)**: 리스크 엔진 구현 계획 (Task 1~5 완료 및 병합).
 
 ---
 
@@ -50,10 +50,10 @@ Current Version: v10.0 (Final Documentation & Public Release)
     - Transitioned from mock arithmetic to GBDT model.
     - XAI Feature: Top 3 Risk Factors extraction & visualization.
     - Scoring: Internal Risk Probability -> External Safety Score (100-Risk).
-*   **User/Admin Support**: Created [USER_MANUAL.md](file:///home/kbgkim/antigravity/projects/ib/docs/USER_MANUAL.md) and [ADMIN_MANUAL.md](file:///home/kbgkim/antigravity/projects/ib/docs/ADMIN_MANUAL.md).
+*   **User/Admin Support**: Created [USER_MANUAL.md](../docs/USER_MANUAL.md) and [ADMIN_MANUAL.md](../docs/ADMIN_MANUAL.md).
 *   **Deep Dive Docs**:
-    - [Interactive_Probability_Bridge_DeepDive.md](file:///home/kbgkim/antigravity/projects/ib/docs/Interactive_Probability_Bridge_DeepDive.md)
-    - [ML_Model_Architecture_Rationale.md](file:///home/kbgkim/antigravity/projects/ib/docs/ML_Model_Architecture_Rationale.md)
+    - [Interactive_Probability_Bridge_DeepDive.md](../docs/Interactive_Probability_Bridge_DeepDive.md)
+    - [ML_Model_Architecture_Rationale.md](../docs/ML_Model_Architecture_Rationale.md)
 
 ---
 
@@ -77,12 +77,12 @@ Current Version: v10.0 (Final Documentation & Public Release)
 ### ✅ Phase 6: 실시간 데이터 피드 및 멀티 에이전트 협업 (완료)
 - **Market Feed Integration**: 블룸버그/로이터 API 기반 실시간 금리/환율/원자재/탄소배출권 수집 및 티커 연동.
 - **Multi-Agent Advisor (Aura)**: 법률/재무/운영 전문가 에이전트 간의 교차 검증 및 전략 요약 제공.
-- **완료 리포트**: [2026-03-31-phase6-completion.md](file:///home/kbgkim/antigravity/projects/ib/docs/superpowers/plans/2026-03-31-phase6-completion.md)
+- **완료 리포트**: [2026-03-31-phase6-completion.md](../docs/superpowers/plans/2026-03-31-phase6-completion.md)
 
 ### ✅ Phase 7: 지능형 리스크 소생(Mitigation) 및 전략 실행 모듈 (완료)
 - **Covenant Smart Monitor**: 실시간 금리/환율 변동에 따른 약정 위반 감지 및 조기 경고 서비스 구축 완료.
 - **Strategy Execution Interface**: 전문가 봇의 조언을 원클릭으로 재무 모델에 주입하여 시뮬레이션하는 기능 구현 완료.
-- **완료 리포트**: [2026-03-31-phase7-completion.md](file:///home/kbgkim/antigravity/projects/ib/docs/superpowers/plans/2026-03-31-phase7-completion.md)
+- **완료 리포트**: [2026-03-31-phase7-completion.md](../docs/superpowers/plans/2026-03-31-phase7-completion.md)
 
 - **완료 리포트**: [walkthrough.md](file:///home/kbgkim/.gemini/antigravity/brain/3917fa5b-a3d4-482b-b51c-9ce113cd8891/walkthrough.md)
 
@@ -95,22 +95,22 @@ Current Version: v10.0 (Final Documentation & Public Release)
 - **Global Monitoring UI**: `react-simple-maps` 기반의 전 세계 자산 위치 및 상태 실시간 관제 대시보드 구축.
 - **Risk Propagation Engine**: 자산 간 의존성을 분석하여 비선형(Sigmoid) 충격 전파를 계산하는 엔진 구현.
 - **Shockwave Visualization**: 리스크 발생 시 시각적 임팩트 전이를 위한 맵 애니메이션 적용.
-- **완료 리포트**: [Phase15_DeepDive.md](file:///home/kbgkim/antigravity/projects/ib/docs/Phase15_Global_Risk_Propagation_DeepDive.md) (Final Verified)
+- **완료 리포트**: [Phase15_DeepDive.md](../docs/Phase15_Global_Risk_Propagation_DeepDive.md) (Final Verified)
 ### ✅ Phase 16: 지능형 자동 헤징(Auto-Hedging) 및 전략 실행 자동화 (완료)
 - **Auto-Hedging Engine**: 리스크 임계점 도달 시 FX, Credit, Commodity, Interest Rate Swap(IRS) 추천 및 실행 로직 구현.
 - **Sentinel Mode**: 고위험(85점 이상) 발생 시 알고리즘에 의한 즉각적인 완전 자동 헤징 처치 기능 구축.
 - **Hedging Advisor UI**: 글로벌 맵과 연동된 사이드바에서 실시간 헤징 시뮬레이션 및 원클릭 실행 인터페이스 제공.
-- **완료 리포트**: [Phase16_DeepDive.md](file:///home/kbgkim/antigravity/projects/ib/docs/Phase16_Auto_Hedging_DeepDive.md) (Final Verified)
+- **완료 리포트**: [Phase16_DeepDive.md](../docs/Phase16_Auto_Hedging_DeepDive.md) (Final Verified)
 ### ✅ Phase 17: 플랫폼 최적화 및 최종 보안 거버넌스 확립 (완료)
 - **Performance Optimization**: Caffeine 캐싱 및 React Memoization을 통한 응답 속도 및 렌더링 최적화.
 - **Security Audit**: AOP 기반의 자산 실행 작업 감사 로깅 및 시스템 상태 체크 API 구축.
 - **Project Completion**: 최종 프로젝트 종료 리포트 작성 및 모든 상세 설계 문서 인덱싱 완료.
-- **완료 리포트**: [Phase17_DeepDive.md](file:///home/kbgkim/antigravity/projects/ib/docs/Phase17_Platform_Optimization_Governance_DeepDive.md) (Final Verified)
+- **완료 리포트**: [Phase17_DeepDive.md](../docs/Phase17_Platform_Optimization_Governance_DeepDive.md) (Final Verified)
 ### ✅ Phase 18: 실시간 환율 API 연동 및 로컬라이제이션 통합 (완료)
 - **Real-Time Currency API**: Frankfurter API 연동을 통해 실시간 USD/KRW 환율 반영 및 Fallback 메커니즘 구축.
 - **Localization Unification**: `조/억` 단위 체계 기반의 통화 포맷팅 유틸리티 고도화 및 전 컴포넌트 확산 적용.
 - **Global UI Localization**: 글로벌 자산 관제 및 헤징 패널의 모든 영문 라벨을 한국어 표준 용어로 전수 번역.
-- **완료 리포트**: [Phase18_DeepDive.md](file:///home/kbgkim/antigravity/projects/ib/docs/Phase18_RealTime_Currency_Localization_DeepDive.md) (Final Verified)
+- **완료 리포트**: [Phase18_DeepDive.md](../docs/Phase18_RealTime_Currency_Localization_DeepDive.md) (Final Verified)
 
 ---
 

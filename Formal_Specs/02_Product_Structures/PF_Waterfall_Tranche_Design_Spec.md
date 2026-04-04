@@ -52,4 +52,4 @@ Status: Formalized
 ---
 
 > [!IMPORTANT]
-> **Waterfall 계산 엔진**의 상세 로직과 코드는 [PF_Waterfall_Calculation_Engine_Spec.md](file:///home/kbgkim/antigravity/projects/ib-risk-worktree/Formal_Specs/02_Product_Structures/PF_Waterfall_Calculation_Engine_Spec.md)를 참조하십시오.
+> **Waterfall 계산 엔진**의 상세 로직과 코드는 [PF_Waterfall_Calculation_Engine_Spec.md](../..-risk-worktree/Formal_Specs/02_Product_Structures/PF_Waterfall_Calculation_Engine_Spec.md)를 참조하십시오.

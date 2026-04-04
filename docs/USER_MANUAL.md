@@ -88,8 +88,8 @@ IB 통합 플랫폼은 고도의 보안 환경을 시뮬레이션하며, 첫 접
 
 > [!TIP]
 > **더 상세한 기술적 배경이 궁금하신가요?**
-> - 시스템의 아키텍처와 설치 방법은 [운영자 매뉴얼](file:///home/kbgkim/antigravity/projects/ib/docs/ADMIN_MANUAL.md)을 참고하세요.
-> - 기능별 상세 설계 논리는 [상세 설계 문서(Deep Dive)](file:///home/kbgkim/antigravity/projects/ib/docs/DOCUMENTATION_INDEX.md)에서 확인할 수 있습니다.
+> - 시스템의 아키텍처와 설치 방법은 [운영자 매뉴얼](../docs/ADMIN_MANUAL.md)을 참고하세요.
+> - 기능별 상세 설계 논리는 [상세 설계 문서(Deep Dive)](../docs/DOCUMENTATION_INDEX.md)에서 확인할 수 있습니다.
 
 ---
 > Last Updated: 2026-04-03 | Maintainer: BongGeon KIm

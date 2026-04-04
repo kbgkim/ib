@@ -57,4 +57,4 @@ public Result execute(CashFlow cashFlow, List<Tranche> tranches) {
 ---
 
 > [!NOTE]
-> 실무에서는 **동순위(Pro-rata) 배분**과 **DSCR 트리거** 등의 복합 규칙이 추가될 수 있습니다. 세부 구현 가이드는 [PF_Waterfall_Calculation_Engine_Ref.md](file:///home/kbgkim/antigravity/projects/ib-risk-worktree/Archive_Drafts/02_Deal_Structures/PF_Waterfall_Calculation_Engine.md) 원본 초안을 참조하십시오.
+> 실무에서는 **동순위(Pro-rata) 배분**과 **DSCR 트리거** 등의 복합 규칙이 추가될 수 있습니다. 세부 구현 가이드는 [PF_Waterfall_Calculation_Engine_Ref.md](../..-risk-worktree/Archive_Drafts/02_Deal_Structures/PF_Waterfall_Calculation_Engine.md) 원본 초안을 참조하십시오.

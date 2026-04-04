@@ -39,4 +39,4 @@ Status: Formalized
 ---
 
 > [!TIP]
-> **고급 모델**: 게임 이론과 결합된 동시 최적화 모델은 [Joint_Optimization_ML_Pipeline_Spec.md](file:///home/kbgkim/antigravity/projects/ib-risk-worktree/Formal_Specs/04_Models_Algorithms/Joint_Optimization_ML_Pipeline_Spec.md)를 참조하십시오.
+> **고급 모델**: 게임 이론과 결합된 동시 최적화 모델은 [Joint_Optimization_ML_Pipeline_Spec.md](../..-risk-worktree/Formal_Specs/04_Models_Algorithms/Joint_Optimization_ML_Pipeline_Spec.md)를 참조하십시오.

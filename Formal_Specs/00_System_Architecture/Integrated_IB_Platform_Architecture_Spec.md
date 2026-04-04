@@ -96,4 +96,4 @@ graph TD
 ---
 
 > [!NOTE]
-> 세부적인 기능적 계층 및 데이터 흐름은 [Integrated_IB_Platform_Functional_Hierarchy.md](file:///home/kbgkim/antigravity/projects/ib-risk-worktree/Formal_Specs/00_System_Architecture/Integrated_IB_Platform_Functional_Hierarchy.md)를 참조하십시오.
+> 세부적인 기능적 계층 및 데이터 흐름은 [Integrated_IB_Platform_Functional_Hierarchy.md](../..-risk-worktree/Formal_Specs/00_System_Architecture/Integrated_IB_Platform_Functional_Hierarchy.md)를 참조하십시오.

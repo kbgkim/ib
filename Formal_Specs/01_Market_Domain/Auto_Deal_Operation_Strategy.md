@@ -51,4 +51,4 @@ Status: Formalized
 ---
 
 > [!TIP]
-> **기술적 구현**에 대한 세부 사항은 [Joint_Optimization_Engine_Spec.md](file:///home/kbgkim/antigravity/projects/ib-risk-worktree/Formal_Specs/03_Risk_Engines/Joint_Optimization_Engine_Spec.md)를 참조하십시오.
+> **기술적 구현**에 대한 세부 사항은 [Joint_Optimization_Engine_Spec.md](../..-risk-worktree/Formal_Specs/03_Risk_Engines/Joint_Optimization_Engine_Spec.md)를 참조하십시오.

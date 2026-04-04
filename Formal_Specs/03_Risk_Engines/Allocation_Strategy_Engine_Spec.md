@@ -51,4 +51,4 @@ $$W_i = \alpha \cdot (\text{Demand Ratio}) + \beta \cdot (\text{Investor ML Scor
 ---
 
 > [!NOTE]
-> 세부적인 투자자 등급 분류 기준은 [Advanced_Allocation_Tiers_Spec.md](file:///home/kbgkim/antigravity/projects/ib-risk-worktree/Formal_Specs/03_Risk_Engines/Advanced_Allocation_Tiers_Spec.md)를 참조하십시오.
+> 세부적인 투자자 등급 분류 기준은 [Advanced_Allocation_Tiers_Spec.md](../..-risk-worktree/Formal_Specs/03_Risk_Engines/Advanced_Allocation_Tiers_Spec.md)를 참조하십시오.

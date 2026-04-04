@@ -30,7 +30,7 @@ Phase 7은 리스크 관리 프레임워크의 최종 단계인 **"폐쇄 루프
 
 ## 4. 관련 문서 및 소스 (Related Assets)
 
-- **디자인 사양**: [2026-03-31-phase7-strategy-execution-design.md](file:///home/kbgkim/antigravity/projects/ib/docs/superpowers/specs/2026-03-31-phase7-strategy-execution-design.md)
+- **디자인 사양**: [2026-03-31-phase7-strategy-execution-design.md](../../../docs/superpowers/specs/2026-03-31-phase7-strategy-execution-design.md)
 - **주요 소스**: `MarketDataService.java`, `advisor.py`, `AdvisorPanel.jsx`, `App.jsx`
 
 > [!IMPORTANT]

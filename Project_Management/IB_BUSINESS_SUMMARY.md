@@ -46,9 +46,9 @@
 
 ## 📁 업무 내용을 찾으실 때 참고할 파일
 
-- **업무 프로세스 및 도메인 개요**: [IB_Domain_Standard.md](file:///home/kbgkim/antigravity/projects/ib-risk-worktree/Formal_Specs/01_Market_Domain/IB_Domain_Standard.md)
-- **금융/재무 공식 및 알고리즘**: [PF_CashFlow_Financial_Spec.md](file:///home/kbgkim/antigravity/projects/ib-risk-worktree/Formal_Specs/02_Product_Structures/PF_CashFlow_Financial_Spec.md)
-- **기술적 통합 아키텍처**: [아키텍처 사양서.md](file:///home/kbgkim/antigravity/projects/ib-risk-worktree/inbox/%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98%20%EC%82%AC%EC%96%91%EC%84%9C.md)
+- **업무 프로세스 및 도메인 개요**: [IB_Domain_Standard.md](../Formal_Specs/01_Market_Domain/IB_Domain_Standard.md)
+- **금융/재무 공식 및 알고리즘**: [PF_CashFlow_Financial_Spec.md](../Formal_Specs/02_Product_Structures/PF_CashFlow_Financial_Spec.md)
+- **기술적 통합 아키텍처**: [아키텍처 사양서.md](../inbox/%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98%20%EC%82%AC%EC%96%91%EC%84%9C.md)
 
 ---
 

@@ -29,4 +29,4 @@ Status: Formalized
 ---
 
 > [!NOTE]
-> 세부 기술 명세는 [IB_Core_Database_Schema.md](file:///home/kbgkim/antigravity/projects/ib-risk-worktree/Formal_Specs/00_System_Architecture/IB_Core_Database_Schema.md) 및 [IB_Trader_Dashboard_UX_Spec.md](file:///home/kbgkim/antigravity/projects/ib-risk-worktree/Formal_Specs/05_UI_UX_Prototyping/IB_Trader_Dashboard_UX_Spec.md)를 참조하십시오.
+> 세부 기술 명세는 [IB_Core_Database_Schema.md](../..-risk-worktree/Formal_Specs/00_System_Architecture/IB_Core_Database_Schema.md) 및 [IB_Trader_Dashboard_UX_Spec.md](../..-risk-worktree/Formal_Specs/05_UI_UX_Prototyping/IB_Trader_Dashboard_UX_Spec.md)를 참조하십시오.

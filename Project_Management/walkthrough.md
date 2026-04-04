@@ -19,13 +19,13 @@
 
 ## 2. 정제 및 이식 로드맵 (Purification Roadmap)
 
-**[Draft_Purification_Map.md](file:///home/kbgkim/antigravity/projects/ib/Project_Management/Draft_Purification_Map.md)**를 작성하여, `Archive_Drafts`에 있는 수많은 초기 자료들이 향후 어떤 사양서로 정제되어 이식되어야 하는지 명확히 매핑했습니다.
+**[Draft_Purification_Map.md](../Project_Management/Draft_Purification_Map.md)**를 작성하여, `Archive_Drafts`에 있는 수많은 초기 자료들이 향후 어떤 사양서로 정제되어 이식되어야 하는지 명확히 매핑했습니다.
 
 ---
 
 ## 3. 세션 마감 및 복구 (Session Memory)
 
-최종 상태를 **[PROJECT_CONTEXT.md](file:///home/kbgkim/antigravity/projects/ib/Project_Management/PROJECT_CONTEXT.md)**에 모두 기록했습니다. 
+최종 상태를 **[PROJECT_CONTEXT.md](../Project_Management/PROJECT_CONTEXT.md)**에 모두 기록했습니다. 
 
 > [!TIP]
 > **다음에 다시 시작할 때**:
