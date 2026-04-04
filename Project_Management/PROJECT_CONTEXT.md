@@ -111,6 +111,12 @@ Current Version: v10.0 (Final Documentation & Public Release)
 - **Localization Unification**: `조/억` 단위 체계 기반의 통화 포맷팅 유틸리티 고도화 및 전 컴포넌트 확산 적용.
 - **Global UI Localization**: 글로벌 자산 관제 및 헤징 패널의 모든 영문 라벨을 한국어 표준 용어로 전수 번역.
 - **완료 리포트**: [Phase18_DeepDive.md](../docs/Phase18_RealTime_Currency_Localization_DeepDive.md) (Final Verified)
+### ✅ Phase 19: 문맥 복구 및 코드 품질 정문화 (완료)
+- **Error Resolution**: Frankfurter API 404 오류 해결을 위한 엔드포인트(`api.frankfurter.dev`) 최신화 및 안정화.
+- **Architectural Refinement**: 필드 주입(`@Autowired`)을 생성자 주입(`@RequiredArgsConstructor` + `final`)으로 전수 전환하여 테스트 가능성 및 의존성 투명성 확보.
+- **Managed Bean Integration**: `RestTemplate`을 빈(Bean)으로 등록하고 `RestConfig`를 통해 중앙 관리 체계 구축.
+- **Static Analysis Cleanup**: 와일드카드 임포트 제거, JPA `open-in-view` 경고 해결, Null-safety 어노테이션 정비.
+- **완료 리포트**: [walkthrough.md](file:///home/kbgkim/.gemini/antigravity/brain/ad599413-9408-47d6-a61f-936ea34a37e9/walkthrough.md) (Final Verified)
 
 ---
 

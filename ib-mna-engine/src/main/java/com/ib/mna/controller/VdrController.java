@@ -1,5 +1,6 @@
 package com.ib.mna.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,10 +14,11 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/v1/mna/vdr")
 @CrossOrigin(origins = "*")
+@RequiredArgsConstructor
 public class VdrController {
 
     private final String ML_ENGINE_URL = "http://localhost:8000/api/v1/ml/summarize";
-    private final RestTemplate restTemplate = new RestTemplate();
+    private final RestTemplate restTemplate;
 
     @PostMapping("/analyze")
     @SuppressWarnings({"unchecked", "null"})

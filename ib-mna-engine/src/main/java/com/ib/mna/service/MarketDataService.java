@@ -1,7 +1,9 @@
 package com.ib.mna.service;
 
 import com.ib.mna.dto.MarketDataResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -16,12 +18,13 @@ import org.springframework.web.client.RestTemplate;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class MarketDataService {
 
     private final AtomicReference<MarketDataResponse> currentMarketData = new AtomicReference<>();
     private final Random random = new Random();
-    private RestTemplate restTemplate = new RestTemplate();
-    private static final String FX_API_URL = "https://www.frankfurter.app/latest?from=USD&to=KRW";
+    private final RestTemplate restTemplate;
+    private static final String FX_API_URL = "https://api.frankfurter.dev/v1/latest?from=USD&to=KRW";
     private static final BigDecimal FALLBACK_FX_RATE = new BigDecimal("1510.50");
 
     @PostConstruct

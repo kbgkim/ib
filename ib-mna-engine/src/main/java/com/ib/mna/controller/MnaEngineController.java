@@ -4,8 +4,15 @@ import com.ib.mna.service.ValuationService;
 import com.ib.mna.service.ScenarioService;
 import com.ib.domain.entity.SynergyItem;
 import com.ib.mna.dto.ValuationBridgeResponse;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
@@ -13,13 +20,11 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/v1/mna")
 @CrossOrigin(origins = "*") // For local dev integration
+@RequiredArgsConstructor
 public class MnaEngineController {
 
-    @Autowired
-    private ValuationService valuationService;
-    
-    @Autowired
-    private ScenarioService scenarioService;
+    private final ValuationService valuationService;
+    private final ScenarioService scenarioService;
 
     @GetMapping("/synergies/{dealId}")
     public List<SynergyItem> getSynergies(@PathVariable String dealId) {

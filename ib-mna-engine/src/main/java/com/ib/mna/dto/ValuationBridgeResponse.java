@@ -2,7 +2,11 @@ package com.ib.mna.dto;
 
 import java.math.BigDecimal;
 import java.util.List;
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
 /**
  * DTO for Waterfall Chart (M&A Valuation Bridge)
