@@ -28,8 +28,6 @@ import java.util.List;
 @Service
 public class PfSensitivityEngine {
 
-    private static final double[] DELTA_STEPS = {-0.20, -0.10, -0.05, 0.05, 0.10, 0.20};
-
     private final PfCashFlowRepository cashFlowRepo;
     private final PfTrancheRepository trancheRepo;
     private final PfMetricsEngine metricsEngine;
