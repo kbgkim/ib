@@ -10,7 +10,6 @@ import com.ib.pf.repository.PfTrancheRepository;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.math.RoundingMode;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -123,8 +122,6 @@ public class PfMetricsEngine {
      * 트랜치별 부채서비스 합산 (Phase 5: Dynamic Interest Rate & Inflation 지원)
      */
     private BigDecimal calculateAnnualDebtService(List<PfTranche> tranches, PfProject project, int year) {
-        BigDecimal inflationMultiplier = BigDecimal.ONE.add(project.getInflationRate().multiply(BigDecimal.valueOf(year)));
-        
         return tranches.stream()
             .filter(t -> !t.getSeniority().equals("EQUITY"))
             .map(t -> {

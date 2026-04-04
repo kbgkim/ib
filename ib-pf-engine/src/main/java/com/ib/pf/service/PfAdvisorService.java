@@ -4,7 +4,6 @@ import com.ib.pf.dto.PfMetricsResponse;
 import com.ib.pf.model.PfProject;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,9 +23,6 @@ public class PfAdvisorService {
         List<AdviceCard> adviceList = new ArrayList<>();
 
         double minDscr = metrics.getMinDscr().doubleValue();
-        double totalDebt = metrics.getTotalDebt().doubleValue();
-        double annualDebtService = metrics.getAnnualDebtService().doubleValue();
-        double currentInterestRate = 0.06; // Mock/Default if not per Tranche
 
         // 1. Refinancing Advice (Interest Rate focus)
         if (minDscr < 1.25) {
