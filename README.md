@@ -8,6 +8,36 @@
 
 본 플랫폼은 M&A 밸류에이션, PF 현금흐름 모델링, 실시간 글로벌 리스크 전파, AI 기반 자동 헤징 전략 등 실제 금융 실무에서 다루는 복잡한 데이터와 시나리오를 통합적인 관점에서 학습하고 시뮬레이션할 수 있도록 설계되었습니다.
 
+
+---
+
+## 🧪 Development Notes (개발 배경 및 환경)
+
+본 프로젝트는 **Vibe Coding 기반 개발 방식**을 통해 구현되었습니다.
+초기 설계 이후 총 **3차례의 주요 요구사항 확장(Iteration)**이 이루어졌으며, 약 **1주일 내 집중 개발**을 통해 완성되었습니다.
+
+개발은 **Antigravity Pro 구독 환경**을 기반으로 진행되었으며, 다음과 같은 특징을 가집니다:
+
+### 📌 개발 환경
+
+* OS: Windows 10
+* Runtime: WSL Ubuntu 22.04
+* Hardware: **16GB RAM 저사양 노트북**
+
+### ⚙️ 개발 방식
+
+* Antigravity 기반 AI Assisted Development
+* Superpowers, GStack 등 플러그인을 활용한 **개인화 개발 하네스(Harness) 구축**
+* 반복적인 요구사항 확장 + 실시간 아키텍처 개선 중심의 Vibe Coding
+
+### ⚠️ 개발 중 이슈 및 한계
+
+* 프로젝트 후반부 **Antigravity 빈번한 크래시 발생**
+* `run command` 기능 간헐적 먹통 현상
+* 로컬 시스템 자원 한계(16GB RAM)로 일부 작업 지연
+
+➡️ 그럼에도 불구하고, 플러그인 조합 및 하네스 최적화를 통해 **전체 시스템 완성**
+
 ---
 
 ## 🏗️ 시스템 아키텍처 (Detailed Architecture)
@@ -92,4 +122,4 @@ graph TD
 본 플랫폼은 **학습 및 연구용 알고리즘 시뮬레이션 목적**으로 제작되었습니다. 시스템에서 제공되는 모든 가치 산정 및 리스크 지표는 입력된 가상의 데이터와 알고리즘 결과물이며, 실제 투자 자문이나 금융 결정 용도로 사용될 수 없습니다.
 
 ---
-> Last Updated: 2026-04-03 | Maintainer: BongGeon KIm
+> Last Updated: 2026-04-04 | Maintainer: BongGeon KIm
