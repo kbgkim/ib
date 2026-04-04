@@ -1,7 +1,6 @@
 package com.ib.mna.service;
 
 import com.ib.mna.dto.MarketDataResponse;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -27,11 +26,10 @@ class MarketDataServiceTest {
     @InjectMocks
     private MarketDataService marketDataService;
 
-    @BeforeEach
-    void setUp() {
-    }
+
 
     @Test
+    @SuppressWarnings("null")
     void testInitWithApiSuccess() {
         // Mock API Response
         Map<String, Object> response = new HashMap<>();
@@ -49,6 +47,7 @@ class MarketDataServiceTest {
     }
 
     @Test
+    @SuppressWarnings("null")
     void testInitWithApiFailureFallback() {
         // Mock API Failure
         when(restTemplate.getForObject(anyString(), eq(Map.class))).thenThrow(new RuntimeException("API Error"));

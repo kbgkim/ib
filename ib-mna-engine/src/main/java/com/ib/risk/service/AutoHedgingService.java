@@ -27,6 +27,7 @@ public class AutoHedgingService {
     private static final double SENTINEL_AUTO_THRESHOLD = 85.0;
 
     @Transactional
+    @SuppressWarnings("null")
     public List<HedgingStrategy> generateRecommendations(String assetId, double currentRisk) {
         log.info("Generating hedging recommendations for asset: {} with risk: {}", assetId, currentRisk);
         
@@ -64,12 +65,14 @@ public class AutoHedgingService {
     }
 
     @Transactional
+    @SuppressWarnings("null")
     public HedgingStrategy executeStrategy(Long strategyId) {
         HedgingStrategy strategy = strategyRepository.findById(strategyId)
                 .orElseThrow(() -> new IllegalArgumentException("Strategy not found: " + strategyId));
         return executeStrategy(strategy);
     }
 
+    @SuppressWarnings("null")
     private HedgingStrategy executeStrategy(HedgingStrategy strategy) {
         log.info("Executing hedging strategy: {} for asset: {}", strategy.getProductName(), strategy.getAssetId());
         strategy.setStatus("EXECUTED");
@@ -77,6 +80,7 @@ public class AutoHedgingService {
         return strategyRepository.save(strategy);
     }
 
+    @SuppressWarnings("null")
     private HedgingStrategy buildStrategy(String assetId, String type, String name, double reduction, double confidence) {
         return HedgingStrategy.builder()
                 .assetId(assetId)

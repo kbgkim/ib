@@ -4,12 +4,12 @@ import com.ib.domain.entity.GlobalAsset;
 import com.ib.domain.entity.HedgingStrategy;
 import com.ib.domain.repository.GlobalAssetRepository;
 import com.ib.domain.repository.HedgingStrategyRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,8 +24,9 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 class AutoHedgingServiceTest {
-
+    
     @Mock
     private HedgingStrategyRepository strategyRepository;
 
@@ -35,13 +36,9 @@ class AutoHedgingServiceTest {
     @InjectMocks
     private AutoHedgingService autoHedgingService;
 
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
-
     @Test
     @DisplayName("리스크 60 이상일 때 헤징 추천 생성 테스트")
+    @SuppressWarnings("null")
     void generateRecommendations_SuccessTest() {
         // Given
         String assetId = "ASSET_001";
@@ -61,6 +58,7 @@ class AutoHedgingServiceTest {
 
     @Test
     @DisplayName("리스크 85 이상일 때 Sentinel Mode(자동 실행) 테스트")
+    @SuppressWarnings("null")
     void generateRecommendations_SentinelModeTest() {
         // Given
         String assetId = "ASSET_HIGH";
@@ -79,6 +77,7 @@ class AutoHedgingServiceTest {
 
     @Test
     @DisplayName("전략 실행(Execute) 기능 테스트")
+    @SuppressWarnings("null")
     void executeStrategy_Test() {
         // Given
         Long strategyId = 100L;

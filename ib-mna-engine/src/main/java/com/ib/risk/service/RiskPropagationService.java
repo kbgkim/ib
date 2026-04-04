@@ -27,6 +27,7 @@ public class RiskPropagationService {
      * @return 전파된 결과를 포함한 자산 리스트
      */
     @Cacheable(value = "riskPropagation", key = "#sourceAssetId + '-' + #shockAmount")
+    @SuppressWarnings("null")
     public List<PropagationResult> simulatePropagation(String sourceAssetId, double shockAmount) {
         log.info("Simulating risk propagation for source: {} with shock: {}", sourceAssetId, shockAmount);
         List<PropagationResult> results = new ArrayList<>();

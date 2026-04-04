@@ -9,9 +9,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.test.context.ActiveProfiles;
-import java.util.Arrays;
+
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -32,6 +33,7 @@ class SystemGovernanceTest {
     @TestConfiguration
     static class CacheTestConfig {
         @Bean
+        @SuppressWarnings("null")
         public CacheManager cacheManager() {
             CaffeineCacheManager cacheManager = new CaffeineCacheManager("globalAssets");
             cacheManager.setCaffeine(Caffeine.newBuilder()
@@ -52,15 +54,16 @@ class SystemGovernanceTest {
 
     @Test
     @DisplayName("Caffeine 캐시 작동 테스트 - 리포지토리 호출 1회 제한")
+    @SuppressWarnings("null")
     void cacheFunctionalityTest() {
         // Given
-        List<GlobalAsset> mockAssets = Arrays.asList(
+        List<GlobalAsset> mockAssets = List.of(
                 GlobalAsset.builder().id("A1").name("Asset 1").build(),
                 GlobalAsset.builder().id("A2").name("Asset 2").build());
         when(assetRepository.findAll()).thenReturn(mockAssets);
 
         // Clear cache before test
-        org.springframework.cache.Cache cache = cacheManager.getCache("globalAssets");
+        Cache cache = cacheManager.getCache("globalAssets");
         if (cache != null) {
             cache.clear();
         }
@@ -72,7 +75,7 @@ class SystemGovernanceTest {
 
         // Then: 리포지토리의 findAll()은 단 1회만 호출되어야 함 (나머지는 캐시에서 반환)
         verify(assetRepository, times(1)).findAll();
-        org.springframework.cache.Cache finalCache = cacheManager.getCache("globalAssets");
+        Cache finalCache = cacheManager.getCache("globalAssets");
         assertNotNull(finalCache);
         // getAllAssets() has no args, so we check if any entry exists in cache
         // Caffeine in Spring uses Nil for null keys internally but we check if result is cached

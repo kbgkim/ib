@@ -4,14 +4,18 @@ import com.ib.domain.entity.RiskDetail;
 import com.ib.domain.entity.RiskMaster;
 import com.ib.domain.repository.RiskMasterRepository;
 import com.ib.domain.risk.RiskGrade;
+import com.ib.risk.client.MlServiceClient;
+import com.ib.risk.client.MlServiceClient.MlPredictResponse;
 import com.ib.risk.model.RiskData;
+import com.ib.risk.model.RiskEvaluationResult;
+import com.ib.risk.service.VdrLogProcessor.VdrRiskMetrics;
 import com.ib.risk.util.RiskGradeMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -19,7 +23,7 @@ import java.util.List;
 public class RiskCompositeEngine {
 
     private final RiskMasterRepository riskMasterRepository;
-    private final com.ib.risk.client.MlServiceClient mlServiceClient;
+    private final MlServiceClient mlServiceClient;
     private final VdrLogProcessor vdrLogProcessor;
 
     // 가중치 정의
@@ -29,7 +33,8 @@ public class RiskCompositeEngine {
     private static final double WEIGHT_SECURITY = 0.10;
 
     @Transactional
-    public com.ib.risk.model.RiskEvaluationResult calculateAndSave(String dealId, RiskData data, String evaluatorId, String evalComment) {
+    @SuppressWarnings("null")
+    public RiskEvaluationResult calculateAndSave(String dealId, RiskData data, String evaluatorId, String evalComment) {
         // 1. 점수 계산
         double financialWeighted = data.financialScore() * WEIGHT_FINANCIAL;
         double legalWeighted = data.legalScore() * WEIGHT_LEGAL;
@@ -40,20 +45,20 @@ public class RiskCompositeEngine {
         RiskGrade grade = RiskGradeMapper.toGrade(totalScore);
 
         // 1-1. 머신러닝 피처 모델 조회 (Circuit Breaker 적용)
-        com.ib.risk.client.MlServiceClient.MlPredictResponse mlResponse = null;
+        MlPredictResponse mlResponse = null;
         try {
             mlResponse = mlServiceClient.predictRiskScore(dealId);
         } catch (Exception e) {
             // 폴백: 호출 실패 시 기본값
-            mlResponse = new com.ib.risk.client.MlServiceClient.MlPredictResponse(dealId, 0.0, 0.0, "ERROR", java.util.Collections.emptyList(), null);
+            mlResponse = new MlPredictResponse(dealId, 0.0, 0.0, "ERROR", Collections.emptyList(), null);
         }
 
         // 1-2. VDR 실시간 보안 리스크 및 상세 로그 분석 (Phase 2)
-        com.ib.risk.service.VdrLogProcessor.VdrRiskMetrics vdrMetrics = vdrLogProcessor.analyzeLogs(dealId);
+        VdrRiskMetrics vdrMetrics = vdrLogProcessor.analyzeLogs(dealId);
         double vdrRiskScore = vdrMetrics.totalRisk();
 
         // 2. 상세 내역 생성
-        List<RiskDetail> details = Arrays.asList(
+        List<RiskDetail> details = List.of(
             createDetail(dealId, "FINANCIAL", "Financial Stability", data.financialScore(), financialWeighted),
             createDetail(dealId, "LEGAL", "Legal Compliance", data.legalScore(), legalWeighted),
             createDetail(dealId, "OPERATIONAL", "Operational Efficiency", data.operationalScore(), operationalWeighted),
@@ -79,7 +84,7 @@ public class RiskCompositeEngine {
 
         RiskMaster savedMaster = riskMasterRepository.save(master);
         
-        return com.ib.risk.model.RiskEvaluationResult.builder()
+        return RiskEvaluationResult.builder()
             .master(savedMaster)
             .mlResponse(mlResponse)
             .vdrMetrics(vdrMetrics)
