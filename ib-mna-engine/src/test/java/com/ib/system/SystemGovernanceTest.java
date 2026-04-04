@@ -14,8 +14,10 @@ import org.springframework.test.context.ActiveProfiles;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -83,6 +85,5 @@ class SystemGovernanceTest {
         // Simple manual verification logic would usually be in an Integration test
         // but here we check if the controller returns the expected format.
         // Assuming we're using RestTemplate or MockMvc for full integration.
-        assertTrue(true); // Mocking success for the plan
     }
 }

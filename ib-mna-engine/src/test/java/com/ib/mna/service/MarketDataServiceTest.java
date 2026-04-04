@@ -5,8 +5,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.web.client.RestTemplate;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -17,6 +18,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 class MarketDataServiceTest {
 
     @Mock
@@ -27,7 +29,6 @@ class MarketDataServiceTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
     }
 
     @Test
@@ -43,7 +44,6 @@ class MarketDataServiceTest {
         marketDataService.init();
 
         MarketDataResponse data = marketDataService.getLatestData();
-        System.out.println("Expected: 1520.50, Actual: " + data.getUsdkrw());
         assertEquals(0, new BigDecimal("1520.50").compareTo(data.getUsdkrw()), 
             "Expected 1520.50 but got " + data.getUsdkrw());
     }

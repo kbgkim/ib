@@ -14,7 +14,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
@@ -69,7 +71,6 @@ class RiskCompositeEngineIntegrationTest {
             .findFirst()
             .orElse(0.0);
 
-        System.out.println("Fetched ML Score: " + mlScore);
         assertTrue(mlScore > 0, "ML 점수가 0보다 커야 합니다 (현재 실시간 연동 성공)");
         assertEquals(50.51, mlScore, 0.1, "Python 서비스의 기대값과 일치해야 함");
     }

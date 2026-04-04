@@ -2,6 +2,7 @@ package com.ib.mna;
 
 import com.ib.domain.entity.SynergyItem;
 import com.ib.domain.repository.SynergyRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -9,6 +10,7 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 
 @Component
+@Slf4j
 public class MnaDataInitializer implements CommandLineRunner {
 
     @Autowired
@@ -23,7 +25,7 @@ public class MnaDataInitializer implements CommandLineRunner {
                 new SynergyItem(null, dealId, "REVENUE", "Cross-selling Strategy", new BigDecimal("300.00"), 2),
                 new SynergyItem(null, dealId, "FINANCIAL", "Tax Shield Re-valuation", new BigDecimal("200.00"), 1)
             ));
-            System.out.println(">>> M&A Seed Data (DEAL-001) Initialized in PostgreSQL.");
+            log.info(">>> M&A Seed Data (DEAL-001) Initialized in PostgreSQL.");
         }
     }
 }
