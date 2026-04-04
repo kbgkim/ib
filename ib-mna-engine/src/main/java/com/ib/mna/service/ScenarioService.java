@@ -1,6 +1,5 @@
 package com.ib.mna.service;
 
-import com.ib.domain.entity.MnaScenario;
 import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.HashMap;

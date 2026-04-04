@@ -1,12 +1,11 @@
 package com.ib.mna.service;
 
 import com.ib.domain.entity.SynergyItem;
-import com.ib.domain.entity.ValuationResult;
 import com.ib.domain.repository.SynergyRepository;
 import com.ib.domain.repository.ValuationRepository;
 import com.ib.mna.dto.ValuationBridgeResponse;
 import com.ib.mna.dto.RiskMetricResponse;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
@@ -17,13 +16,13 @@ import java.util.HashMap;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class ValuationService {
 
-    @Autowired
-    private SynergyRepository synergyRepository;
-
-    @Autowired
-    private ValuationRepository valuationRepository;
+    private final SynergyRepository synergyRepository;
+    private final ValuationRepository valuationRepository;
+    private final MarketDataService marketDataService;
+    private final RiskEvaluationService riskEvaluationService;
 
     /**
      * DCF (Discounted Cash Flow) calculation for Synergies
@@ -61,11 +60,6 @@ public class ValuationService {
         return dcfValue.multiply(dcfWeight).add(multipleValue.multiply(multipleWeight));
     }
 
-    @Autowired
-    private MarketDataService marketDataService;
-
-    @Autowired
-    private RiskEvaluationService riskEvaluationService;
 
     /**
      * Calculate 5 points for Waterfall Bridge with Scenario Multiplier

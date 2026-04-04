@@ -1,13 +1,19 @@
 package com.ib.mna.service;
 
 import com.ib.mna.dto.MarketDataResponse;
-import com.lowagie.text.*;
+import com.lowagie.text.Document;
+import com.lowagie.text.DocumentException;
+import com.lowagie.text.Element;
 import com.lowagie.text.Font;
+import com.lowagie.text.FontFactory;
+import com.lowagie.text.PageSize;
+import com.lowagie.text.Paragraph;
+import com.lowagie.text.Phrase;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.awt.Color;
@@ -18,10 +24,10 @@ import java.util.Map;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class MnaReportService {
 
-    @Autowired
-    private MarketDataService marketDataService;
+    private final MarketDataService marketDataService;
 
     public byte[] generateIntelligenceReport(String dealId, Map<String, Object> projectData, AdvisorService.AdvisorResponse advisor) {
         ByteArrayOutputStream out = new ByteArrayOutputStream();

@@ -3,24 +3,23 @@ package com.ib.mna.service;
 import com.ib.mna.dto.MarketDataResponse;
 import lombok.Builder;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class AdvisorService {
 
     private final String ML_ADVISOR_URL = "http://localhost:8000/api/v1/ml/advisor/analyze";
     private final RestTemplate restTemplate = new RestTemplate();
 
-    @Autowired
-    private MarketDataService marketDataService;
+    private final MarketDataService marketDataService;
 
     @Data
     @Builder

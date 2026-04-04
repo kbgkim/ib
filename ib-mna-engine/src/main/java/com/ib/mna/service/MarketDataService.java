@@ -42,6 +42,7 @@ public class MarketDataService {
                 .build());
     }
 
+    @SuppressWarnings({"unchecked", "null"})
     private BigDecimal fetchRealTimeRate() {
         try {
             log.info("Fetching real-time exchange rate from: {}", FX_API_URL);

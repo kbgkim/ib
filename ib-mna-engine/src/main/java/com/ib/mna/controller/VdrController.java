@@ -19,6 +19,7 @@ public class VdrController {
     private final RestTemplate restTemplate = new RestTemplate();
 
     @PostMapping("/analyze")
+    @SuppressWarnings({"unchecked", "null"})
     public ResponseEntity<Map<String, Object>> analyzeVdrDocument(@RequestBody Map<String, String> request) {
         String docText = request.get("text");
         String category = request.getOrDefault("category", "GENERAL");
