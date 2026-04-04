@@ -2,7 +2,6 @@ package com.ib.mna.service;
 
 import com.ib.domain.entity.SynergyItem;
 import com.ib.domain.repository.SynergyRepository;
-import com.ib.domain.repository.ValuationRepository;
 import com.ib.mna.dto.ValuationBridgeResponse;
 import com.ib.mna.dto.RiskMetricResponse;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +19,6 @@ import java.util.HashMap;
 public class ValuationService {
 
     private final SynergyRepository synergyRepository;
-    private final ValuationRepository valuationRepository;
     private final MarketDataService marketDataService;
     private final RiskEvaluationService riskEvaluationService;
 
