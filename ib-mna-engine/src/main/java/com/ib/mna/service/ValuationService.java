@@ -27,6 +27,7 @@ public class ValuationService {
     /**
      * DCF (Discounted Cash Flow) calculation for Synergies
      */
+    @SuppressWarnings("null")
     public BigDecimal calculateSynergyNPV(String dealId, List<SynergyItem> items, BigDecimal wacc, int years) {
         BigDecimal totalNPV = BigDecimal.ZERO;
         
@@ -64,6 +65,7 @@ public class ValuationService {
     /**
      * Calculate 5 points for Waterfall Bridge with Scenario Multiplier
      */
+    @SuppressWarnings("null")
     public ValuationBridgeResponse calculateValuationBridge(List<SynergyItem> items, BigDecimal multiplier) {
         BigDecimal baseValue = new BigDecimal("2000"); // Fixed starting value
         
@@ -104,6 +106,7 @@ public class ValuationService {
     /**
      * Generate all three scenarios (Bear, Base, Bull) for the bridge
      */
+    @SuppressWarnings("null")
     public Map<String, ValuationBridgeResponse> calculateAllScenarios(List<SynergyItem> items) {
         Map<String, ValuationBridgeResponse> scenarios = new HashMap<>();
         
@@ -114,6 +117,7 @@ public class ValuationService {
         return scenarios;
     }
 
+    @SuppressWarnings("null")
     private BigDecimal calculateCategoryNPV(List<SynergyItem> items, String category, BigDecimal wacc, int years) {
         List<SynergyItem> filtered = items.stream()
                 .filter(i -> category.equalsIgnoreCase(i.getCategory()))

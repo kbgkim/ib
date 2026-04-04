@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 import java.awt.Color;
 import java.io.ByteArrayOutputStream;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -29,7 +28,8 @@ public class MnaReportService {
 
     private final MarketDataService marketDataService;
 
-    public byte[] generateIntelligenceReport(String dealId, Map<String, Object> projectData, AdvisorService.AdvisorResponse advisor) {
+    public byte[] generateIntelligenceReport(String dealId, Map<String, Object> projectData,
+            AdvisorService.AdvisorResponse advisor) {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         Document document = new Document(PageSize.A4); // Start with Portrait
 
@@ -39,9 +39,10 @@ public class MnaReportService {
 
             // 1. Portrait Section: Executive Summary & Advisor
             renderExecutiveSummary(document, dealId, projectData, advisor);
-            
+
             // 2. Switch to Landscape for Detailed Charts & Matrices
-            if (advisor != null && advisor.getIndividual_reports() != null && !advisor.getIndividual_reports().isEmpty()) {
+            if (advisor != null && advisor.getIndividual_reports() != null
+                    && !advisor.getIndividual_reports().isEmpty()) {
                 document.setPageSize(PageSize.A4.rotate());
                 document.newPage();
                 renderIntelligenceDeepDive(document, advisor);
@@ -54,12 +55,14 @@ public class MnaReportService {
         return out.toByteArray();
     }
 
-    private void renderExecutiveSummary(Document document, String dealId, Map<String, Object> data, AdvisorService.AdvisorResponse advisor) throws DocumentException {
+    private void renderExecutiveSummary(Document document, String dealId, Map<String, Object> data,
+            AdvisorService.AdvisorResponse advisor) throws DocumentException {
         Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 22, new Color(15, 23, 42));
         Font subTitleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 14, new Color(16, 185, 129));
         Font normalFont = FontFactory.getFont(FontFactory.HELVETICA, 11, Color.DARK_GRAY);
 
-        document.add(new Paragraph("Aura Intelligence: M&A Strategic Report", FontFactory.getFont(FontFactory.HELVETICA, 9, Color.GRAY)));
+        document.add(new Paragraph("Aura Intelligence: M&A Strategic Report",
+                FontFactory.getFont(FontFactory.HELVETICA, 9, Color.GRAY)));
         document.add(new Paragraph("\n"));
 
         document.add(new Paragraph("Deal: " + dealId, titleFont));
@@ -78,7 +81,7 @@ public class MnaReportService {
         addHeaderCell(marketTable, "USD/KRW");
         addHeaderCell(marketTable, "Carbon (ETS)");
         addHeaderCell(marketTable, "Covenant Status");
-        
+
         marketTable.addCell(market.getUst10y() != null ? market.getUst10y().toString() + "%" : "N/A");
         marketTable.addCell(market.getUsdkrw() != null ? market.getUsdkrw().toString() : "N/A");
         marketTable.addCell(market.getCarbonPrice() != null ? market.getCarbonPrice().toString() : "N/A");
@@ -86,17 +89,18 @@ public class MnaReportService {
         document.add(marketTable);
     }
 
-    private void renderIntelligenceDeepDive(Document document, AdvisorService.AdvisorResponse advisor) throws DocumentException {
+    private void renderIntelligenceDeepDive(Document document, AdvisorService.AdvisorResponse advisor)
+            throws DocumentException {
         Font subTitleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 16, new Color(59, 130, 246));
         Font tableHeaderFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 10, Color.WHITE);
-        
+
         document.add(new Paragraph("Expert Consensus & Geopolitical Audit Matrix", subTitleFont));
         document.add(new Paragraph("\n"));
 
-        PdfPTable agentTable = new PdfPTable(new float[]{1, 1.5f, 3, 1});
+        PdfPTable agentTable = new PdfPTable(new float[] { 1, 1.5f, 3, 1 });
         agentTable.setWidthPercentage(100);
 
-        String[] headers = {"Agent", "Category", "Expert Insight & Mitigation Action", "Risk"};
+        String[] headers = { "Agent", "Category", "Expert Insight & Mitigation Action", "Risk" };
         for (String h : headers) {
             PdfPCell cell = new PdfPCell(new Phrase(h, tableHeaderFont));
             cell.setBackgroundColor(new Color(30, 41, 59));
@@ -109,14 +113,18 @@ public class MnaReportService {
                 agentTable.addCell(report.getOrDefault("agent", "Unknown").toString());
                 agentTable.addCell(report.getOrDefault("category", "General").toString());
                 agentTable.addCell(report.getOrDefault("comment", "No comment provided.").toString());
-                
+
                 String riskLevel = report.getOrDefault("risk_level", "LOW").toString();
-                PdfPCell riskCell = new PdfPCell(new Phrase(riskLevel, FontFactory.getFont(FontFactory.HELVETICA_BOLD, 9, Color.WHITE)));
-                
-                if ("HIGH".equalsIgnoreCase(riskLevel)) riskCell.setBackgroundColor(new Color(239, 68, 68)); // Red
-                else if ("MEDIUM".equalsIgnoreCase(riskLevel)) riskCell.setBackgroundColor(new Color(245, 158, 11)); // Amber
-                else riskCell.setBackgroundColor(new Color(16, 185, 129)); // Green
-                
+                PdfPCell riskCell = new PdfPCell(
+                        new Phrase(riskLevel, FontFactory.getFont(FontFactory.HELVETICA_BOLD, 9, Color.WHITE)));
+
+                if ("HIGH".equalsIgnoreCase(riskLevel))
+                    riskCell.setBackgroundColor(new Color(239, 68, 68)); // Red
+                else if ("MEDIUM".equalsIgnoreCase(riskLevel))
+                    riskCell.setBackgroundColor(new Color(245, 158, 11)); // Amber
+                else
+                    riskCell.setBackgroundColor(new Color(16, 185, 129)); // Green
+
                 riskCell.setHorizontalAlignment(Element.ALIGN_CENTER);
                 riskCell.setPadding(5);
                 agentTable.addCell(riskCell);
@@ -124,10 +132,11 @@ public class MnaReportService {
         }
 
         document.add(agentTable);
-        
-        document.add(new Paragraph("\nGeopolitical & ESG Compliance Note:", FontFactory.getFont(FontFactory.HELVETICA_BOLD, 10)));
+
+        document.add(new Paragraph("\nGeopolitical & ESG Compliance Note:",
+                FontFactory.getFont(FontFactory.HELVETICA_BOLD, 10)));
         document.add(new Paragraph("Based on current Carbon ETS price and Supply Chain node analysis, " +
-                "the deal resilience score is estimated at 88/100. Geopolitical exposure is currently MINIMAL.", 
+                "the deal resilience score is estimated at 88/100. Geopolitical exposure is currently MINIMAL.",
                 FontFactory.getFont(FontFactory.HELVETICA, 10, Color.GRAY)));
     }
 
