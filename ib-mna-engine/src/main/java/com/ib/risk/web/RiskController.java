@@ -2,7 +2,6 @@ package com.ib.risk.web;
 
 import com.ib.domain.risk.RiskGrade;
 import com.ib.risk.service.RiskCompositeEngine;
-import com.ib.risk.util.RiskGradeMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

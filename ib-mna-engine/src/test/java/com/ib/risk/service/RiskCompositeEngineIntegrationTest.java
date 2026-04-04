@@ -1,7 +1,6 @@
 package com.ib.risk.service;
 
 import com.ib.domain.entity.RiskMaster;
-import com.ib.domain.repository.RiskMasterRepository;
 import com.ib.risk.client.MlServiceClient;
 import com.ib.risk.integration.RiskVDRAdapter;
 import com.ib.mna.MnaEngineApplication;

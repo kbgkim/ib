@@ -20,7 +20,6 @@ public class RiskCompositeEngine {
 
     private final RiskMasterRepository riskMasterRepository;
     private final com.ib.risk.client.MlServiceClient mlServiceClient;
-    private final com.ib.risk.integration.RiskVDRAdapter vdrAdapter;
     private final VdrLogProcessor vdrLogProcessor;
 
     // 가중치 정의

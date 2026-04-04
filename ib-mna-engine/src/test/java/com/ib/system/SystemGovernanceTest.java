@@ -11,8 +11,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.cache.CacheManager;
 import org.springframework.test.context.ActiveProfiles;
-import com.ib.risk.service.RiskPropagationService;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -46,9 +44,6 @@ class SystemGovernanceTest {
 
     @MockBean
     private GlobalAssetRepository assetRepository;
-
-    @MockBean
-    private RiskPropagationService propagationService;
 
     @Autowired
     private CacheManager cacheManager;
