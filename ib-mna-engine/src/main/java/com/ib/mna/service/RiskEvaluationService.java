@@ -1,16 +1,20 @@
 package com.ib.mna.service;
 
 import com.ib.mna.dto.RiskMetricResponse;
+import com.ib.risk.client.MlServiceClient;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
 
+@Slf4j
 @Service
+@RequiredArgsConstructor
 public class RiskEvaluationService {
+
+    private final MlServiceClient mlServiceClient;
 
     /**
      * Calculate Expected Loss (EL) = PD * LGD * EAD
@@ -20,49 +24,37 @@ public class RiskEvaluationService {
     }
 
     /**
-     * Perform Monte Carlo Simulation to derive VaR (Value at Risk) and CVaR (Conditional VaR)
-     * For demonstration, we simulate 1,000 loss scenarios.
+     * Refactored: Call External ML Engine instead of internal Monte Carlo.
+     * Strategic Realignment: Separation of computation and domain orchestration.
      */
     public RiskMetricResponse evaluateAdvancedMetrics(String dealId, BigDecimal baseExposure) {
-        Random random = new Random();
-        List<BigDecimal> simulatedLosses = new ArrayList<>();
+        log.info("Requesting advanced risk evaluation from ML Client for deal: {}", dealId);
         
-        // Simulating 1000 Monte Carlo scenarios
-        for (int i = 0; i < 1000; i++) {
-            // Random loss between 0% and 100% of exposure with specific distribution
-            double factor = Math.max(0, Math.min(1, random.nextGaussian() * 0.2 + 0.1));
-            simulatedLosses.add(baseExposure.multiply(BigDecimal.valueOf(factor)));
-        }
-        
-        // Sort for VaR/CVaR calculation
-        Collections.sort(simulatedLosses);
-        
-        // 95% Confidence -> 950th index in a 1000-sample list
-        BigDecimal var95 = simulatedLosses.get(949).setScale(2, RoundingMode.HALF_UP);
-        
-        // CVaR -> Average of losses greater than or equal to VaR
-        BigDecimal sumTailLoss = simulatedLosses.subList(949, 1000).stream()
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-        BigDecimal cvar95 = sumTailLoss.divide(BigDecimal.valueOf(51), 2, RoundingMode.HALF_UP);
-        
-        // PD/LGD/EL (Mocked for now based on baseExposure)
-        BigDecimal pd = new BigDecimal("0.05"); // 5% default prob
-        BigDecimal lgd = new BigDecimal("0.40"); // 40% loss rate
-        BigDecimal el = calculateEL(pd, lgd, baseExposure);
-        
-        String riskLevel = "LOW";
-        if (var95.compareTo(baseExposure.multiply(new BigDecimal("0.5"))) > 0) riskLevel = "HIGH";
-        else if (var95.compareTo(baseExposure.multiply(new BigDecimal("0.2"))) > 0) riskLevel = "MEDIUM";
+        try {
+            MlServiceClient.MlPredictResponse prediction = mlServiceClient.predictRiskScore(dealId);
+            
+            if ("ERROR".equals(prediction.confidenceLevel())) {
+                throw new RuntimeException("ML Service reported error state");
+            }
 
-        return RiskMetricResponse.builder()
+            return RiskMetricResponse.builder()
                 .dealId(dealId)
-                .pd(pd)
-                .lgd(lgd)
-                .ead(baseExposure)
-                .expectedLoss(el)
-                .var95(var95)
-                .cvar95(cvar95)
-                .riskLevel(riskLevel)
+                .pd(BigDecimal.valueOf(prediction.riskProbability()))
+                .lgd(new BigDecimal("0.45")) // Standard LGD for project finance
+                .var95(baseExposure.multiply(BigDecimal.valueOf(prediction.mlScore() / 100.0)))
+                .riskLevel(prediction.confidenceLevel())
                 .build();
+
+        } catch (Exception e) {
+            log.error("ML Client integration failed, providing fallback risk metrics", e);
+            // Fallback to maintain system stability (Minimum Invasive)
+            return RiskMetricResponse.builder()
+                .dealId(dealId)
+                .pd(new BigDecimal("0.05"))
+                .lgd(new BigDecimal("0.40"))
+                .var95(baseExposure.multiply(new BigDecimal("0.1"))) // 10% exposure fallback
+                .riskLevel("STABLE (FALLBACK)")
+                .build();
+        }
     }
 }

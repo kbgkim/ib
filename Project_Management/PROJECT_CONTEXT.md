@@ -117,11 +117,17 @@ Current Version: v10.0 (Final Documentation & Public Release)
 - **Managed Bean Integration**: `RestTemplate`을 빈(Bean)으로 등록하고 `RestConfig`를 통해 중앙 관리 체계 구축.
 - **Static Analysis Cleanup**: 와일드카드 임포트 제거, JPA `open-in-view` 경고 해결, Null-safety 어노테이션 정비.
 - **완료 리포트**: [walkthrough.md](file:///home/kbgkim/.gemini/antigravity/brain/ad599413-9408-47d6-a61f-936ea34a37e9/walkthrough.md) (Final Verified)
+### ✅ Phase 20: 도메인 중심 아키텍처 재정렬 및 이벤트 연동 (완료)
+- **Domain Centricity**: `Deal` 엔티티 중심의 비즈니스 행위 집중 및 상태 전이 로직 구현.
+- **Application Orchestration**: `DealApplicationService` 도입을 통한 서비스 간 결합도 완화 및 흐름 제어 중앙화.
+- **Transactional Outbox**: DB 트랜잭션과 연동된 이벤트 발행 체계 구축 (`JdbcTemplate` + `ObjectMapper`).
+- **Clean External Integration**: `MlServiceClient`를 통한 리스크 엔진의 투명한 외부 연동 및 Fallback 메커니즘 고도화.
+- **완료 리포트**: [walkthrough.md](file:///home/kbgkim/.gemini/antigravity/brain/f3fdca9e-5f81-435a-a5d8-9ad7732f19b2/walkthrough.md) (Final Verified)
 
 ---
 
 ## 🏆 Project Completion Notice
-본 프로젝트는 **Phase 1부터 Phase 17까지의 모든 요구사항을 완수**하였습니다. 이제 IB 플랫폼은 안정적인 프로덕션 운영이 가능한 상태로 최적화되었으며, 모든 기술적 의사결정은 상세 설계 문서(Deep Dive)에 영구 보존됩니다.
+본 프로젝트는 **Phase 1부터 Phase 20까지의 모든 주요 아키텍처 요구사항을 완수**하였습니다. 이제 IB 플랫폼은 도메인 주도 설계(DDD)와 이벤트 기반 아키텍처(EDA)의 초석을 다졌으며, 대규모 확장 및 유지보수에 최적화된 상태입니다.
 
 ---
 

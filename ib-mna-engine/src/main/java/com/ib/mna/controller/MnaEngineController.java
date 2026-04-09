@@ -1,8 +1,10 @@
 package com.ib.mna.controller;
 
+import com.ib.mna.application.DealApplicationService;
 import com.ib.mna.service.ValuationService;
 import com.ib.mna.service.ScenarioService;
 import com.ib.domain.entity.SynergyItem;
+import com.ib.domain.deal.Deal;
 import com.ib.mna.dto.ValuationBridgeResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -25,6 +27,12 @@ public class MnaEngineController {
 
     private final ValuationService valuationService;
     private final ScenarioService scenarioService;
+    private final DealApplicationService dealApplicationService;
+
+    @PostMapping("/deals")
+    public Deal createDeal(@RequestParam String name, @RequestParam BigDecimal initialValue) {
+        return dealApplicationService.createAndEvaluateDeal(name, initialValue);
+    }
 
     @GetMapping("/synergies/{dealId}")
     public List<SynergyItem> getSynergies(@PathVariable String dealId) {
